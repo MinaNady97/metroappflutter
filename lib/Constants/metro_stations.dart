@@ -1,6 +1,6 @@
 // metro_stations.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 Map<List<int>, List<String>> getCommonStationsMap(BuildContext context) {
@@ -153,6 +153,78 @@ List<String> getMetroLine3Branch1Stations(BuildContext context) {
 }
 
 List<String> getMetroLine3Branch2Stations(BuildContext context) {
+  return [
+    AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    AppLocalizations.of(context)!.metroStationEL_HAYKSTEP,
+    AppLocalizations.of(context)!.metroStationOMAR_IBN_EL_KHATTAB,
+    AppLocalizations.of(context)!.metroStationQOBA,
+    AppLocalizations.of(context)!.metroStationHESHAM_BARAKAT,
+    AppLocalizations.of(context)!.metroStationEL_NOZHA,
+    AppLocalizations.of(context)!.metroStationNADI_EL_SHAMS,
+    AppLocalizations.of(context)!.metroStationALF_MASKAN,
+    AppLocalizations.of(context)!.metroStationHELIOPOLIS,
+    AppLocalizations.of(context)!.metroStationHAROUN,
+    AppLocalizations.of(context)!.metroStationEL_AHRAM,
+    AppLocalizations.of(context)!.metroStationKOLLEYET_EL_BANAT,
+    AppLocalizations.of(context)!.metroStationEL_ESTAD,
+    AppLocalizations.of(context)!.metroStationARD_EL_MAARD,
+    AppLocalizations.of(context)!.metroStationABASIA,
+    AppLocalizations.of(context)!.metroStationABDO_BASHA,
+    AppLocalizations.of(context)!.metroStationEL_GEISH,
+    AppLocalizations.of(context)!.metroStationBAB_EL_SHARIA,
+    AppLocalizations.of(context)!.metroStationATABA,
+    AppLocalizations.of(context)!.metroStationGAMAL_ABD_EL_NASSER,
+    AppLocalizations.of(context)!.metroStationMASPERO,
+    AppLocalizations.of(context)!.metroStationSAFAA_HEGAZI,
+    AppLocalizations.of(context)!.metroStationKIT_KAT,
+    AppLocalizations.of(context)!.metroStationEL_TOUFIQIA,
+    AppLocalizations.of(context)!.metroStationWADI_EL_NIL,
+    AppLocalizations.of(context)!.metroStationGAMAET_EL_DOWL_EL_ARABIA,
+    AppLocalizations.of(context)!.metroStationBOLAK_EL_DAKROUR,
+    AppLocalizations.of(context)!.metroStationCAIRO_UNIVERSITY,
+    AppLocalizations.of(context)!.metroStationSUDAN,
+    AppLocalizations.of(context)!.metroStationIMBABA,
+    AppLocalizations.of(context)!.metroStationEL_BOHY,
+    AppLocalizations.of(context)!.metroStationEL_QAWMEYA,
+    AppLocalizations.of(context)!.metroStationEL_TARIQ_EL_DAIRY,
+    AppLocalizations.of(context)!.metroStationROD_EL_FARAG_AXIS,
+  ];
+}
+
+List<String> getMetroLine3StationsEN(BuildContext context) {
+  return [
+    AppLocalizations.of(context)!.en_metroStationADLY_MANSOUR,
+    AppLocalizations.of(context)!.en_metroStationEL_HAYKSTEP,
+    AppLocalizations.of(context)!.en_metroStationOMAR_IBN_EL_KHATTAB,
+    AppLocalizations.of(context)!.en_metroStationQOBA,
+    AppLocalizations.of(context)!.en_metroStationHESHAM_BARAKAT,
+    AppLocalizations.of(context)!.en_metroStationEL_NOZHA,
+    AppLocalizations.of(context)!.en_metroStationNADI_EL_SHAMS,
+    AppLocalizations.of(context)!.en_metroStationALF_MASKAN,
+    AppLocalizations.of(context)!.en_metroStationHELIOPOLIS,
+    AppLocalizations.of(context)!.en_metroStationHAROUN,
+    AppLocalizations.of(context)!.en_metroStationEL_AHRAM,
+    AppLocalizations.of(context)!.en_metroStationKOLLEYET_EL_BANAT,
+    AppLocalizations.of(context)!.en_metroStationEL_ESTAD,
+    AppLocalizations.of(context)!.en_metroStationARD_EL_MAARD,
+    AppLocalizations.of(context)!.en_metroStationABASIA,
+    AppLocalizations.of(context)!.en_metroStationABDO_BASHA,
+    AppLocalizations.of(context)!.en_metroStationEL_GEISH,
+    AppLocalizations.of(context)!.en_metroStationBAB_EL_SHARIA,
+    AppLocalizations.of(context)!.en_metroStationATABA,
+    AppLocalizations.of(context)!.en_metroStationGAMAL_ABD_EL_NASSER,
+    AppLocalizations.of(context)!.en_metroStationMASPERO,
+    AppLocalizations.of(context)!.en_metroStationSAFAA_HEGAZI,
+    AppLocalizations.of(context)!.en_metroStationKIT_KAT,
+    AppLocalizations.of(context)!.en_metroStationEL_TOUFIQIA,
+    AppLocalizations.of(context)!.en_metroStationWADI_EL_NIL,
+    AppLocalizations.of(context)!.en_metroStationGAMAET_EL_DOWL_EL_ARABIA,
+    AppLocalizations.of(context)!.en_metroStationBOLAK_EL_DAKROUR,
+    AppLocalizations.of(context)!.en_metroStationCAIRO_UNIVERSITY,
+  ];
+}
+
+List<String> getMetroLine3StationsAR(BuildContext context) {
   return [
     AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
     AppLocalizations.of(context)!.metroStationEL_HAYKSTEP,

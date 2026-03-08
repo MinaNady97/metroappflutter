@@ -1,0 +1,3055 @@
+{
+  "en_metroStationADLY_MANSOUR": {
+    "stationName": "ADLY MANSOUR",
+    "Religious": ["El Hegra Mosque"],
+    "Medical": [],
+    "Cultural": [],
+    "Commercial": ["Shopping Mall"],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": ["Ahmed Orabi Industrial School","Police Academy"],
+    "Services": ["Cemetry"],
+    "Landmarks": [],
+    "Public Institutions": ["Light Rail Train Station (LRT)","Metro Garage","Military Institution"],
+    "Streets": ["EL Loaloah","Ring Road","Cairo Ismailia Desert Road","El Salam Tunnel","Wadi El Nile","Othman Ebn Affan","Omar Ebn El Khattab","Omar Ebn Abd El Aziz","Markaz Shabab El Haykstep","Mecca","Galaxo Road","El Maahad El Diny","El Hegazy","El Haykstep","El Halawany","Ali Ebn Abi Taleb","Abou El Hagag","Abd El Aziz El Sedeek"]
+  },
+  "armetroStationADLY_MANSOUR": {
+    "stationName": "عدلي منصور",
+    "Religious": ["مسجد الهجرة"],
+    "Medical": [],
+    "Cultural": [],
+    "Commercial": ["مول تجاري"],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": ["معهد الحراسات الخاصة","مدرسة أحمد عرابي الصناعية"],
+    "Services": ["۲۵ مدافن"],
+    "Landmarks": [],
+    "Public Institutions": ["محطة سكة حديد السلام القطار الكهربائي","جراح مترو الأنفاق","منشآة عسكرية"],
+    "Streets": ["وادي النيل","عمر بن الخطاب","عمر بن عبد العزيز","على بن أبي طالب","عثمان بن عفان","طريق جالاكسو","عبد العزيز صديق","طريق القاهرة الإسماعلية الصحراوي","اللؤلؤة","المعهد الديني","الهايكستيب","الطريق الدائري,","أبو الحجاج","الحجازي","الحلواني"]
+  },
+  "en_metroStationEL_HAYKSTEP": {
+    "stationName": "EL HAYKSTEP",
+    "Religious": ["El Herafeyeen Mosque"],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": ["Ammar Ibn Yasser Elementary School"],
+    "Services": ["Cairo International Airport", "Car Service Center"],
+    "Landmarks": [],
+    "Public Institutions": ["Police Station El Herafeyeen", "Military Services"],
+    "Streets": [
+      "Ahmed Shawki El Keel St.",
+      "El Badry St.",
+      "Gamal Abd El Nasser St.",
+      "Gamal El Deen Zaki St.",
+      "Gesr El Suez St.",
+      "Hatem Qabeel St.",
+      "Haykstep Bridge",
+      "Joseph Tito St.",
+      "Nabil El Beshbeshi St.",
+      "Raafat Thawi St.",
+      "Cairo-Ismailia Desert Road"
+    ]
+  },
+  "ar_metroStationEL_HAYKSTEP": {
+    "stationName": "الهايكستب",
+    "Religious": ["مسجد الحرفيين"],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": ["مدرسة عمار بن ياسر الإبتدائية"],
+    "Services": ["مطار القاهرة الدولي", "مركز خدمة سيارات"],
+    "Landmarks": [],
+    "Public Institutions": ["نقطة شرطة الحرفيين", "منشأة عسكرية"],
+    "Streets": [
+      "شارع أحمد شوقي القيمي",
+      "شارع البدري",
+      "شارع جمال عبد الناصر",
+      "شارع جمال الدين ذكي",
+      "شارع جسر السويس",
+      "شارع حاتم قابيل",
+      "كوبري الهايكستب",
+      "شارع جوزيف تيتو",
+      "شارع نبيل البيشبيشي",
+      "شارع رأفت الطهطاوي",
+      "طريق القاهرة الإسماعلية الصحراوي"
+    ]
+  },
+  "en_metroStationOMAR_IBN_EL_KHATTAB": {
+    "stationName": "OMAR IBN EL KHATTAB",
+    "Religious": ["El Rahman Mosque"],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": ["Police Sports Club"],
+    "Educational": ["As Salam High Institute for Engineering and Technology"],
+    "Services": [
+      "Cairo International Airport",
+      "Car Service Workshops",
+      "El Farouqeya Buildings"
+    ],
+    "Landmarks": [],
+    "Public Institutions": ["Security Aides Institute Gesr El Suez"],
+    "Streets": [
+      "Arafa St.",
+      "Abu Bakr El Sedeek St.",
+      "Dr. Masoud St.",
+      "El Kersh St.",
+      "El Rahman Mosque St.",
+      "El Safa We El Marwa St.",
+      "Gamal Abd El Nasser St.",
+      "Gesr El Suez St.",
+      "Gilla St.",
+      "Joseph Tito St.",
+      "Khalf Joseph Tito St.",
+      "Khaled Mohamed Mourad St.",
+      "Mohamed Ibrahim St.",
+      "Mokhtar Abaza St.",
+      "Nasser Abd El Wahab St.",
+      "Omar Ibn El Khattab St.",
+      "Roki St.",
+      "Street 18",
+      "Tawakol St.",
+      "Thalaget El Zahraa St."
+    ]
+  },
+  "ar_metroStationOMAR_IBN_EL_KHATTAB": {
+    "stationName": "عمر بن الخطاب",
+    "Religious": ["مسجد الرحمن"],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": ["نادي الداخلية الرياضي"],
+    "Educational": ["معهد السلام العالي للهندسة"],
+    "Services": [
+      "مطار القاهرة الدولي",
+      "ورش خدمات سيارات",
+      "عمارات الفاروقية"
+    ],
+    "Landmarks": [],
+    "Public Institutions": ["معهد معاوني الأمن بجسر السويس"],
+    "Streets": [
+      "شارع عرفة",
+      "شارع أبو بكر الصديق",
+      "شارع د. مسعود",
+      "شارع القرش",
+      "شارع مسجد الرحمن",
+      "شارع الصفاء و المروة",
+      "شارع جمال عبد الناصر",
+      "شارع جسر السويس",
+      "شارع جيلا",
+      "شارع جوزيف تيتو",
+      "خلف جوزيف تيتو",
+      "شارع خالد محمد موراد",
+      "شارع محمد إبراهيم",
+      "شارع مختار أباظة",
+      "شارع ناصر عبد الوهاب",
+      "شارع عمر بن الخطاب",
+      "شارع روكي",
+      "شارع ۱۸",
+      "شارع توكل",
+      "شارع ثلاجة الزهراء"
+    ]
+  },
+  "en_metroStationQOBA": {
+    "stationName": "QOBA",
+    "Religious": ["Virgin Mary Church"],
+    "Medical": ["Saudi German Hospital Cairo"],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "El Massria Schools",
+      "Egyptian Integrated Schools",
+      "Qubaa Primary School"
+    ],
+    "Services": [
+      "Cairo International Airport",
+      "Kanal Market",
+      "Workshops"
+    ],
+    "Landmarks": [],
+    "Public Institutions": ["General Authority for Literacy and Adult Education"],
+    "Streets": [
+      "Ali Ibn Abi Taleb St.",
+      "Anabeeb El Petrol St.",
+      "El Fayzi St.",
+      "El Fayzi 2 St.",
+      "El Mostafa St.",
+      "Gesr El Suez St.",
+      "Gharb El Rashah St.",
+      "Ideal St.",
+      "Joseph Tito St.",
+      "Khalf Joseph Tito St.",
+      "Magdy El Kenawy St.",
+      "Nakheel St.",
+      "Philip St.",
+      "Taha Hussein Rd."
+    ]
+  },
+  "ar_metroStationQOBA": {
+    "stationName": "قباء",
+    "Religious": ["كنيسة العذراء وأبو سفين"],
+    "Medical": ["المستشفى السعودي الألماني القاهرة"],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "مدارس المصرية المتكاملة",
+      "مدرسة المصرية",
+      "مدرسة قباء الإبتدائية"
+    ],
+    "Services": [
+      "مطار القاهرة الدولي",
+      "سوق القنال",
+      "ورش"
+    ],
+    "Landmarks": [],
+    "Public Institutions": ["الهيئة العامة لمحو الأمية وتعليم الكبار"],
+    "Streets": [
+      "شارع علي بن أبي طالب",
+      "شارع أنابيب البترول",
+      "شارع الفايزي",
+      "شارع الفايزي 2",
+      "شارع المصطفى",
+      "شارع جسر السويس",
+      "شارع غرب الرشاح",
+      "شارع ايديال",
+      "شارع جوزيف تيتو",
+      "شارع خلف جوزيف تيتو",
+      "شارع مجدى القناوي",
+      "شارع النخيل",
+      "شارع العميد فيليب",
+      "محور طه حسين"
+    ]
+  },
+  "en_metroStationHESHAM_BARAKAT": {
+    "stationName": "HESHAM BARAKAT",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": ["Badr Park"],
+    "Sport Facilities": [],
+    "Educational": [
+      "Computer Qualifying Center",
+      "Pioneer Language School",
+      "Schools' Complex"
+    ],
+    "Services": ["Direct Transport Company"],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": [
+      "Abd El Rahman St.",
+      "Ahmed Zaki St.",
+      "Anabeeb El Petrol St.",
+      "Belal Ibn Rabah St.",
+      "El Arbieen St.",
+      "El Bebawy St.",
+      "El Insheraah St.",
+      "El Khamseen St.",
+      "El Madina St.",
+      "El Masanea St.",
+      "El Quds El Shareef St.",
+      "Gesr El Suez St.",
+      "Gesr El Suez 113 St.",
+      "Gharb El Seka El Hadid St.",
+      "Hassan El Dibeky St.",
+      "Joseph Tito St.",
+      "Mahmoud Hassan St.",
+      "Manshiyet El Sad El Aly St.",
+      "Masnaa El Warak",
+      "Mohamed El Sebai St.",
+      "Mohamed El Tabei St.",
+      "Omar El Dessouky St.",
+      "Othman Amin St.",
+      "Sharif Sheita St.",
+      "Taha Hussien St.",
+      "Zahret El Madan St."
+    ]
+  },
+  "ar_metroStationHESHAM_BARAKAT": {
+    "stationName": "هشام بركات",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": ["حديقة بدر"],
+    "Sport Facilities": [],
+    "Educational": [
+      "مركز تأهيل الحاسبات",
+      "مدرسة الرائد للغات",
+      "مجمع مدارس"
+    ],
+    "Services": ["شركة النقل العام"],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": [
+      "شارع عبد الرحمن",
+      "شارع أحمد زكي",
+      "شارع أنابيب البترول",
+      "شارع بلال بن رباح",
+      "شارع الأربعين",
+      "شارع البياوي",
+      "شارع الانشراح",
+      "شارع الخمسين",
+      "شارع المدينة",
+      "شارع المصانع",
+      "شارع القدس الشريف",
+      "شارع جسر السويس",
+      "شارع جسر السويس ١١٣",
+      "شارع غرب السكة الحديد",
+      "شارع حسن الدبيكي",
+      "شارع جوزيف تيتو",
+      "شارع محمود حسن",
+      "شارع منشية السد العالي",
+      "شارع مصنع الورق",
+      "شارع محمد السباعي",
+      "شارع محمد التابعي",
+      "شارع عمر الدسوقي",
+      "شارع عثمان أمين",
+      "شارع شريف شتا",
+      "محور طه حسين",
+      "شارع زهرة المدائن"
+    ]
+  },
+  "en_metroStationEL_NOZHA": {
+    "stationName": "EL NOZHA",
+    "Religious": [
+      "Tawfiq Mohamad Mosque",
+      "Martyr Hamza Mosque",
+      "El Rahma Mosque"
+    ],
+    "Medical": [
+      "Tubarak Hospital for Children",
+      "El Amal Hospital"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "Sun Sporting Club",
+      "Palm Club"
+    ],
+    "Educational": [],
+    "Services": [
+      "El Nozha Central",
+      "Heliopolis Power Station",
+      "Public Transport Authority Garage",
+      "Co-Operation Company"
+    ],
+    "Landmarks": [
+      "Hellopols Power Station"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "6 October St.",
+      "Abd El Jabar Abd El Sattar St.",
+      "Abd El Moniem Reyad St.",
+      "Ali Abou Deif St.",
+      "Aziz El Masry St.",
+      "Behind Sour El Mahata",
+      "El Arbieen St.",
+      "El Fangary St.",
+      "El Fayrouz St.",
+      "El Horeya St.",
+      "El Nasr St.",
+      "El Petrol St.",
+      "El Rahma Mosque St.",
+      "El Salam St.",
+      "Fawzy El Shatwy St.",
+      "Gamal Abd El Nasser St.",
+      "Gesr El Suez St.",
+      "Hosni Abd El Aziem St.",
+      "Kamal Hijab St.",
+      "Karim St.",
+      "Omar Ibn El Khattab St.",
+      "Sekat El Petrol St.",
+      "Sherif St.",
+      "Sour El Mahata",
+      "Taha Hussien St.",
+      "Salah Salim St."
+    ]
+  },
+  "ar_metroStationEL_NOZHA": {
+    "stationName": "النزهة",
+    "Religious": [
+      "مسجد التوفيق المحمدي",
+      "مسجد الشهيد حمزة",
+      "مسجد الرحمة"
+    ],
+    "Medical": [
+      "مستشفى تبارك للأطفال",
+      "مستشفى الأمل"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "نادي الشمس الرياضي",
+      "نادي النخيل"
+    ],
+    "Educational": [],
+    "Services": [
+      "سنترال النزهة",
+      "محطة محولات هليوبوليس",
+      "جراج هيئة النقل العام",
+      "شركة التعاون للبترول"
+    ],
+    "Landmarks": [
+      "محطة محولات هليوبوليس"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "شارع 6 أكتوبر",
+      "شارع عبد الجبار عبد الستار",
+      "شارع عبد المنعم رياض",
+      "شارع على أبو ضيف",
+      "شارع عزيز المصري",
+      "خلف سور المحطة",
+      "شارع الأربعين",
+      "شارع الفنجري",
+      "شارع الفيروز",
+      "شارع الحرية",
+      "شارع النصر",
+      "شارع البترول",
+      "شارع مسجد الرحمة",
+      "شارع السلام",
+      "شارع فوزي الشتوي",
+      "شارع جمال عبد الناصر",
+      "شارع جسر السويس",
+      "شارع حسني عبد العظيم",
+      "شارع كمال حجاب",
+      "شارع كريم",
+      "شارع عمر بن الخطاب",
+      "شارع سكة البترول",
+      "شارع شريف",
+      "شارع سور المحطة",
+      "شارع طه حسين",
+      "شارع صلاح سالم"
+    ]
+  },
+  "en_metroStationNADI_EL_SHAMS": {
+    "stationName": "NADI EL SHAMS",
+    "Religious": [
+      "El Arab Mosque",
+      "El Tawheid Mosque"
+    ],
+    "Medical": [
+      "El Mostashfa"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "El Shams Club",
+      "Shooting Club - El Shams Club",
+      "El Zahraa Stud"
+    ],
+    "Educational": [
+      "El Khateeb School"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "El Arab Theme Park"
+    ],
+    "Public Institutions": [
+      "Public Taxes Authority"
+    ],
+    "Streets": [
+      "Gesr El Suez St.",
+      "Abu El Fetouh Abd Allah St.",
+      "Mohammed Abou El Naga St.",
+      "El Gameyya El Zeraya St.",
+      "Ahmed Orabi St.",
+      "Khalil Ibrahim St.",
+      "Khalid Ibn El Walid St.",
+      "Ahmed Abdel Aziz St.",
+      "Abdel Hamid Badawy St.",
+      "Abu El Mutiq St.",
+      "Amman St.",
+      "Assuit St.",
+      "Aziz El Masry St.",
+      "El Elwaya St.",
+      "El Khalil Ibrahim St.",
+      "El Sallam St.",
+      "El Tawheid Mosque St.",
+      "El Wihda El Arabiya St.",
+      "El Zaeem Ghandy St.",
+      "Filastin St.",
+      "Mahmoud Mahrous St.",
+      "Makkah St.",
+      "Moustafa Hafez St.",
+      "Omar Ibn El Khattab St.",
+      "Sedi Belal St."
+    ]
+  },
+  "ar_metroStationNADI_EL_SHAMS": {
+    "stationName": "نادي الشمس",
+    "Religious": [
+      "مسجد العرب",
+      "مسجد التوحيد"
+    ],
+    "Medical": [
+      "المستشفى"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "نادي الشمس",
+      "نادي الرماية بنادي الشمس الرياضي",
+      "مدرسة فروسية الزهراء"
+    ],
+    "Educational": [
+      "مدارس منارة الخطيب الخاصة"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "ملاهي العرب"
+    ],
+    "Public Institutions": [
+      "مصلحة الضرائب العامة"
+    ],
+    "Streets": [
+      "شارع جسر السويس",
+      "شارع أبو الفتوح عبد الله",
+      "شارع محمد أبو النجا",
+      "شارع الجمعية الزراعية",
+      "شارع أحمد عرابي",
+      "شارع الخليل إبراهيم",
+      "شارع خالد ابن الوليد",
+      "شارع أحمد عبد العزيز",
+      "شارع عبد الحميد بدوي",
+      "شارع أبو معتق",
+      "شارع عمان",
+      "شارع أسيوط",
+      "شارع الفريق عزيز المصري",
+      "شارع العلويا",
+      "شارع الزعيم غاندي",
+      "شارع فلسطين",
+      "شارع محمود محروس",
+      "شارع مكة",
+      "شارع مصطفى حافظ",
+      "شارع عمر بن الخطاب",
+      "شارع سيدي بلال",
+      "شارع الوحدة العربية"
+    ]
+  },
+  "en_metroStationALF_MASKAN": {
+    "stationName": "ALF MASKAN",
+    "Religious": [
+      "Fatima Zahra Mosque",
+      "Saint George Church"
+    ],
+    "Medical": [
+      "Heliopolis Specialized Hospital"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "El Shams Club",
+      "El Zahraa Stud"
+    ],
+    "Educational": [
+      "Al Ansar School",
+      "Nabeel Waqqad Primary School",
+      "Sheikh El Amoud School"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "Alf Maskan Square"
+    ],
+    "Public Institutions": [
+      "Supply Bureau - Ain Shams",
+      "Health Insurance Office",
+      "Real Estate Registration Office - El Shams Club"
+    ],
+    "Streets": [
+      "Ahmed Ismail St.",
+      "Ibrahim Abd El Razik St.",
+      "Gesr El Suez St.",
+      "Abd Al Mohsen Al Wasimi St.",
+      "El Intag St.",
+      "Ahmed Esmat St.",
+      "Ahmed Ibrahem St.",
+      "El Montazah St.",
+      "Farid Simaika St.",
+      "Gool Gamal St.",
+      "Ismail Al Fangari St.",
+      "Maher Badawi St.",
+      "Mohammed Farid St.",
+      "Abdel Hamid Badawy St."
+    ]
+  },
+  "ar_metroStationALF_MASKAN": {
+    "stationName": "ألف مسكن",
+    "Religious": [
+      "مسجد فاطمة الزهراء",
+      "كنيسة مار جرجس"
+    ],
+    "Medical": [
+      "مستشفى هليوبوليس التخصصي"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "نادي الشمس الرياضي",
+      "مدرسة فروسية الزهراء"
+    ],
+    "Educational": [
+      "مدرسة الأنصار للتعليم الأساسي",
+      "مدرسة نبيل الوقاد الابتدائية المشتركة",
+      "مدرسة شيخ الصمود"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "ميدان ألف مسكن"
+    ],
+    "Public Institutions": [
+      "مكتب تموين عين شمس",
+      "مكتب التأمين الصحي",
+      "الشهر العقاري - مكتب توثيق نادي الشمس"
+    ],
+    "Streets": [
+      "شارع أحمد إسماعيل",
+      "شارع إبراهيم عبد الرازق",
+      "شارع جسر السويس",
+      "شارع عبد المحسن الوسيمي",
+      "شارع الإنتاج",
+      "شارع أحمد عصمت",
+      "شارع أحمد إبراهيم",
+      "شارع المنتزه",
+      "شارع فريد سميكة",
+      "شارع جول جمال",
+      "شارع إسماعيل الفنجري",
+      "شارع ماهر بدوي",
+      "شارع محمد فريد",
+      "شارع عبد الحميد بدوي"
+    ]
+  },
+ "en_metroStationHELIOPOLIS": {
+    "stationName": "HELIOPOLIS",
+    "Religious": [
+      "El Sayda Gwairya Mosque",
+      "Mar Guirgus Orthodox Church",
+      "Seif El Islam Mosque",
+      "Sultan Qotz Mosque"
+    ],
+    "Medical": [
+      "Cairo Health Care Center",
+      "El Doaah Hospital",
+      "El Haram Hospital",
+      "Heliopolis Hospital",
+      "Misr El Gadida Hospital",
+      "Tabarak Hospital for Children"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "El Sayda Gwairya Park"
+    ],
+    "Sport Facilities": [
+      "El Ghaba Sporting Club"
+    ],
+    "Educational": [
+      "Our Lady of Perpetual Succour School"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "Heliopolis Square"
+    ],
+    "Public Institutions": [
+      "El Nozha Passport Office",
+      "El Nozha Police Station",
+      "Social Insurance Office"
+    ],
+    "Streets": [
+      "Abd El Aziz Fahmy St.",
+      "Abd El Ghafar Selim St.",
+      "Abd El Hamid Abou Hief St.",
+      "Abd El Latif El Makbati St.",
+      "Abd El Moati El Khayal St.",
+      "Abd El Rahman Roushdy St.",
+      "Abd El Salam Ibrahim St.",
+      "Abdallah Abou El Seoud St.",
+      "Ahmed Amin St.",
+      "Ahmed Farid St.",
+      "Dr. Ali Ibrahim Rames St.",
+      "Dr. Mohamed Ali El Baqli St.",
+      "El Hegaz St.",
+      "El Hussein Ibn Ali St.",
+      "El Montaza St.",
+      "El Nozha St.",
+      "El Sheikh Ali Mahmoud St.",
+      "El Sheikh Mohamed Refaat St.",
+      "Haroun El Rashid St.",
+      "Ismail Sabry St.",
+      "Mohamed Farid St.",
+      "Mohamed Shafeek St.",
+      "Mohamed Youssef Selim St.",
+      "Mostafa Sadeek El Rafaey St.",
+      "Shams El Din El Kofi St.",
+      "Snan Basha St."
+    ]
+  },
+  "ar_metroStationHELIOPOLIS": {
+    "stationName": "هيليوبوليس",
+    "Religious": [
+      "مسجد السيدة جويرية",
+      "كنيسة القديس مارجرجس",
+      "مسجد سيف الإسلام",
+      "مسجد السلطان قطر"
+    ],
+    "Medical": [
+      "مركز كايرو هيلث كير",
+      "مستشفى الدعاة",
+      "مستشفى الحرم",
+      "مستشفى هليوبوليس",
+      "مستشفى مصر الجديدة",
+      "مستشفى تبارك للأطفال"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "حديقة السيدة جويرية"
+    ],
+    "Sport Facilities": [
+      "نادي الغابة الرياضي"
+    ],
+    "Educational": [
+      "مدرسة راهبات سيدة المعونة"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "ميدان هليوبوليس"
+    ],
+    "Public Institutions": [
+      "مكتب جوازات مصر الجديدة",
+      "قسم شرطة النزهة",
+      "مكتب التأمينات الإجتماعية"
+    ],
+    "Streets": [
+      "شارع عبد العزيز فهمي",
+      "شارع عبد الغفار سليم",
+      "شارع عبد الحميد أبو هيف",
+      "شارع عبد اللطيف المكباتي",
+      "شارع عبد المعطي الخيالي",
+      "شارع عبد الرحمن رشدي",
+      "شارع عبد السلام إبراهيم",
+      "شارع عبدالله أبو السعود",
+      "شارع أحمد أمين",
+      "شارع أحمد فريد",
+      "شارع د. علي إبراهيم رامز",
+      "شارع د. محمد علي البقلي",
+      "شارع الحجاز",
+      "شارع الحسين بن علي",
+      "شارع المنتزه",
+      "شارع النزهة",
+      "شارع الشيخ علي محمود",
+      "شارع الشيخ محمد رفعت",
+      "شارع هارون الرشيد",
+      "شارع إسماعيل صبري",
+      "شارع محمد فريد",
+      "شارع محمد شفيق",
+      "شارع محمد يوسف سليم",
+      "شارع مصطفى صادق الرفاعي",
+      "شارع شمس الدين الكوفي",
+      "شارع سنان باشا"
+    ]
+  },
+  "en_metroStationHAROUN": {
+    "stationName": "HAROUN",
+    "Religious": [
+      "El Safa w El Marwa Mosque",
+      "Sultan Qotz Mosque"
+    ],
+    "Medical": [
+      "Al Rahma Hospital",
+      "El Doaah Hospital",
+      "El Haram Hospital",
+      "El Safwa Medical Center",
+      "Gamal El Din Al Afghany Hospital",
+      "Heliopolis Hospital",
+      "Petrogas Hospital"
+    ],
+    "Cultural": [
+      "The Child Museum"
+    ],
+    "Public Spaces": [
+      "El Nasr Park"
+    ],
+    "Sport Facilities": [
+      "El Nasr Sporting Club",
+      "El Ghaba Sporting Club"
+    ],
+    "Educational": [
+      "King Abdel Aziz Al Saud Language School",
+      "El Nasr Language School",
+      "Notre Dame Des Aportres School",
+      "Our Lady of Perpetual Succour School",
+      "St. George College",
+      "Youssef El Sebaoe School"
+    ],
+    "Services": [
+      "GCR Water Company"
+    ],
+    "Landmarks": [
+      "El Mahkama Square"
+    ],
+    "Public Institutions": [
+      "Heliopolis Family Court",
+      "Heliopolis Traffic and Police Department",
+      "Labor Bureau",
+      "Nozha Health Bureau",
+      "Real Estate Registration Mission"
+    ],
+    "Streets": [
+      "Abou Bakr El Sedeek St",
+      "Ahmed Ali Hussein St",
+      "Aswan St",
+      "Dr. Ali Ibrahim Ramez St",
+      "El Hegaz St",
+      "El Mahkama Bridge",
+      "El Montaza St",
+      "El Reyad St",
+      "El Sheikh Ali Mahmoud St",
+      "Haroun El Rashid St",
+      "Mohammed Shafeek St",
+      "Nakha Al Motinai St",
+      "Omar Ibn El Khattab St",
+      "Othman Ibn Affan St",
+      "Safeer Bridge",
+      "Abd Al Hamid Abou Hief St"
+    ]
+  },
+  "ar_metroStationHAROUN": {
+    "stationName": "هارون",
+    "Religious": [
+      "مسجد الصفا والمروة",
+      "مسجد السلطان قطز"
+    ],
+    "Medical": [
+      "مستشفى الرحمة",
+      "مستشفى الدعاة",
+      "مستشفى الحرم",
+      "مركز الصفوة الطبي",
+      "مستشفى جمال الدين الأفغاني",
+      "مستشفى هليوبوليس",
+      "مستشفى بتروجاز"
+    ],
+    "Cultural": [
+      "متحف الطفل"
+    ],
+    "Public Spaces": [
+      "حديقة النصر"
+    ],
+    "Sport Facilities": [
+      "نادي النصر الرياضي",
+      "نادي الغابة الرياضي"
+    ],
+    "Educational": [
+      "مدرسة الملك عبد العزيز آل سعود للغات",
+      "مدرسة النصر للغات",
+      "مدرسة نوتردام ديزابوتر",
+      "مدرسة راهبات سيدة المعونة",
+      "مدرسة سانت جورج",
+      "مدرسة يوسف السباعي"
+    ],
+    "Services": [
+      "شركة مياه الشرب"
+    ],
+    "Landmarks": [
+      "ميدان المحكمة"
+    ],
+    "Public Institutions": [
+      "محكمة الأسرة - مصر الجديدة",
+      "قسم شرطة ومرور مصر الجديدة",
+      "مكتب العمل",
+      "مكتب صحة النزهة",
+      "مأمورية الشهر العقاري"
+    ],
+    "Streets": [
+      "أبوبكر الصديق",
+      "أحمد علي حسين",
+      "أسوان",
+      "د. علي إبراهيم رامز",
+      "الحجاز",
+      "الرياض",
+      "الشيخ علي محمود",
+      "المنتزه",
+      "هارون الرشيد",
+      "محمد شفيق",
+      "عمر بن الخطاب",
+      "نخلة المطيعي",
+      "كوبري المحكمة",
+      "كوبري سفير",
+      "عثمان بن عفان",
+      "عبد الحميد أبو هيف"
+    ]
+  },
+  "en_metroStationEL_AHRAM": {
+    "stationName": "EL AHRAM",
+    "Religious": [
+      "Hafzeya El Alfi Mosque",
+      "Our Lady of Heliopolis Co-Cathedral",
+      "Saint Cyril Church",
+      "St. Michael's Church",
+      "Maronite Patriarchate",
+      "St. Rita Church Heliopolis",
+      "St. Mark Coptic Orthodox Church",
+      "El Thawra Mosque",
+      "Theotokos Greek Church"
+    ],
+    "Medical": [
+      "Health Insurance Hospital",
+      "El Thawra Hospital",
+      "Hayat Medical Center",
+      "Cleopatra Hospital",
+      "Mary Morcos Medical Center",
+      "Queen's Hospital - Cleopatra Hospitals"
+    ],
+    "Cultural": [
+      "Cinema",
+      "El Orouba Youth Center"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "National School of El Ahram",
+      "Cleopatra Language School",
+      "El Thawra School",
+      "Heliopolis General School",
+      "Kalousdian-Nubarian Armenian School",
+      "Menese Language School",
+      "Patriarchal College",
+      "Patriarchal School",
+      "St. Joseph's School"
+    ],
+    "Services": [
+      "Korba Post Office",
+      "Health Bureau Heliopolis"
+    ],
+    "Landmarks": [
+      "Ittihadia Palace",
+      "Salah El Din Square",
+      "Sultana Malak Palace",
+      "Baron Empain Palace"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "Damascus St.",
+      "Ibrahim Al Lakani St.",
+      "Al Ahram St.",
+      "Baghdad St.",
+      "Ramses St.",
+      "Sherif St.",
+      "Nazih Khalifa St.",
+      "Fakhry Basha St.",
+      "Sayegh St.",
+      "Minis St.",
+      "Cleopatra St.",
+      "El Mahala St.",
+      "El Orouba St.",
+      "El Fayoum St.",
+      "El Khartoum St.",
+      "El Thawra St.",
+      "Al Diverand St.",
+      "El Thawra Tunnel",
+      "Esna St.",
+      "Othman Ibn Affan St.",
+      "Beirut St.",
+      "Haroun El Rashid St.",
+      "Ibrahim St.",
+      "Kafr El Dawar St."
+    ]
+  },
+  "ar_metroStationEL_AHRAM": {
+    "stationName": "الأهرام",
+    "Religious": [
+      "مسجد حفظية الألفى",
+      "كاتدرائية البازليك بهليوبليس",
+      "كنيسة القديس كيرلس",
+      "الكنيسة الأسقفية بالكورية",
+      "البطريركية المارونية",
+      "كنيسة سانت ريتا بهليوبوليس",
+      "كنيسة سانت مارك الأرثوذكسية",
+      "مسجد الثورة",
+      "الكنيسة الأرثوذكسية اليونانية"
+    ],
+    "Medical": [
+      "مستشفى التأمين الصحى",
+      "مستشفى الثورة",
+      "مركز الحياة الطبي",
+      "مستشفى كليوباترا",
+      "مركز مارمرقس الطبي",
+      "مستشفى كوينز مجموعة مستشفيات كليوبترا"
+    ],
+    "Cultural": [
+      "سينما",
+      "مركز شباب العروبة"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "مدرسة الأهرام التجربية",
+      "مدرسة كليوباترا للغات",
+      "مدرسة الثورة",
+      "مدرسة مصر الجديدة الرسمية لغات",
+      "مدرسة كالوسديان- نوباريان الأرمنية",
+      "مدرسة مينسي للغات",
+      "الكلية البطريركية",
+      "المدرسة البطريركية",
+      "مدرسة القديس يوسف"
+    ],
+    "Services": [
+      "مكتب بريد الكوربة",
+      "مكتب صحة هليوبليس"
+    ],
+    "Landmarks": [
+      "قصر الإتحادية",
+      "ميدان صلاح الدين",
+      "قصر السلطانة ملك",
+      "قصر البارون إميان"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "شارع دمشق",
+      "شارع إبراهيم اللقاني",
+      "شارع الأهرام",
+      "شارع بغداد",
+      "شارع رمسيس",
+      "شارع شريف",
+      "شارع نزيه خليفة",
+      "شارع فخري باشا",
+      "شارع الصايغ",
+      "شارع مينسي",
+      "شارع كليوباترا",
+      "شارع المحلة",
+      "شارع العروبة",
+      "شارع الفيوم",
+      "شارع الخرطوم",
+      "شارع الثورة",
+      "شارع الدليفراند",
+      "نفق الثورة",
+      "شارع إسنا",
+      "شارع عثمان بن عفان",
+      "شارع بيروت",
+      "شارع هارون الرشيد",
+      "شارع إبراهيم",
+      "شارع كفر الدوار"
+    ]
+  },
+  "en_metroStationKOLLEYET_EL_BANAT": {
+    "stationName": "KOLLEYET EL BANAT",
+    "Religious": [
+      "El Marwa Mosque",
+      "Hafsa Mosque",
+      "Saint Mary Church",
+      "Virgin Mary Church"
+    ],
+    "Medical": [
+      "Mashreq Hospital",
+      "El Merghany Hospital",
+      "Om El Noor Hospital",
+      "Virgin Mary Hospital"
+    ],
+    "Cultural": [
+      "French Cultural Center"
+    ],
+    "Public Spaces": [
+      "Golf Park",
+      "World War 2 Memorial"
+    ],
+    "Sport Facilities": [
+      "HMEN Nubar Sporting Club"
+    ],
+    "Educational": [
+      "Ain Shams University - Faculty of Girls",
+      "Ain Shams University - Dorms",
+      "Masr El Gedida Ideal School For Girls",
+      "Talace El Kamal Language School",
+      "YAT Education Center"
+    ],
+    "Services": [
+      "Almaza Exchange",
+      "Masr El Gedida Cemetery"
+    ],
+    "Landmarks": [
+      "Sultana Malak Palace",
+      "Baron Empain Palace",
+      "World War 2 Memorial"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "Abdel Wahab El Qady St.",
+      "Ahmed Tayseer St.",
+      "El Baron St.",
+      "El Merghani St.",
+      "El Merghani New Bridge",
+      "El Orouba St.",
+      "El Thawra St.",
+      "El Thawra Tunnel",
+      "Hassan Sadek St.",
+      "Nabeel El Wakkad St.",
+      "Nazih Khalifa St.",
+      "Shams El Dean El Zahaby St.",
+      "Abdallah Deraz St."
+    ]
+  },
+  "ar_metroStationKOLLEYET_EL_BANAT": {
+    "stationName": "كلية البنات",
+    "Religious": [
+      "مسجد المروة",
+      "مسجد السيدة حفصة",
+      "كنيسة السيدة العذراء",
+      "كنيسة العذراء مريم"
+    ],
+    "Medical": [
+      "مستشفى المشرق",
+      "مستشفى الميرغني",
+      "مستشفى أم النور",
+      "مستشفى العذراء"
+    ],
+    "Cultural": [
+      "المركز الثقافي الفرنسي"
+    ],
+    "Public Spaces": [
+      "حديقة الجولف",
+      "مقابر الحرب العالمية الثانية"
+    ],
+    "Sport Facilities": [
+      "هومنتمن نوبار الرياضي"
+    ],
+    "Educational": [
+      "جامعة عين شمس - كلية البنات",
+      "المدينة الجامعية للطالبات",
+      "مدرسة مصر الجديدة النموذجية بنات",
+      "مدرسة طلائع الكمال للغات",
+      "مركز YAT للتدريب"
+    ],
+    "Services": [
+      "سنترال الماظة",
+      "مدافن مصر الجديدة"
+    ],
+    "Landmarks": [
+      "قصر السلطانة ملك",
+      "قصر البارون إمبان",
+      "مقابر الحرب العالمية الثانية"
+    ],
+    "Public Institutions": [],
+    "Streets": [
+      "شارع عبد الوهاب القاضي",
+      "شارع أحمد تيسير",
+      "شارع البارون",
+      "شارع الميرغني",
+      "كوبري الميرغني الجديد",
+      "شارع العروبة",
+      "شارع الثورة",
+      "نفق الثورة",
+      "شارع حسن صادق",
+      "شارع نبيل الوقاد",
+      "شارع نزيه خليفة",
+      "شارع شمس الدين الذهبي",
+      "شارع عبد الله دراز"
+    ]
+  },
+  "en_metroStationEL_ESTAD": {
+    "stationName": "EL ESTAD",
+    "Religious": [
+      "El Fath Mosque",
+      "El Moustafa Mosque",
+      "El Nasr Mosque",
+      "Abeer Al Eslam Mosque",
+      "El Tawfik City Mosque"
+    ],
+    "Medical": [
+      "Sports Medicine Specialized Center"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "Cairo International Stadium",
+      "El Zohour Sporting Club",
+      "Egyptian Gymnastics Federation",
+      "Egyptian Basketball Federation",
+      "Egyptian Swimming Federation",
+      "Squash Stadium Complex"
+    ],
+    "Educational": [
+      "Abeer Al Eslam School",
+      "Nasr City Model School",
+      "Special Education School",
+      "Thebes Language Schools"
+    ],
+    "Services": [
+      "Egypt Post Nasr City",
+      "Post Office El Zohour Club"
+    ],
+    "Landmarks": [],
+    "Public Institutions": [
+      "Ministry of Manpower and Immigration",
+      "Accountability State Authority",
+      "Nasr City Educational Administration"
+    ],
+    "Streets": [
+      "Khedr El Toney St.",
+      "El Tayaran St.",
+      "El Tawfiq St.",
+      "El Tawfiq City",
+      "Ebn Fadlan St.",
+      "Ebn Hawqal St.",
+      "Ahmed Kandeel St.",
+      "Asmaa Zaghloul St.",
+      "Mohamed Fouad Nasim St.",
+      "Mahmoud Talaat St.",
+      "Emad El Shafei St.",
+      "Youssef Abbas St.",
+      "Mostafa Abou Zahra St.",
+      "Osman Abd El Hafeez St.",
+      "Abd El Meniem El Hosseiny St.",
+      "New City St.",
+      "Salah Salem St.",
+      "El Tayaran Tunnel"
+    ]
+  },
+  "ar_metroStationEL_ESTAD": {
+    "stationName": "الاستاد",
+    "Religious": [
+      "مسجد الفتح",
+      "مسجد المصطفى",
+      "مسجد النصر",
+      "مسجد عبير الإسلام",
+      "مسجد مدينة التوفيق"
+    ],
+    "Medical": [
+      "مركز الطب الرياضي التخصصي"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "استاد القاهرة الدولي",
+      "نادي الزهور الرياضي",
+      "الاتحاد المصري للجمباز",
+      "الاتحاد المصري لكرة السلة",
+      "الاتحاد المصري للسباحة",
+      "مجمع ملاعب الإسكواش"
+    ],
+    "Educational": [
+      "مدرسة عبير الإسلام",
+      "مدرسة مدينة نصر النموذجية",
+      "مدرسة التربية الفكرية",
+      "مدارس طيبة للغات"
+    ],
+    "Services": [
+      "البريد المصري بمدينة نصر",
+      "مكتب بريد نادي الزهور"
+    ],
+    "Landmarks": [],
+    "Public Institutions": [
+      "وزارة القوة العاملة والهجرة",
+      "الجهاز المركزي للمحاسبات",
+      "الإدارة التعليمية بمدينة نصر"
+    ],
+    "Streets": [
+      "شارع خضر التوني",
+      "شارع الطيران",
+      "شارع التوفيق",
+      "مدينة التوفيق",
+      "شارع ابن فضلان",
+      "شارع ابن حوقل",
+      "شارع أحمد قنديل",
+      "شارع أسماء زغلول",
+      "شارع محمد فؤاد نسيم",
+      "شارع محمود طلعت",
+      "شارع عماد الشافعي",
+      "شارع يوسف عباس",
+      "شارع مصطفى أبو زهرة",
+      "شارع عثمان عبد الحفيظ",
+      "شارع عبد المنعم الحسيني",
+      "شارع المدينة الجديدة",
+      "شارع صلاح سالم",
+      "نفق الطيران"
+    ]
+  },
+  "en_metroStationARD_EL_MAARD": {
+    "stationName": "ARD EL MAARD",
+    "Religious": [],
+    "Medical": [
+      "El Abbasya Mental Health Hospital"
+    ],
+    "Cultural": [
+      "Panorama October"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "Cairo Stadium"
+    ],
+    "Educational": [
+      "Miltary Technical College"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "Panorama October Garden",
+      "Cairo International Fair"
+    ],
+    "Public Institutions": [
+      "Dar ElMoshah",
+      "Social Fund for Development",
+      "Ministry of Investment"
+    ],
+    "Streets": [
+      "Khalf Hadaeek El Obour St.",
+      "EL Tayaran Tunnel",
+      "Salah Salim St",
+      "Ismail El Fangary St.",
+      "El Fangary Bridge",
+      "El Orouba",
+      "Organization of Alrican Unity St"
+    ]
+  },
+  "ar_metroStationARD_EL_MAARD": {
+    "stationName": "أرض المعارض",
+    "Religious": [],
+    "Medical": [
+      "مستشفى العباسية للصحة النفسية"
+    ],
+    "Cultural": [
+      "بانوراما اكتوبر"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "إستاد القاهرة"
+    ],
+    "Educational": [
+      "الكلية الفنية العسكرية"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "حديقة بانوراما اكتوبر",
+      "معرض القاهرة الدولي"
+    ],
+    "Public Institutions": [
+      "دار المشاة",
+      "الصندوق الاجتماعي للتنمية",
+      "وزارة الاستثمار"
+    ],
+    "Streets": [
+      "خلف حدائق العبور",
+      "نفق الطيران",
+      "صلاح سالم",
+      "إسماعيل الفنجري",
+      "كوبري الفنجري",
+      "العروبة",
+      "منظمة الوحدة الإفريقية"
+    ]
+  },
+  "en_metroStationABASIA": {
+    "stationName": "ABASIA",
+    "Religious": [
+      "El Nour Mosque",
+      "El Qobba El Fedaweya Mosque",
+      "Wehda Islamic Mosque"
+    ],
+    "Medical": [
+      "Academic Institute for Heart Surgery",
+      "Arkan Specialized Hospital",
+      "Dar El-Shefaa Hospital",
+      "Obstetrics and Gynaecology Hospital",
+      "Pediatrics Hospital - Ain Shams University",
+      "Italian Hospital"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "Adel Abou El Hadid Park",
+      "Arab Mohammadi Park"
+    ],
+    "Sport Facilities": [
+      "Police Academy Stadium"
+    ],
+    "Educational": [
+      "Abbasia Secondary Electrical School",
+      "El Maamon Private Secondary School for Hotel",
+      "Faculty of Medicine - Ain Shams University",
+      "Faculty of Arts - Ain Shams University",
+      "Faculty of Law - Ain Shams University",
+      "Faculty of Commerce - Ain Shams University",
+      "Faculty of Specific Education - Ain Shams University",
+      "Faculty of Al Alsun - Ain Shams University",
+      "Coptic Girls College",
+      "Evangelical Theological Seminary",
+      "St. Fatima School",
+      "Saint Fatima Language School",
+      "El Salam Language School",
+      "El Qobba El Fedaweya Primary School",
+      "Mohamed Kamel School"
+    ],
+    "Services": [
+      "Abbasia Bus Station",
+      "Egyptian Cooperative Insurance Association"
+    ],
+    "Landmarks": [
+      "Abbasia Square"
+    ],
+    "Public Institutions": [
+      "Administration of Military Works",
+      "Central Cairo Educational Administration",
+      "Civil Status Sector",
+      "Conseil d'Etat - Egyptian State Council",
+      "North Cairo Court of First Instance",
+      "Supreme Council of Antiquities",
+      "Department of Criminal Cases",
+      "General Department of Criminal Evidence",
+      "General Department of Passports, Immigration and Nationality",
+      "Ministry of Tourism",
+      "Ministry of Electricity and Energy",
+      "Police Academy",
+      "Egyptian Electricity Holding Co.",
+      "General Department of Administrative Affairs",
+      "El Waily Police Department",
+      "El Waily Traffic Prosecution",
+      "El Waily Traffic Station"
+    ],
+    "Streets": [
+      "6th of October Bridge",
+      "Abbasia Bridge",
+      "Al Afdal St",
+      "Al Mostashfa Al Itali St",
+      "Al Omaraa St",
+      "Al Qobah Al Fadaweh St",
+      "Ali Taher St",
+      "Azeem El Dawla St",
+      "Bostan El Geish St",
+      "El Abbasia St",
+      "El-Khalifa El-Maamoun St",
+      "Fakhry Abd El-Nour St",
+      "Gharb Al Qashlaq St",
+      "Hassan Allam St",
+      "Kamal St",
+      "Lotfy El Sayed St",
+      "Madraset Wli Al Ahd St",
+      "Masaken Al Gound St",
+      "Nakib Al Glesh St",
+      "Ramses St",
+      "Salah Zou Al Fekar St",
+      "Zaidan St",
+      "Zhni St"
+    ]
+  },
+  "ar_metroStationABASIA": {
+    "stationName": "عباسية",
+    "Religious": [
+      "مسجد النور",
+      "مسجد القبة الفداوية",
+      "مسجد الوحدة الإسلامية"
+    ],
+    "Medical": [
+      "المعهد الأكاديمي لجراحات القلب",
+      "مستشفى أركان التخصصي",
+      "مستشفى دار الشفاء",
+      "مستشفى أمراض النساء والتوليد",
+      "مستشفى الأطفال - جامعة عين شمس",
+      "المستشفى الإيطالي"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "حديقة اللواء عادل أبو الحديد",
+      "حديقة عرب المحمدي"
+    ],
+    "Sport Facilities": [
+      "استاد أكاديمية الشرطة"
+    ],
+    "Educational": [
+      "مدرسة العباسية الكهربية",
+      "مدرسة المأمون الثانوية الفندقية الخاصة",
+      "كلية الطب - جامعة عين شمس",
+      "كلية الآداب - جامعة عين شمس",
+      "كلية الحقوق - جامعة عين شمس",
+      "كلية التجارة - جامعة عين شمس",
+      "كلية التربية النوعية - جامعة عين شمس",
+      "كلية الألسن - جامعة عين شمس",
+      "كلية البنات القبطية",
+      "كلية اللاهوت الرسمية",
+      "مدرسة سانت فاتيما",
+      "مدرسة سانت فاتيما للغات",
+      "مدرسة السلام للغات",
+      "مدرسة القبة الفداوية الابتدائية",
+      "مدرسة الشهيد امتياز محمد كامل"
+    ],
+    "Services": [
+      "موقف أتوبيس العباسية",
+      "الجمعية المصرية للتأمين التعاوني"
+    ],
+    "Landmarks": [
+      "ميدان العباسية"
+    ],
+    "Public Institutions": [
+      "إدارة الأشغال العسكرية",
+      "إدارة وسط القاهرة التعليمية",
+      "قطاع الأحوال المدنية",
+      "مجلس الدولة - مجمع محاكم مجلس الدولة",
+      "محكمة شمال القاهرة الإبتدائية",
+      "المجلس الأعلى للآثار بالعباسية",
+      "مصلحة الأدلة الجنائية بالعباسية",
+      "الإدارة العامة لتحقيق الأدلة الجنائية",
+      "الإدارة العامة للجوازات والهجرة والجنسية",
+      "وزارة السياحة",
+      "وزارة الكهرباء والطاقة المتجددة",
+      "أكاديمية الشرطة",
+      "الشركة القابضة لكهرباء مصر",
+      "الإدارة العامة لمباحث الأموال العامة",
+      "قسم شرطة الوايلي",
+      "قسم مرور الوايلي",
+      "وحدة تراخيص مرور الوايلي"
+    ],
+    "Streets": [
+      "كوبري 6 أكتوبر",
+      "كوبري العباسية",
+      "شارع الأفضال",
+      "شارع المستشفى الإيطالي",
+      "شارع العمارة",
+      "شارع القبة الفداوية",
+      "شارع علي طاهر",
+      "شارع عظيم الدولة",
+      "شارع بستان الجيش",
+      "شارع العباسية",
+      "شارع الخليفة المأمون",
+      "شارع فخري عبد النور",
+      "شارع غرب القشلاق",
+      "شارع حسن علام",
+      "شارع كمال",
+      "شارع لطفي السيد",
+      "شارع مدرسة ولي العهد",
+      "شارع مساكن الجند",
+      "شارع نقيب الجيش",
+      "شارع رمسيس",
+      "شارع صلاح ذو الفقار",
+      "شارع زيدان",
+      "شارع ذهني"
+    ]
+  },
+  "en_metroStationABDO_BASHA": {
+    "stationName": "ABDO BASHA",
+    "Religious": [
+      "Abbasia Presbyterian Church",
+      "El Qobba El Fedaweya Mosque",
+      "Fatima Mosque",
+      "Khaled Tokey Mosque",
+      "Moussa Dar'i Synagogue"
+    ],
+    "Medical": [
+      "Air Force General Hospital",
+      "Evangelical Clinic",
+      "Outpatient clinics - Air Force Hospital",
+      "Tiba Hospital and Blood Bank"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "El Daher Club",
+      "Ismail El-Qabbany School Pitch"
+    ],
+    "Educational": [
+      "Abbasia School of Notre Dame",
+      "Abbasia Secondary Electrical School",
+      "Abu Bakr Siddiq Prep Secondary Sports School for Boys",
+      "Al Abbasia Secondary Commercial School for Girls",
+      "Al Ahram Industrial High School",
+      "Al Husaineya Official Language School",
+      "Al Shorfaa Private School",
+      "College Saint Joseph De L' Apparition",
+      "El Hosayneya Secondary School for Boys",
+      "El Shaheed Mohamed Farahat School",
+      "Faculty of Engineering Ain Shams University",
+      "El Shaheed Emad Aly Kamel School",
+      "Fatima Zahra Preparatory School Professional",
+      "Modern Academy - Computer Science",
+      "Ismail El Qabbany School for Boys",
+      "Modern Future Language School",
+      "Notre Dame Des Apotres School",
+      "Old Abassiya Secondary School for Girls",
+      "Productivity & Vocational Training Department - El Abassiya",
+      "El Maamon Private Secondary School for Hotel",
+      "El Mostakbal Distinctive Governmental Language School 4"
+    ],
+    "Services": [
+      "Abbasia Post Office",
+      "Car Repair & Maintenance Centres",
+      "Telecom Egypt - Abassiya Central"
+    ],
+    "Landmarks": [],
+    "Public Institutions": [
+      "Diwan Malaysia Abbasiah",
+      "Education Directorate - Cairo",
+      "El Waily Police Department",
+      "General Department of Criminal Evidence",
+      "Labor Bureau - El Waily",
+      "Social Insurance Bureau - El Zaher"
+    ],
+    "Streets": [
+      "Abdou Pasha",
+      "Ahmed Fouad Abd Al Aziz Al Sarayat",
+      "Ahmed Mokhtar",
+      "Ahmed Saeed",
+      "Al Sergani",
+      "Al Tarabishy",
+      "El Abbasia",
+      "El Etry",
+      "El Fardous",
+      "Greek Hospital",
+      "Ibrahim Desouky",
+      "Masoud",
+      "Sabeel Abd El Azeem",
+      "Sabeel El Khazindar",
+      "Selim Abdou"
+    ]
+  },
+  "ar_metroStationABDO_BASHA": {
+    "stationName": "عبد باشا",
+    "Religious": [
+      "الكنيسة الإنجيلية بالعباسية",
+      "مسجد القبة الفداوية",
+      "مسجد فاطمة",
+      "مسجد خالد تقي الله",
+      "معبد موسى درعي"
+    ],
+    "Medical": [
+      "المستشفى الجوي العام",
+      "دار العلاج الإنجيلي",
+      "العيادات الخارجية بمستشفى القوات الجوية",
+      "مستشفى وبنك دم طيبة بالعباسية"
+    ],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "نادي الظاهر",
+      "ملاعب مدرسة إسماعيل القباني"
+    ],
+    "Educational": [
+      "مدرسة النوتردام العباسية",
+      "مدرسة العباسية الكهربية",
+      "مدرسة أبو بكر الصديق الرياضية الإعدادية الثانوية للبنين",
+      "مدرسة العباسية الثانوية التجارية بنات",
+      "مدرسة الأهرام الثانوية الصناعية بنين",
+      "مدرسة الحسينية الإبتدائية التجريبية",
+      "مدرسة الشرفاء الخاصة",
+      "مدرسة القديس يوسف الظهور للبنات",
+      "مدرسة الحسينية الثانوية للبنين",
+      "مدرسة الشهيد محمد فرحات",
+      "كلية الهندسة جامعة عين شمس",
+      "مدرسة الشهيد عماد علي كامل",
+      "مدرسة فاطمة الزهراء الإعدادية المهنية",
+      "الأكاديمية الحديثة",
+      "مدرسة إسماعيل القباني الثانوية بنين",
+      "مدارس المستقبل الحديثة للغات",
+      "مدرسة نوتردام ديدابوتر",
+      "مدرسة العباسية القديمة الثانوية للبنات",
+      "مصلحة الكفاية الإنتاجية والتدريب المهني - العباسية",
+      "مدرسة المأمون الثانوية الفندقية الخاصة",
+      "مدرسة المستقبل الرسمية المتميزة للغات ٤"
+    ],
+    "Services": [
+      "مكتب بريد العباسية",
+      "مراكز صيانة وإصلاح السيارات",
+      "المصرية للإتصالات - سنترال العباسية"
+    ],
+    "Landmarks": [],
+    "Public Institutions": [
+      "ديوان ماليزيا بالعباسية",
+      "مديرية التربية والتعليم - القاهرة",
+      "قسم شرطة الوايلي",
+      "الإدارة العامة للأدلة الجنائية",
+      "مكتب العمل - الوايلي",
+      "مكتب التأمينات الإجتماعية - الظاهر"
+    ],
+    "Streets": [
+      "عبده باشا",
+      "أحمد فواد عبد العزيز السريات",
+      "أحمد مختار",
+      "أحمد سعيد",
+      "السرجاني",
+      "الطرابيشي",
+      "العباسية",
+      "الإتري",
+      "الفردوس",
+      "المستشفى اليوناني",
+      "إبراهيم الدسوقي",
+      "مسعود",
+      "سبيل عبد العظيم",
+      "سبيل الخازندار",
+      "سليم عبده"
+    ]
+  },
+  "en_metroStationEL_GEISH": {
+    "stationName": "EL GEISH",
+    "Religious": [
+      "Al Mazharya Mosque",
+      "Al Zahir Baybars Mosque",
+      "Church of St. George",
+      "St. Anthony's Church",
+      "Pahad Itzhak Synagogue",
+      "St. Vincent De Paul Monastery"
+    ],
+    "Medical": [
+      "Al Salam Hospital"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "El-Giesh Square",
+      "Koshtomor Square",
+      "El Zaher Square"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "Al-Ahram Industrial High School",
+      "Alhusaineya Official Language School",
+      "Bab El-Sheareya Secondary School For Girls",
+      "College Saint Joseph De L' Apparition",
+      "Dominican Institute for Oriental Studies",
+      "El Mostakbal Distinctive Governmental Language School 4",
+      "El Nasr Governmental Language School",
+      "Khaleel Agha Secondary Military School for Boys",
+      "Saint Anne School",
+      "St. Vincent De Paul School",
+      "The Workers University El Darrasa"
+    ],
+    "Services": [
+      "Bab El Nasr Cemeteries",
+      "Bab El Sheareya Post Office",
+      "Ghamra Post Office"
+    ],
+    "Landmarks": [
+      "El-Giesh Square",
+      "El Sakakini Pasha Palace",
+      "Koshtomor Square"
+    ],
+    "Public Institutions": [
+      "Civil Registry",
+      "El Zaher Police Station",
+      "Public Taxes Mission - El Gamaleya"
+    ],
+    "Streets": [
+      "Ahmed Saeed St.",
+      "Al Bayoumi St.",
+      "Al Sergani St.",
+      "Bostan Al Thalabi St.",
+      "Bostan Zayed St.",
+      "Darb El Gemeza",
+      "El Abassiya St.",
+      "El Ashtary St.",
+      "El Giesh St.",
+      "El Nozha St.",
+      "El Sakakini St.",
+      "El Sheikh Qamar St.",
+      "El Sheikh Quesny St.",
+      "El Tarabeeshy St.",
+      "El Zaher Square",
+      "Ezzat Basha St.",
+      "Gaafar St.",
+      "Ibn Khaldoun St.",
+      "Mahmoud Fahmy Al Memari St.",
+      "Port Said St.",
+      "Sabeal El Khazindar St.",
+      "Saeed St.",
+      "Tour Sinaa St."
+    ]
+  },
+  "ar_metroStationEL_GEISH": {
+    "stationName": "الجيش",
+    "Religious": [
+      "مسجد المزهرية",
+      "مسجد الظاهر بيبرس",
+      "كنيسة مارجرجس",
+      "كنيسة القديس انطونيوس",
+      "معبد كرايم بحاد إسحاق",
+      "دير سان فانسان"
+    ],
+    "Medical": [
+      "مستشفى السلام الخيري"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "ميدان الجيش",
+      "ميدان قشتمر",
+      "ميدان الظاهر"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "مدرسة الأهرام الثانوية الصناعية بنين",
+      "مدرسة الحسينية الإبتدائية التجربية",
+      "مدرسة باب الشعرية الثانوية بنات",
+      "مدرسة القديس يوسف الظهور للبنات",
+      "معهد الدراسات الشرقية للآباء الدومنيكان",
+      "مدرسة المستقبل الرسمية المتميزة للغات ٤",
+      "مدرسة النصر الرسمية للغات",
+      "مدرسة خليل أغا الثانوية العسكرية بنين",
+      "مدرسة القديسة آنا",
+      "مدرسة دير سان فانسان",
+      "الجامعة العمالية فرع الدراسة"
+    ],
+    "Services": [
+      "مقابر باب النصر",
+      "مكتب بريد باب الشعرية",
+      "مكتب بريد غمرة"
+    ],
+    "Landmarks": [
+      "ميدان الجيش",
+      "قصر السكاكيني باشا",
+      "ميدان قشتمر"
+    ],
+    "Public Institutions": [
+      "السجل المدني",
+      "قسم شرطة الظاهر",
+      "مأمورية الضرائب العامة الجمالية"
+    ],
+    "Streets": [
+      "شارع أحمد سعيد",
+      "شارع البيومي",
+      "شارع السرجاني",
+      "شارع بستان الثقلبي",
+      "شارع بستان زايد",
+      "درب الجميزة",
+      "شارع العباسية",
+      "شارع الأشفهاني",
+      "شارع الجيش",
+      "شارع النزهة",
+      "شارع السكاكيني",
+      "شارع الشيخ قمر",
+      "شارع الشيخ كويستي",
+      "شارع الطرابيشي",
+      "ميدان الظاهر",
+      "شارع عزت باشا",
+      "شارع جعفر",
+      "شارع ابن خلدون",
+      "شارع محمود فهمي المعماري",
+      "شارع بورسعيد",
+      "شارع سبيل الخازندار",
+      "شارع سعيد",
+      "شارع طور سيناء"
+    ]
+  },
+  "en_metroStationBAB_EL_SHARIA": {
+    "stationName": "BAB EL SHARIA",
+    "Religious": [
+      "Al-Shaarany Mosque",
+      "Church of Virgin Mary",
+      "El Ahmar Mosque",
+      "Monastery of Great Martyr George",
+      "Mosque and Khanqah Al-Ashraf Barsbay",
+      "Rav Moshe Synagogue"
+    ],
+    "Medical": [
+      "El Rahma Hospital",
+      "Tawfik Complex for Health Insurance"
+    ],
+    "Cultural": [
+      "Egyptian Textiles Museum",
+      "Qalawoon Complex",
+      "Bashtak Palace"
+    ],
+    "Public Spaces": [
+      "Bab El Shaaria Square"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "Amir El Geyoush Preparatory School for Girls",
+      "Bab El Shaaria Preparatory School",
+      "College Saint Joseph",
+      "Good Shepherd School",
+      "Shaarany Secondary Industrial School",
+      "Tawfik Coptic Language School"
+    ],
+    "Services": [
+      "Post Office - Bab El Bahr",
+      "Post Office - El Khoronfesh",
+      "Shopping Mall 1",
+      "Shopping Mall 2"
+    ],
+    "Landmarks": [
+      "Bashtak Palace",
+      "Egyptian Textiles Museum",
+      "Qalawoon Complex",
+      "Bab El Shaaria Square"
+    ],
+    "Public Institutions": [
+      "Labor Bureau",
+      "Local Government Offices"
+    ],
+    "Streets": [
+      "Bab El Bahr St.",
+      "Alkota St",
+      "El Fawatiah St.",
+      "Darb Aya St.",
+      "BKharateen St.",
+      "Atfal Rabie St.",
+      "Gohar El Kaed St.",
+      "Hosh El Hussein St.",
+      "FL Bondaka St.",
+      "Mostafa St.",
+      "Beean El Syareg St.",
+      "Qadi Al Bahar St.",
+      "Al Banhawi St.",
+      "Al Khoronfesh St",
+      "Port Said St.",
+      "El Glesh St",
+      "El Gohary St",
+      "El Muski",
+      "El Moez",
+      "El Kota",
+      "El Kharateen",
+      "El Shaarani El Barrani",
+      "Mohammed Ali St.",
+      "El Esielli",
+      "Darb El Barabra",
+      "Darb Aya",
+      "Kamel Sedky St."
+    ]
+  },
+  "ar_metroStationBAB_EL_SHARIA": {
+    "stationName": "باب الشريعة",
+    "Religious": [
+      "مسجد الشعراني",
+      "كنيسة السيدة العذراء مريم",
+      "الجامع الأحمر",
+      "دير الشهيد العظيم مار جرجس للراهبات",
+      "مسجد وخانقاه الأشرف برسباي",
+      "معبد موسى بن ميمون"
+    ],
+    "Medical": [
+      "مستشفى الرحمة",
+      "مجمع التوفيق للتأمين الصحي"
+    ],
+    "Cultural": [
+      "متحف النسيج المصري",
+      "مجمع قلاوون",
+      "قصر الأمير بشتاك"
+    ],
+    "Public Spaces": [
+      "ميدان باب الشعرية"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "مدرسة أمير الجيوش الإعدادية بنات",
+      "مدرسة باب الشعرية الإعدادية بنين",
+      "مدرسة القديس يوسف الغرير",
+      "مدرسة راهبات الراعي الصالح لغات",
+      "مدرسة الشهراني الثانوية الصناعية بنين",
+      "مدرسة التوفيق القبطية"
+    ],
+    "Services": [
+      "مكتب بريد باب البحر",
+      "مكتب بريد الخرنفش",
+      "مول تجاري ١",
+      "مول تجاري ٢"
+    ],
+    "Landmarks": [
+      "قصر الأمير بشتاك",
+      "متحف النسيج المصري",
+      "مجمع قلاوون",
+      "ميدان باب الشعرية"
+    ],
+    "Public Institutions": [
+      "مكتب تأمينات وسط القاهرة",
+      "رئاسة حي باب الشعرية"
+    ],
+    "Streets": [
+      "شارع باب البحر",
+      "شارع القطة",
+      "شارع القواطية",
+      "درب آية",
+      "شارع الخراطين",
+      "عطفة ربيع",
+      "شارع جوهر القائد",
+      "حوش الحسين",
+      "شارع البنادقة",
+      "شارع الجوهري",
+      "شارع السيارج",
+      "قاضي البهار",
+      "شارع الكرنفش",
+      "شارع الكامل صدقي",
+      "شارع الجيش",
+      "شارع بورسعيد",
+      "كلوت بك",
+      "شارع المعز",
+      "درب البرابرة",
+      "شارع محمد علي"
+    ]
+  },
+  "en_metroStationATABA": {
+    "stationName": "ATABA",
+    "Religious": [
+      "El-Ahmar Mosque",
+      "Kekhia Mosque",
+      "Sha'ar Hashamayim Synagogue",
+      "St. Mark Coptic Orthodox Cathedral",
+      "The Virgin Mary Calibate Church"
+    ],
+    "Medical": [
+      "Sednawi Hospital",
+      "Evangelist Medical Center",
+      "El Agouza Hospital"
+    ],
+    "Cultural": [
+      "Abdel Moneim Madbouly Theatre",
+      "El Rihany Stage",
+      "National Theatre",
+      "Zawya Cinema"
+    ],
+    "Public Spaces": [
+      "Azbakeya Garden",
+      "Opera Square",
+      "Tiring Department Store"
+    ],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [
+      "Attaba Garage",
+      "Opera Garage",
+      "Opera Central",
+      "Labor Bureau",
+      "Greece Consulate"
+    ],
+    "Landmarks": [
+      "Azbakeya Garden",
+      "Opera Square",
+      "Tiring Department Store"
+    ],
+    "Public Institutions": [
+      "Attaba Traffic Department",
+      "Central Bank of Egypt",
+      "Department of Social Insurance",
+      "Egypt Post Building",
+      "Egyptian Endowments Authority",
+      "El Mousky Police Department"
+    ],
+    "Streets": [
+      "26 July St.",
+      "Ramses St.",
+      "Nagib El Rihani St.",
+      "Sollman El Halaby St.",
+      "Waked St.",
+      "Mohamed Bek Al Alfi St.",
+      "Adly St.",
+      "Abd El Khaliq Tharwat St.",
+      "Kasr El Nile St.",
+      "Halim Basha St.",
+      "Ali El Kassar St.",
+      "Bab El Bahr St.",
+      "Clot Bek St.",
+      "El Azhar St.",
+      "El Azhar Bridge",
+      "El Bab El Bahary St.",
+      "El Bostah St.",
+      "El Fawatiah St.",
+      "El Glesh St.",
+      "El Gomhoreya St.",
+      "El Qabilah St.",
+      "El Qeta St.",
+      "El Rowaey St.",
+      "Emad El Deen St.",
+      "Kamel Sedky St.",
+      "Mohamed Ali St."
+    ]
+  },
+  "ar_metroStationATABA": {
+    "stationName": "العتبة",
+    "Religious": [
+      "مسجد الأحمر",
+      "مسجد كخيا",
+      "معبد شعار هشمايم",
+      "الكنيسة المرقسية الكبرى",
+      "كنيسة السيدة العذراء العزباوية"
+    ],
+    "Medical": [
+      "مستشفى صيدناوي",
+      "المركز الطبي الإنجيلي",
+      "مستشفى العجوزة"
+    ],
+    "Cultural": [
+      "مسرح عبد المنعم مدبولي",
+      "مسرح الريحاني",
+      "المسرح القومي",
+      "سينما زاوية"
+    ],
+    "Public Spaces": [
+      "حديقة الأزبكية",
+      "ميدان الأوبرا",
+      "مبنى تيرينج"
+    ],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [
+      "جراج العتبة",
+      "جراج الأوبرا",
+      "سنترال الأوبرا",
+      "مكتب العمل",
+      "قنصلية اليونان"
+    ],
+    "Landmarks": [
+      "حديقة الأزبكية",
+      "ميدان الأوبرا",
+      "مبنى تيرينج"
+    ],
+    "Public Institutions": [
+      "إدارة مرور العتبة",
+      "البنك المركزي المصري",
+      "مكتب التأمينات الاجتماعية",
+      "مبنى البريد المصري",
+      "هيئة الأوقاف المصرية",
+      "قسم شرطة الموسكي"
+    ],
+    "Streets": [
+      "شارع ٢٦ يوليو",
+      "شارع رمسيس",
+      "شارع نجيب الريحاني",
+      "شارع سليمان الحلبي",
+      "شارع واكد",
+      "شارع محمد بك الألفي",
+      "شارع عدلي",
+      "شارع عبد الخالق ثروت",
+      "شارع قصر النيل",
+      "شارع حليم باشا",
+      "شارع علي الكسار",
+      "شارع باب البحر",
+      "شارع كلوت بك",
+      "شارع الأزهر",
+      "كوبري الأزهر",
+      "شارع الباب البحري",
+      "شارع البوسطة",
+      "شارع الفواطية",
+      "شارع الجلش",
+      "شارع الجمهورية",
+      "شارع القبيلة",
+      "شارع القطة",
+      "شارع الرويعي",
+      "شارع عماد الدين",
+      "شارع محمد علي"
+    ]
+  },
+  "en_metroStationGAMAL_ABD_EL_NASSER": {
+    "stationName": "GAMAL ABD EL NASSER",
+    "Religious": [
+      "Church of Saint Demiana",
+      "Ebad Alrahman Mosque",
+      "Our Lady of The Vine Church",
+      "Sahafa Mosque",
+      "Sha'ar HaShamayim Synagogue",
+      "The Greek Church",
+      "Torgoman mosque"
+    ],
+    "Medical": [
+      "Al-Galaa Educational Hospital",
+      "CTA Hospital",
+      "Egyptian Railways Medical Center"
+    ],
+    "Cultural": [
+      "El Rihany Stage"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "Franciscan Nuns School"
+    ],
+    "Services": [
+      "Ramsis Central"
+    ],
+    "Landmarks": [
+      "Orabi Square",
+      "Statue of Abdel Moneim Riad",
+      "The Egyptian Museum"
+    ],
+    "Public Institutions": [
+      "Agricultural Professions Syndicate",
+      "Ahram Newspaper",
+      "Akhbar El Yom Newspaper",
+      "Al Jomhoriah Newspaper",
+      "Chemistry Administration",
+      "Consulate of Italy",
+      "Court of Cassation",
+      "Egyptian Engineers Syndicate",
+      "Electric Utility Company",
+      "General Authority For Health Insurance",
+      "General Organization For Export & Import Control",
+      "High Court",
+      "Ministry of Communications",
+      "Ministry of Foreign Affairs Documentation Office Translator",
+      "Real Estate Agency",
+      "Sanitary Drainage Authority for Greater Cairo",
+      "The Egyptian Lawyers Association"
+    ],
+    "Streets": [
+      "6th of October Bridge",
+      "26th of July Corridor",
+      "26th of July Street",
+      "Abd El Khaliq Tharwat",
+      "Adly",
+      "Al Sahafa",
+      "AL Teraa AL Bolakia",
+      "Champollion Rd",
+      "Emad El Deen St.",
+      "Kasr El Nile",
+      "Mahmoud Bassiouny",
+      "Mohamed Bek Al Alfi St.",
+      "Nagib El Rihani",
+      "Ramses",
+      "Saraya Al Azbakya",
+      "Shanan",
+      "Sherif Basha",
+      "Soliman El Halaby",
+      "Souk Al Tawfik",
+      "Talaat Harb",
+      "Wabour Al Torgoman"
+    ]
+  },
+  "ar_metroStationGAMAL_ABD_EL_NASSER": {
+    "stationName": "جمال عبد الناصر",
+    "Religious": [
+      "كنيسة القديسة دميانة",
+      "مسجد عباد الرحمن",
+      "كنيسة سيدة الكرمة",
+      "مسجد الصحافة",
+      "معبد شهر هشمايم",
+      "الكنيسة اليونانية",
+      "مسجد الترجمان"
+    ],
+    "Medical": [
+      "مستشفى الجلاء التعليمي",
+      "مستشفى هيئة النقل العام",
+      "مستشفى السكة الحديد"
+    ],
+    "Cultural": [
+      "مسرح الريحاني"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [
+      "مدرسة الراهبات الفرنسيسكانيات"
+    ],
+    "Services": [
+      "سنترال رمسيس"
+    ],
+    "Landmarks": [
+      "ميدان عرابي",
+      "تمثال عبد المنعم رياض",
+      "المتحف المصري"
+    ],
+    "Public Institutions": [
+      "نقابة المهن الزراعية",
+      "جريدة الأهرام",
+      "جريدة أخبار اليوم",
+      "جريدة الجمهورية",
+      "مصلحة الكيمياء",
+      "قنصلية ايطاليا بالقاهرة",
+      "محكمة النقض",
+      "نقابة المهندسين المصرية",
+      "شركة جنوب القاهرة لتوزيع الكهرباء",
+      "الهيئة العامة للتأمين الصحي",
+      "الهيئة العامة للرقابة على الصادرات والواردات",
+      "دار القضاء العالي",
+      "وزارة الاتصالات",
+      "مكتب توثيق وزارة الخارجية الترجمان",
+      "مصلحة الشهر العقاري والتوثيق",
+      "شركة الصرف الصحي للقاهرة الكبرى",
+      "نقابة المحامين"
+    ],
+    "Streets": [
+      "كوبرى 6 أكتوبر",
+      "محور ٢٦ يوليو",
+      "٢٦ يوليو",
+      "عبد الخالق ثروت",
+      "عدلي",
+      "الصحافة",
+      "الترعة البولاقية",
+      "طريق شامبليون",
+      "عماد الدين",
+      "قصر النيل",
+      "محمود بسيوني",
+      "محمد بك الألفي",
+      "نجيب الريحاني",
+      "رمسيس",
+      "سرايا الأزبكية",
+      "شنن",
+      "شريف باشا",
+      "سليمان الحلبي",
+      "سوق التوفيق",
+      "طلعت حرب",
+      "وابور الترجمان"
+    ]
+  },
+  "en_metroStationMASPERO": {
+    "stationName": "MASPERO",
+    "Religious": [
+      "AIQady Yehia Mosque",
+      "Saint Virgin Mary Church",
+      "Lady of the Vine Church",
+      "Sidi Atteya Mosque",
+      "Sultan Abo Elelaa Mosque"
+    ],
+    "Medical": [
+      "Boulaq Public Health Center"
+    ],
+    "Cultural": [
+      "Royal Chariots Museum"
+    ],
+    "Public Spaces": [
+      "El Masslaa Park"
+    ],
+    "Sport Facilities": [
+      "Gezira Sporting Club"
+    ],
+    "Educational": [
+      "San Arsany Language School"
+    ],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [
+      "National Media Authority",
+      "Ministry of Foreign Affairs",
+      "Tunisia Embassy",
+      "Consulate of Italy"
+    ],
+    "Streets": [
+      "Mohamed Abd El-Wahab",
+      "Gezira St",
+      "Nile Corniche",
+      "Hamam Gomaa",
+      "Galaa St",
+      "Ramses St",
+      "26th of July Corridor",
+      "6th of October Bridge",
+      "Souk Al Asr",
+      "Sidna Nasr",
+      "Al Waghah",
+      "Bolak Al Gadid",
+      "Sidi Al-Khaterai",
+      "Haret El Nokali"
+    ]
+  },
+  "ar_metroStationMASPERO": {
+    "stationName": "ماسبيرو",
+    "Religious": [
+      "جامع القاضي يحيى",
+      "كنيسة القديسة العذراء مريم",
+      "كنيسة سيدة الكرمة",
+      "مسجد سيدي عطية",
+      "مسجد السلطان أبو العلا"
+    ],
+    "Medical": [
+      "المركز الصحي العام ببولاق"
+    ],
+    "Cultural": [
+      "متحف المركبات الملكية"
+    ],
+    "Public Spaces": [
+      "حديقة المسلة"
+    ],
+    "Sport Facilities": [
+      "نادي الجزيرة الرياضي"
+    ],
+    "Educational": [
+      "مدرسة سان ارساني للغات"
+    ],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [
+      "الهيئة الوطنية للإعلام",
+      "وزارة الخارجية",
+      "سفارة الجمهورية التونسية",
+      "قنصلية ايطاليا بالقاهرة"
+    ],
+    "Streets": [
+      "محمد عبد الوهاب",
+      "شارع الجزيرة",
+      "كورنيش النيل",
+      "همام جمعة",
+      "شارع الجلاء",
+      "شارع رمسيس",
+      "محور ٢٦ يوليو",
+      "كوبري ٦ أكتوبر",
+      "سوق العصر",
+      "سيدنا نصر",
+      "الوجهة",
+      "بولاق الجديد",
+      "سيدي الخطيري",
+      "حارة النقلي"
+    ]
+  },
+  "en_metroStationSAFAA_HEGAZI": {
+    "stationName": "SAFAA HEGAZI",
+    "Religious": [
+      "All Saints' Cathedral",
+      "Saint Joseph Roman Catholic Church",
+      "Saint Mary Church",
+      "Saint Virgin Mary Church"
+    ],
+    "Medical": [
+      "Boulaq General Hospital",
+      "Magdi Yacoub Heart Foundation"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "El Masslaa Park",
+      "Mamsha Ahl Misr"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "Faculty of Fine Arts - Helwan University",
+      "Faculty of Art Education - Helwan University",
+      "Faculty of Music Education",
+      "Amoun Private School",
+      "El Tarbeya El Qawmeya Private School",
+      "Zamalek National Mixed School",
+      "Nile Language School",
+      "Port Said American School",
+      "Port Said Schools",
+      "Lycee Francais du Caire"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "Aisha Fahmy Palace"
+    ],
+    "Public Institutions": [
+      "Embassy of Sweden",
+      "Embassy of Australia",
+      "Embassy of the Republic of Iraq",
+      "Embassy of the Sultanate of Oman",
+      "Embassy of Bahrain",
+      "Embassy of the Republic of India",
+      "Embassy of the People's Republic of China",
+      "Embassy of the Republic of Serbia",
+      "Embassy of the Republic of Poland",
+      "Embassy of the Netherlands",
+      "Embassy of Romania",
+      "Embassy of the Republic of Ireland",
+      "Embassy of Estonia",
+      "Embassy of the Kingdom of Spain",
+      "Embassy of the State of Libya",
+      "Moroccan Embassy",
+      "Consulate of Italy",
+      "Apostolic Nunciature of the Holy See",
+      "General Egyptian Book Organization",
+      "National Library",
+      "Cairo World Trade Center"
+    ],
+    "Streets": [
+      "Al Sabtiah",
+      "Al Matbaa Al Amireya",
+      "Amir El-Lewaa",
+      "Wkalet Al Balah",
+      "Souk Al Hatab",
+      "Souk Al Asr",
+      "Sidi Al Khaterai",
+      "Nile Corniche",
+      "Haret Al Hanout",
+      "Haret Al Hatab",
+      "Gameaa Al Snaneyh",
+      "Shagaret Al Dor",
+      "Salah El-Deen",
+      "Bahaa El-Deen Qaraqosh",
+      "Zakareya Rizk",
+      "Zaki Ali",
+      "Youssef Kamal",
+      "Taha Hussein",
+      "Mohamed Thakeb",
+      "Mohammed Maraashly",
+      "Mohammed Abd El-Wahab",
+      "Mohammed Mazhar",
+      "Meshel Lotf Allah",
+      "Mahmoud Azmy",
+      "Ismail Mohammed",
+      "Ibn Zinky St.",
+      "Hassan Sabry",
+      "Hassan Assem",
+      "El-Morsaleen",
+      "El-Mansour Mohammed",
+      "El-Aziz Othman",
+      "Dr Allahwani",
+      "Brazil St.",
+      "Bahgat Ali",
+      "Aziz Abaza",
+      "Al Sharif Al Idrisi",
+      "Al Kamel Mohamed",
+      "Ahmed Sabry",
+      "Ahmed Heshmat",
+      "Baba Sharo",
+      "15 May Bridge",
+      "26th of July Corridor"
+    ]
+  },
+  "ar_metroStationSAFAA_HEGAZI": {
+    "stationName": "صفاء حجازي",
+    "Religious": [
+      "كاتدرائية جميع القديسين",
+      "كنيسة سان جوزيف الرومانية الكاثوليكية",
+      "كنيسة السيدة العذراء مريم",
+      "كنيسة القديسة العذراء مريم"
+    ],
+    "Medical": [
+      "مستشفى بولاق العام",
+      "مؤسسة مجدي يعقوب للقلب"
+    ],
+    "Cultural": [],
+    "Public Spaces": [
+      "حديقة المسلة",
+      "ممشى أهل مصر"
+    ],
+    "Sport Facilities": [],
+    "Educational": [
+      "كلية الفنون الجميلة - جامعة حلوان",
+      "كلية التربية الفنية - جامعة حلوان",
+      "كلية التربية الموسيقية",
+      "مدرسة آمون الخاصة",
+      "مدرسة التربية القومية الخاصة",
+      "مدرسة الزمالك القومية المشتركة",
+      "مدرسة النيل الرسمية للغات",
+      "مدرسة بورسعيد الأمريكية",
+      "مدارس بورسعيد للغات",
+      "الليسيه الفرنسية بالقاهرة"
+    ],
+    "Services": [],
+    "Landmarks": [
+      "قصر عائشة فهمي"
+    ],
+    "Public Institutions": [
+      "سفارة السويد",
+      "السفارة الاسترالية",
+      "السفارة العراقية",
+      "سفارة سلطنة عمان",
+      "سفارة البحرين",
+      "سفارة جمهورية الهند",
+      "سفارة جمهورية الصين الشعبية",
+      "سفارة جمهورية صربيا",
+      "سفارة جمهورية بولندا",
+      "سفارة هولندا",
+      "سفارة رومانيا",
+      "سفارة جمهورية ايرلندا",
+      "سفارة إستونيا",
+      "سفارة مملكة إسبانيا",
+      "سفارة دولة ليبيا",
+      "سفارة المغرب",
+      "قنصلية ايطاليا",
+      "سفارة الفاتيكان",
+      "الهيئة المصرية العامة للكتاب",
+      "الهيئة العامة لدار الكتب والوثائق القومية",
+      "مركز التجارة العالمي - القاهرة"
+    ],
+    "Streets": [
+      "السبتية",
+      "المطبعة الأميرية",
+      "أمير اللواء",
+      "وكالة البلح",
+      "سوق الحطب",
+      "سوق العصر",
+      "سيدي الخطيري",
+      "كورنيش النيل",
+      "حارة الحانوت",
+      "حارة الحطب",
+      "جامع الصناينة",
+      "شجرة الدر",
+      "صلاح الدين",
+      "بهاء الدين قراقوش",
+      "زكريا رزق",
+      "زكي علي",
+      "يوسف كامل",
+      "طه حسين",
+      "محمد ثاقب",
+      "محمد المرعشلي",
+      "محمد عبد الوهاب",
+      "محمد مظهر",
+      "ميشيل لطف الله",
+      "محمود عزمي",
+      "إسماعيل محمد",
+      "ابن زنكي",
+      "حسن صبري",
+      "حسن عاصم",
+      "المرسلين",
+      "المنصور محمد",
+      "العزيز عثمان",
+      "الدكتور الهواني",
+      "شارع البرازيل",
+      "بهجت علي",
+      "عزيز أباظة",
+      "الشريف الإدريسي",
+      "الكامل محمد",
+      "أحمد صبري",
+      "أحمد حشمت",
+      "بابا شارو",
+      "كوبري ١٥ مايو",
+      "محور ٢٦ يوليو"
+    ]
+  },
+  "en_metroStationKIT_KAT": {
+    "stationName": "KIT KAT",
+    "Religious": [
+      "Ahmed Elbadr Mosque",
+      "Maghfera Mosque",
+      "El-Hossary Mosque",
+      "Elnoor Mosque",
+      "Khaled Ibn Elwaled Mosque",
+      "Saint Mary Church",
+      "Zamalek Mosque"
+    ],
+    "Medical": [
+      "Imbaba General Hospital",
+      "National Heart Institute",
+      "Zamalek Hospital"
+    ],
+    "Cultural": [
+      "El Sawy Cultural Wheel",
+      "Balloon Theatre"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "Agouza Girls' Sports Center",
+      "Bar Association's River Club",
+      "Engineers Syndicate Club",
+      "NBE Club",
+      "State's Lawsuit's Club",
+      "Swiss Club",
+      "Talaat Harb Club",
+      "Tala'a El Geish Rowing Club",
+      "Tawfikiya Tennis Club"
+    ],
+    "Educational": [
+      "Faculty of Art Education - Helwan University",
+      "Faculty of Fine Arts- Helwan University",
+      "Imbaba Ismalia Prep School",
+      "Khaled Ibn Elwaled Library",
+      "Pakistan International School",
+      "Schools Student Union",
+      "Zamalik Middle School"
+    ],
+    "Services": [
+      "Post Office"
+    ],
+    "Landmarks": [
+      "Kit Kat Square",
+      "Om Kalthoum Statue"
+    ],
+    "Public Institutions": [
+      "Cyprus Embassy",
+      "Embassy of the People's Republic of China",
+      "Embassy of the Republic of Serbia",
+      "Family Court",
+      "Family Court - Markaz Imbaba",
+      "Ministry of Culture",
+      "National Center for Research",
+      "Supreme Council of Antiquities",
+      "Tax Department"
+    ],
+    "Streets": [
+      "15 May Bridge",
+      "Abd El-Haleem Ali",
+      "Abou El Feda",
+      "Ahmed Oraby",
+      "Al Alameen",
+      "Al Sawahel Canal",
+      "Bahgat Ali Street",
+      "El-Horeya",
+      "El-Itihad",
+      "El-Kamal",
+      "El-Kasasin",
+      "El-Malek El-Fadl",
+      "Dr Ahmed Al Hofy-Almansora",
+      "El Gabalaya St",
+      "El Gezira El Wosta",
+      "El-Hoda El-Nabawy",
+      "El-Mansour Mohammed",
+      "El-Nour",
+      "El-Safa",
+      "El-Salam",
+      "Hassan Assem",
+      "Hassan Yousry St",
+      "Ibn Khaldon",
+      "Ismail Mohammed",
+      "Mohammed Anis",
+      "Mohammed Maraashly",
+      "Mohammed Thakeb",
+      "Nile Corniche",
+      "Noeman Abdou",
+      "Omar Toson",
+      "Saeed Matar",
+      "Salah El-Deen",
+      "Saleh Abou Sewaral",
+      "Sudan",
+      "Taha Hussein"
+    ]
+  },
+  "ar_metroStationKIT_KAT": {
+    "stationName": "كتكات",
+    "Religious": [
+      "مسجد أحمد البدر",
+      "مسجد المغفرة",
+      "مسجد الحصري",
+      "مسجد النور",
+      "مسجد خالد ابن الوليد",
+      "كنيسة السيدة العذراء مريم",
+      "مسجد الزمالك"
+    ],
+    "Medical": [
+      "مستشفى إمبابة العام",
+      "معهد القلب القومي",
+      "مستشفى الزمالك"
+    ],
+    "Cultural": [
+      "ساقية الصاوي",
+      "مسرح البالون"
+    ],
+    "Public Spaces": [],
+    "Sport Facilities": [
+      "المركز الرياضي للفتيات بالعجوزة",
+      "نادي نقابة المحامين النهري",
+      "نادي نقابة المهندسين",
+      "نادي البنك الأهلي",
+      "نادي مستشاري قضايا الدولة",
+      "النادي السويسري",
+      "نادي طلعت حرب",
+      "نادي طلائع الجيش للتجديف",
+      "نادي التوفيقية للتنس"
+    ],
+    "Educational": [
+      "كلية التربية الفنية - جامعة حلوان",
+      "كلية الفنون الجميلة - جامعة حلوان",
+      "مدرسة إمبابة الاسماعيلية الإعدادية",
+      "مكتبة خالد ابن الوليد",
+      "المدرسة الباكستانية",
+      "المركز الرئيسي للأنشطة الطلابية",
+      "مدرسة الزمالك الاعدادية"
+    ],
+    "Services": [
+      "بريد الكيت كات"
+    ],
+    "Landmarks": [
+      "ميدان الكيت كات",
+      "تمثال أم كلثوم"
+    ],
+    "Public Institutions": [
+      "سفارة قبرص",
+      "سفارة جمهورية الصين الشعبية",
+      "سفارة جمهورية صربيا",
+      "محكمة الأسرة",
+      "محكمة الأسرة - مركز إمبابة",
+      "وزارة الثقافة",
+      "المركز القومي للبحوث الاجتماعية والجنائية",
+      "المجلس الأعلى للآثار",
+      "مأمورية الضرائب - الدقي"
+    ],
+    "Streets": [
+      "كوبري 15 مايو",
+      "عبد الحليم علي",
+      "أبو الفدا",
+      "أحمد عرابي",
+      "العلمين",
+      "ترعة السواحل",
+      "شارع بهجت علي",
+      "الحرية",
+      "الاتحاد",
+      "الكمال",
+      "القصاصين",
+      "الملك الفضل",
+      "الدكتور أحمد الحوفي - المنصورة",
+      "شارع الجبلاية",
+      "الجزيرة الوسطى",
+      "الهدي النبوي",
+      "المنصور محمد",
+      "النور",
+      "الصفا",
+      "السلام",
+      "حسن عاصم",
+      "حسن يسري",
+      "ابن خلدون",
+      "إسماعيل محمد",
+      "محمد أنيس",
+      "محمد مرعشلي",
+      "محمد ثاقب",
+      "كورنيش النيل",
+      "نعمان عبده",
+      "عمر طوسون",
+      "سعيد مطر",
+      "صلاح الدين",
+      "صالح أبو صوير",
+      "شارع السودان",
+      "طه حسين"
+    ]
+  },
+  "en_metroStationSUDAN": {
+    "stationName": "SUDAN",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationSUDAN": {
+    "stationName": "السودان",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationIMBABA": {
+    "stationName": "IMBABA",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationIMBABA": {
+    "stationName": "إمبابة",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationEL_BOHY": {
+    "stationName": "EL BOHY",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationEL_BOHY": {
+    "stationName": "البوهي",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationEL_QAWMEYA": {
+    "stationName": "EL QAWMEYA",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationEL_QAWMEYA": {
+    "stationName": "القومية",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationEL_TARIQ_EL_DAIRY": {
+    "stationName": "EL TARIQ EL DAIRY",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationEL_TARIQ_EL_DAIRY": {
+    "stationName": "الطريق الدائري",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationROD_EL_FARAG_AXIS": {
+    "stationName": "ROD EL FARAG AXIS",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationROD_EL_FARAG_AXIS": {
+    "stationName": "محور روض الفرج",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationEL_TOUFIQIA": {
+    "stationName": "EL TOUFIQIA",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationEL_TOUFIQIA": {
+    "stationName": "التوفيقية",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationWADI_EL_NIL": {
+    "stationName": "WADI EL NIL",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationWADI_EL_NIL": {
+    "stationName": "وادي النيل",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationGAMAET_EL_DOWL_EL_ARABIA": {
+    "stationName": "GAMAET EL DOWL EL ARABIA",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationGAMAET_EL_DOWL_EL_ARABIA": {
+    "stationName": "جامعة الدول العربية",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationBOLAK_EL_DAKROUR": {
+    "stationName": "BOLAK EL DAKROUR",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationBOLAK_EL_DAKROUR": {
+    "stationName": "بولاق الدكرور",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "en_metroStationCAIRO_UNIVERSITY": {
+    "stationName": "CAIRO UNIVERSITY",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  },
+  "ar_metroStationCAIRO_UNIVERSITY": {
+    "stationName": "جامعة القاهرة",
+    "Religious": [],
+    "Medical": [],
+    "Cultural": [],
+    "Public Spaces": [],
+    "Sport Facilities": [],
+    "Educational": [],
+    "Services": [],
+    "Landmarks": [],
+    "Public Institutions": [],
+    "Streets": []
+  }
+}

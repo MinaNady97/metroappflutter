@@ -10,6 +10,9 @@ List<String> metroLine1Stations = [];
 List<String> metroLine2Stations = [];
 List<String> metroLine3Branch1Stations = [];
 List<String> metroLine3Branch2Stations = [];
+List<String> lrtMainStations = [];
+List<String> lrtNacBranchStations = [];
+List<String> lrt10thBranchStations = [];
 
 Map<List<int>, List<String>> commonStationsMap = {};
 Map<String, List<String>> commonStationsStringMap = {};
@@ -37,6 +40,9 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
       getMetroLine3Branch1Stations(context); // And for Branch 1
   metroLine3Branch2Stations =
       getMetroLine3Branch2Stations(context); // And for Branch 2
+  lrtMainStations = getLrtMainStations(context);
+  lrtNacBranchStations = getLrtNacBranchStations(context);
+  lrt10thBranchStations = getLrt10thBranchStations(context);
   commonStationsMap = getCommonStationsMap(context);
   commonStationsStringMap = getCommonStationsStringMap(context);
 
@@ -49,6 +55,12 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
       departureStationLine, departureStationIndexList, 3);
   addStationInfo(departureStation, metroLine3Branch2Stations,
       departureStationLine, departureStationIndexList, 4);
+  addStationInfo(departureStation, lrtMainStations, departureStationLine,
+      departureStationIndexList, 5);
+  addStationInfo(departureStation, lrtNacBranchStations, departureStationLine,
+      departureStationIndexList, 6);
+  addStationInfo(departureStation, lrt10thBranchStations, departureStationLine,
+      departureStationIndexList, 7);
 
   addStationInfo(arrivalStation, metroLine1Stations, arrivalStationLine,
       arrivalStationIndexList, 1);
@@ -58,6 +70,12 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
       arrivalStationIndexList, 3);
   addStationInfo(arrivalStation, metroLine3Branch2Stations, arrivalStationLine,
       arrivalStationIndexList, 4);
+  addStationInfo(arrivalStation, lrtMainStations, arrivalStationLine,
+      arrivalStationIndexList, 5);
+  addStationInfo(arrivalStation, lrtNacBranchStations, arrivalStationLine,
+      arrivalStationIndexList, 6);
+  addStationInfo(arrivalStation, lrt10thBranchStations, arrivalStationLine,
+      arrivalStationIndexList, 7);
 
   // Check if both lists have common stations and update them
   updateCommonStations(
@@ -367,6 +385,12 @@ List<String> getLineStations(int line) {
       return metroLine3Branch1Stations;
     case 4:
       return metroLine3Branch2Stations;
+    case 5:
+      return lrtMainStations;
+    case 6:
+      return lrtNacBranchStations;
+    case 7:
+      return lrt10thBranchStations;
     default:
       return [];
   }
@@ -382,6 +406,12 @@ List<List<int>> getLineCoordinates(int line) {
       return metroLine3Branch1Coordinates;
     case 4:
       return metroLine3Branch2Coordinates;
+    case 5:
+      return lrtMainCoordinates;
+    case 6:
+      return lrtNacBranchCoordinates;
+    case 7:
+      return lrt10thBranchCoordinates;
     default:
       return [];
   }
@@ -396,6 +426,11 @@ String getLineStartDirection(BuildContext context, int line) {
     case 3:
     case 4:
       return AppLocalizations.of(context)!.metroStationADLY_MANSOUR;
+    case 5:
+      return AppLocalizations.of(context)!.metroStationADLY_MANSOUR;
+    case 6:
+    case 7:
+      return AppLocalizations.of(context)!.locale == 'ar' ? 'بدر' : 'Badr';
     default:
       return "";
   }
@@ -411,6 +446,16 @@ String getLineEndDirection(BuildContext context, int line) {
       return AppLocalizations.of(context)!.metroStationROD_EL_FARAG_AXIS;
     case 4:
       return AppLocalizations.of(context)!.metroStationCAIRO_UNIVERSITY;
+    case 5:
+      return AppLocalizations.of(context)!.locale == 'ar' ? 'بدر' : 'Badr';
+    case 6:
+      return AppLocalizations.of(context)!.locale == 'ar'
+          ? 'العاصمة المركزية'
+          : 'Central Capital (NAC)';
+    case 7:
+      return AppLocalizations.of(context)!.locale == 'ar'
+          ? 'مدينة المعرفة'
+          : 'Knowledge City';
     default:
       return "";
   }
@@ -583,7 +628,7 @@ List<List<List<String>>> findRoute3(
   List<String> departureLineStations = getLineStations(departureStationLine);
   List<String> arrivalLineStations = getLineStations(arrivalStationLine);
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 7; i++) {
     List<String> midLine = getLineStations((i + 1));
     int midLineIndex = (i + 1);
     if (!(departureLineStations == midLine || arrivalLineStations == midLine)) {
@@ -732,6 +777,18 @@ String getLineName(BuildContext context, int line) {
       return AppLocalizations.of(context)!.metro3branch1;
     case 4:
       return AppLocalizations.of(context)!.metro3branch2;
+    case 5:
+      return AppLocalizations.of(context)!.locale == 'ar'
+          ? 'القطار الكهربائي الخفيف - المسار الرئيسي'
+          : 'LRT Main Trunk';
+    case 6:
+      return AppLocalizations.of(context)!.locale == 'ar'
+          ? 'القطار الكهربائي الخفيف - فرع العاصمة'
+          : 'LRT New Capital Branch';
+    case 7:
+      return AppLocalizations.of(context)!.locale == 'ar'
+          ? 'القطار الكهربائي الخفيف - فرع العاشر'
+          : 'LRT 10th of Ramadan Branch';
     default:
       return '';
   }
@@ -746,6 +803,15 @@ int getLineNumber(BuildContext context, String lineName) {
     return 3;
   } else if (lineName == AppLocalizations.of(context)!.metro3branch2) {
     return 4;
+  } else if (lineName == 'LRT Main Trunk' ||
+      lineName == 'القطار الكهربائي الخفيف - المسار الرئيسي') {
+    return 5;
+  } else if (lineName == 'LRT New Capital Branch' ||
+      lineName == 'القطار الكهربائي الخفيف - فرع العاصمة') {
+    return 6;
+  } else if (lineName == 'LRT 10th of Ramadan Branch' ||
+      lineName == 'القطار الكهربائي الخفيف - فرع العاشر') {
+    return 7;
   } else {
     return 0;
   }

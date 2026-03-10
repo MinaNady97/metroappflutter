@@ -6,7 +6,7 @@ import '../Controllers/homepagecontroller.dart';
 import '../Pages/stationspage.dart';
 
 class RouteCardThreeMetro extends StatelessWidget {
-  final HomepageController homeController = Get.put(HomepageController());
+  final HomepageController homeController = Get.find<HomepageController>();
   final String numStations;
   final String travelTime;
   final String changeTime;

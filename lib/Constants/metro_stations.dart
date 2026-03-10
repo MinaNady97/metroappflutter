@@ -4,6 +4,7 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 Map<List<int>, List<String>> getCommonStationsMap(BuildContext context) {
+  final isAr = AppLocalizations.of(context)!.locale == 'ar';
   return <List<int>, List<String>>{
     [1, 2]: [
       AppLocalizations.of(context)!.metroStationSADAT,
@@ -25,10 +26,26 @@ Map<List<int>, List<String>> getCommonStationsMap(BuildContext context) {
     [3, 4]: [
       AppLocalizations.of(context)!.metroStationKIT_KAT,
     ],
+    [3, 5]: [
+      AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    ],
+    [4, 5]: [
+      AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    ],
+    [5, 6]: [
+      isAr ? 'بدر' : 'Badr',
+    ],
+    [5, 7]: [
+      isAr ? 'بدر' : 'Badr',
+    ],
+    [6, 7]: [
+      isAr ? 'بدر' : 'Badr',
+    ],
   };
 }
 
 Map<String, List<String>> getCommonStationsStringMap(BuildContext context) {
+  final isAr = AppLocalizations.of(context)!.locale == 'ar';
   return <String, List<String>>{
     '1,2': [
       AppLocalizations.of(context)!.metroStationSADAT,
@@ -49,6 +66,21 @@ Map<String, List<String>> getCommonStationsStringMap(BuildContext context) {
     ],
     '3,4': [
       AppLocalizations.of(context)!.metroStationKIT_KAT,
+    ],
+    '3,5': [
+      AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    ],
+    '4,5': [
+      AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    ],
+    '5,6': [
+      isAr ? 'بدر' : 'Badr',
+    ],
+    '5,7': [
+      isAr ? 'بدر' : 'Badr',
+    ],
+    '6,7': [
+      isAr ? 'بدر' : 'Badr',
     ],
   };
 }
@@ -191,6 +223,39 @@ List<String> getMetroLine3Branch2Stations(BuildContext context) {
   ];
 }
 
+List<String> getLrtMainStations(BuildContext context) {
+  final isAr = AppLocalizations.of(context)!.locale == 'ar';
+  return [
+    AppLocalizations.of(context)!.metroStationADLY_MANSOUR,
+    isAr ? 'العبور' : 'El-Obour',
+    isAr ? 'المستقبل' : 'Future',
+    isAr ? 'الشروق' : 'El Shorouk',
+    isAr ? 'هليوبوليس الجديدة' : 'New Heliopolis',
+    isAr ? 'بدر' : 'Badr',
+  ];
+}
+
+List<String> getLrtNacBranchStations(BuildContext context) {
+  final isAr = AppLocalizations.of(context)!.locale == 'ar';
+  return [
+    isAr ? 'بدر' : 'Badr',
+    isAr ? 'الروبيكي' : 'El Robaikey',
+    isAr ? 'حدائق العاصمة' : 'Hadayek Al Assema',
+    isAr ? 'مطار العاصمة' : 'Capital Airport',
+    isAr ? 'مدينة الفنون والثقافة' : 'Arts and Culture City',
+    isAr ? 'العاصمة المركزية' : 'Central Capital (NAC)',
+  ];
+}
+
+List<String> getLrt10thBranchStations(BuildContext context) {
+  final isAr = AppLocalizations.of(context)!.locale == 'ar';
+  return [
+    isAr ? 'بدر' : 'Badr',
+    isAr ? 'المنطقة الصناعية' : 'Industrial Park',
+    isAr ? 'مدينة المعرفة' : 'Knowledge City',
+  ];
+}
+
 List<String> getMetroLine3StationsEN(BuildContext context) {
   return [
     AppLocalizations.of(context)!.en_metroStationADLY_MANSOUR,
@@ -258,6 +323,9 @@ List<String> getMetroLine3StationsAR(BuildContext context) {
 }
 
 List<String> getAllMetroStations(BuildContext context) {
+  final lrtMain = getLrtMainStations(context);
+  final lrtNac = getLrtNacBranchStations(context);
+  final lrt10th = getLrt10thBranchStations(context);
   return [
     AppLocalizations.of(context)!.metroStationHELWAN,
     AppLocalizations.of(context)!.metroStationAIN_HELWAN,
@@ -343,6 +411,9 @@ List<String> getAllMetroStations(BuildContext context) {
     AppLocalizations.of(context)!.metroStationWADI_EL_NIL,
     AppLocalizations.of(context)!.metroStationGAMAET_EL_DOWL_EL_ARABIA,
     AppLocalizations.of(context)!.metroStationBOLAK_EL_DAKROUR,
+    ...lrtMain.where((s) => s != AppLocalizations.of(context)!.metroStationADLY_MANSOUR),
+    ...lrtNac.where((s) => !lrtMain.contains(s)),
+    ...lrt10th.where((s) => !lrtMain.contains(s) && !lrtNac.contains(s)),
   ];
 }
 
@@ -469,6 +540,30 @@ const List<List<double>> metroLine3Branch2StationsCoordinates = [
   [30.05083, 31.19972], // Gamaat EL-Dowal Al-Arabiya
   [30.03611, 31.19639], // Bulaq El-Dakroor
   [30.02611, 31.20111] // Cairo University
+];
+
+const List<List<double>> lrtMainStationsCoordinates = [
+  [30.14661096, 31.42124641], // Adly Mansour
+  [30.16329751, 31.48149008], // El-Obour
+  [30.17310314, 31.55416228], // Future
+  [30.17932584, 31.60585802], // El Shorouk
+  [30.18405322, 31.65273091], // New Heliopolis
+  [30.17527303, 31.7160199], // Badr
+];
+
+const List<List<double>> lrtNacBranchStationsCoordinates = [
+  [30.17527303, 31.7160199], // Badr
+  [30.16658308, 31.75241221], // El Robaikey
+  [30.1369591, 31.80688173], // Hadayek Al Assema
+  [30.0767382, 31.78305736], // Capital Airport
+  [30.01433519, 31.72513259], // Arts and Culture City
+  [30.0050, 31.7850], // Central Capital (NAC)
+];
+
+const List<List<double>> lrt10thBranchStationsCoordinates = [
+  [30.17527303, 31.7160199], // Badr
+  [30.20461601, 31.7154668], // Industrial Park
+  [30.2308951, 31.69166131], // Knowledge City
 ];
 
 const List<List<double>> allMetroStationsCoordinates = [
@@ -680,6 +775,30 @@ final metroLine3Branch2Coordinates = <List<int>>[
   [275, 428],
   [286, 464],
   [311, 501]
+];
+
+final lrtMainCoordinates = <List<int>>[
+  [873, 288],
+  [920, 270],
+  [970, 250],
+  [1020, 235],
+  [1065, 220],
+  [1110, 205],
+];
+
+final lrtNacBranchCoordinates = <List<int>>[
+  [1110, 205],
+  [1140, 228],
+  [1170, 255],
+  [1200, 290],
+  [1230, 325],
+  [1260, 360],
+];
+
+final lrt10thBranchCoordinates = <List<int>>[
+  [1110, 205],
+  [1135, 180],
+  [1160, 150],
 ];
 
 void showCustomToast(String message) {

@@ -13,7 +13,14 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:metroappflutter/widgets/metro_map_painter.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// MetroMapPage — Interactive Cairo Metro + LRT Map  v3
+// MetroMapPage — Interactive Cairo Metro + LRT Map  v4 (performance)
+//
+// Two-layer rendering:
+//   Static  — lines, stations, labels, grid → cached via RepaintBoundary
+//   Animated — train dots, selection ring, user location → lightweight
+//
+// Animations paused during pan/zoom for buttery-smooth interaction.
+// Paths & train positions pre-computed once at load time.
 // ─────────────────────────────────────────────────────────────────────────────
 
 class MetroMapPage extends StatefulWidget {
@@ -26,6 +33,7 @@ class _MetroMapPageState extends State<MetroMapPage>
     with TickerProviderStateMixin {
   final TransformationController _transform = TransformationController();
 
+  // ── Animation controllers ──────────────────────────────────────────────
   late final AnimationController _legendCtrl;
   late final Animation<double> _legendAnim;
   late final AnimationController _resetBtnCtrl;
@@ -37,15 +45,15 @@ class _MetroMapPageState extends State<MetroMapPage>
   late final Animation<double> _entranceAnim;
   late final AnimationController _userLocPulseCtrl;
 
+  // ── State ──────────────────────────────────────────────────────────────
   double _scale = 1.0;
   bool _legendVisible = true;
+  bool _loading = true;
 
   List<MetroLine> _lines = [];
   Map<String, Station> _stationMap = {};
-  bool _loading = true;
 
   String? _selectedStationId;
-  final Map<String, Offset> _stationPositions = {};
   final Set<String> _visibleLineIds = {'L1', 'L2', 'L3', 'LRT'};
 
   bool _searchOpen = false;
@@ -57,8 +65,14 @@ class _MetroMapPageState extends State<MetroMapPage>
   Position? _userGpsPosition;
   bool _locationLoading = false;
 
-  // We keep a reference to the painter's projection for GPS→canvas
-  MetroMapPainter? _lastPainter;
+  // Interaction tracking — skip setState during pan/zoom
+  bool _isInteracting = false;
+
+  // ── Pre-computed caches (built once) ───────────────────────────────────
+  MapBounds? _bounds;
+  Map<String, Offset> _stationPositions = {};
+  Map<String, Path> _linePaths = {};
+  Map<String, List<Offset>> _trainSamples = {};
 
   static const _min = 0.25;
   static const _max = 10.0;
@@ -83,17 +97,23 @@ class _MetroMapPageState extends State<MetroMapPage>
     _pulseAnim = CurvedAnimation(parent: _pulseCtrl, curve: Curves.easeInOut);
 
     _trainCtrl = AnimationController(
-        vsync: this, duration: const Duration(seconds: 14))
-      ..repeat();
+        vsync: this, duration: const Duration(seconds: 14));
+    // Don't start train until entrance finishes
 
     _entranceCtrl = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 2000));
     _entranceAnim =
         CurvedAnimation(parent: _entranceCtrl, curve: Curves.easeOutCubic);
 
+    _entranceCtrl.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _trainCtrl.repeat(); // start trains only after entrance
+      }
+    });
+
     _userLocPulseCtrl = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1500))
-      ..repeat();
+        vsync: this, duration: const Duration(milliseconds: 1500));
+    // Don't start until user location is available
 
     _searchCtrl.addListener(_onSearchChanged);
     _loadData();
@@ -104,13 +124,34 @@ class _MetroMapPageState extends State<MetroMapPage>
     final stations = await repo.getAllStations();
     final lines = await repo.getAllLines();
     if (!mounted) return;
+
+    // Pre-compute everything once
+    final bounds = MapBounds.fromStations(stations);
+    final positions = <String, Offset>{};
+    for (final s in stations) {
+      positions[s.id] = bounds.project(s.latitude, s.longitude);
+    }
+
+    final paths = <String, Path>{};
+    final samples = <String, List<Offset>>{};
+    for (final line in lines) {
+      final path = buildLinePath(line, positions);
+      if (path != null) {
+        paths[line.id] = path;
+        samples[line.id] = samplePathPositions(path);
+      }
+    }
+
     setState(() {
       _stationMap = {for (final s in stations) s.id: s};
       _lines = lines;
+      _bounds = bounds;
+      _stationPositions = positions;
+      _linePaths = paths;
+      _trainSamples = samples;
       _loading = false;
     });
 
-    // Start entrance, then fit map after a frame
     _entranceCtrl.forward();
     WidgetsBinding.instance.addPostFrameCallback((_) => _fitAllStations());
   }
@@ -130,46 +171,31 @@ class _MetroMapPageState extends State<MetroMapPage>
     super.dispose();
   }
 
-  // ── Fit all stations in view ────────────────────────────────────────────
+  // ── Fit all stations ───────────────────────────────────────────────────
 
   void _fitAllStations() {
-    if (_stationPositions.isEmpty) return;
+    if (_bounds == null) return;
     final sz = MediaQuery.of(context).size;
-
-    // Create a temporary painter to get canvas size
-    final painter = MetroMapPainter(
-      lines: _lines,
-      stationMap: _stationMap,
-      languageCode: 'en',
-      zoom: 1,
-      stationPositions: _stationPositions,
-      visibleLineIds: _visibleLineIds,
-    );
-    final canvasSize = painter.canvasSize;
-
-    // Compute scale to fit canvas in viewport
-    final scaleX = sz.width / canvasSize.width;
-    final scaleY = (sz.height - 200) / canvasSize.height; // account for appbar+legend
+    final cs = _bounds!.size;
+    final scaleX = sz.width / cs.width;
+    final scaleY = (sz.height - 200) / cs.height;
     final fitScale = (scaleX < scaleY ? scaleX : scaleY) * 0.92;
-
-    // Center the canvas
-    final scaledW = canvasSize.width * fitScale;
-    final scaledH = canvasSize.height * fitScale;
-    final tx = (sz.width - scaledW) / 2;
-    final ty = (sz.height - scaledH) / 2;
-
+    final tx = (sz.width - cs.width * fitScale) / 2;
+    final ty = (sz.height - cs.height * fitScale) / 2;
     _transform.value = Matrix4.identity()
       ..translate(tx, ty)
       ..scale(fitScale);
   }
 
-  // ── Zoom ────────────────────────────────────────────────────────────────
+  // ── Zoom ───────────────────────────────────────────────────────────────
 
   void _onTransformChanged() {
     final s = _transform.value.getMaxScaleOnAxis();
     if ((s - _scale).abs() < 0.01) return;
-    setState(() => _scale = s);
+    _scale = s;
     s > 0.35 ? _resetBtnCtrl.forward() : _resetBtnCtrl.reverse();
+    // Don't rebuild widget tree during active pinch/pan — zero lag
+    if (!_isInteracting) setState(() {});
   }
 
   void _zoomStep(double factor) {
@@ -197,7 +223,7 @@ class _MetroMapPageState extends State<MetroMapPage>
     _legendVisible ? _legendCtrl.forward() : _legendCtrl.reverse();
   }
 
-  // ── Zoom to station ─────────────────────────────────────────────────────
+  // ── Zoom to station ───────────────────────────────────────────────────
 
   void _zoomToStation(String stationId) {
     final pos = _stationPositions[stationId];
@@ -211,7 +237,24 @@ class _MetroMapPageState extends State<MetroMapPage>
       ..translate(-pos.dx, -pos.dy);
   }
 
-  // ── Tap ─────────────────────────────────────────────────────────────────
+  // ── Interaction pause/resume ──────────────────────────────────────────
+
+  void _onInteractionStart(ScaleStartDetails _) {
+    _isInteracting = true;
+    _trainCtrl.stop();
+    _userLocPulseCtrl.stop();
+    _pulseCtrl.stop();
+  }
+
+  void _onInteractionEnd(ScaleEndDetails _) {
+    _isInteracting = false;
+    setState(() {}); // update zoom display once
+    if (_entranceAnim.value >= 1.0) _trainCtrl.repeat();
+    if (_userLocationCanvas != null) _userLocPulseCtrl.repeat();
+    if (_selectedStationId != null) _pulseCtrl.repeat();
+  }
+
+  // ── Tap ───────────────────────────────────────────────────────────────
 
   void _onTapUp(TapUpDetails details) {
     if (_stationPositions.isEmpty) return;
@@ -221,7 +264,9 @@ class _MetroMapPageState extends State<MetroMapPage>
     if (hit != null) {
       HapticFeedback.lightImpact();
       setState(() => _selectedStationId = hit.id);
-      _pulseCtrl..reset()..repeat();
+      _pulseCtrl
+        ..reset()
+        ..repeat();
       _showStationSheet(hit);
     } else if (_selectedStationId != null) {
       setState(() => _selectedStationId = null);
@@ -237,7 +282,9 @@ class _MetroMapPageState extends State<MetroMapPage>
       HapticFeedback.mediumImpact();
       _zoomToStation(hit.id);
       setState(() => _selectedStationId = hit.id);
-      _pulseCtrl..reset()..repeat();
+      _pulseCtrl
+        ..reset()
+        ..repeat();
       _showStationSheet(hit);
     }
   }
@@ -246,7 +293,6 @@ class _MetroMapPageState extends State<MetroMapPage>
     Station? nearest;
     double minDist = double.infinity;
     final r = radius / _scale;
-
     for (final entry in _stationPositions.entries) {
       final s = _stationMap[entry.key];
       if (s == null || !_isStationVisible(s)) continue;
@@ -262,12 +308,14 @@ class _MetroMapPageState extends State<MetroMapPage>
   bool _isStationVisible(Station s) {
     return s.lineIds.any((lid) {
       if (lid.startsWith('LRT')) return _visibleLineIds.contains('LRT');
-      if (lid == 'L3A' || lid == 'L3B') return _visibleLineIds.contains('L3');
+      if (lid == 'L3A' || lid == 'L3B') {
+        return _visibleLineIds.contains('L3');
+      }
       return _visibleLineIds.contains(lid);
     });
   }
 
-  // ── User location ───────────────────────────────────────────────────────
+  // ── User location ────────────────────────────────────────────────────
 
   Future<void> _fetchUserLocation() async {
     if (_locationLoading) return;
@@ -278,7 +326,8 @@ class _MetroMapPageState extends State<MetroMapPage>
       if (!serviceEnabled) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocalizations.of(context)!.locationServicesDisabled),
+            content:
+                Text(AppLocalizations.of(context)!.locationServicesDisabled),
             backgroundColor: Colors.red.shade700,
           ));
         }
@@ -292,7 +341,8 @@ class _MetroMapPageState extends State<MetroMapPage>
         if (permission == LocationPermission.denied) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(AppLocalizations.of(context)!.locationPermissionDenied),
+              content:
+                  Text(AppLocalizations.of(context)!.locationPermissionDenied),
               backgroundColor: Colors.red.shade700,
             ));
           }
@@ -304,7 +354,8 @@ class _MetroMapPageState extends State<MetroMapPage>
       if (permission == LocationPermission.deniedForever) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(AppLocalizations.of(context)!.locationPermissionDenied),
+            content:
+                Text(AppLocalizations.of(context)!.locationPermissionDenied),
             backgroundColor: Colors.red.shade700,
           ));
         }
@@ -319,7 +370,6 @@ class _MetroMapPageState extends State<MetroMapPage>
         _userGpsPosition = pos;
         _locationLoading = false;
       });
-      // Canvas projection happens in build via _lastPainter
       _updateUserCanvasPosition();
     } catch (_) {
       if (mounted) {
@@ -333,16 +383,19 @@ class _MetroMapPageState extends State<MetroMapPage>
   }
 
   void _updateUserCanvasPosition() {
-    if (_userGpsPosition == null || _lastPainter == null) return;
+    if (_userGpsPosition == null || _bounds == null) return;
     setState(() {
-      _userLocationCanvas = _lastPainter!.projectGps(
+      _userLocationCanvas = _bounds!.project(
         _userGpsPosition!.latitude,
         _userGpsPosition!.longitude,
       );
     });
+    if (!_userLocPulseCtrl.isAnimating) {
+      _userLocPulseCtrl.repeat();
+    }
   }
 
-  // ── Search ──────────────────────────────────────────────────────────────
+  // ── Search ────────────────────────────────────────────────────────────
 
   void _onSearchChanged() {
     final q = _searchCtrl.text.trim().toLowerCase();
@@ -366,9 +419,10 @@ class _MetroMapPageState extends State<MetroMapPage>
       _searchResults = [];
       _selectedStationId = station.id;
     });
-    _pulseCtrl..reset()..repeat();
+    _pulseCtrl
+      ..reset()
+      ..repeat();
 
-    // Ensure line visible
     for (final lid in station.lineIds) {
       if (lid.startsWith('LRT')) {
         _visibleLineIds.add('LRT');
@@ -385,7 +439,7 @@ class _MetroMapPageState extends State<MetroMapPage>
     });
   }
 
-  // ── Line filter ─────────────────────────────────────────────────────────
+  // ── Line filter ───────────────────────────────────────────────────────
 
   void _toggleLine(String visKey) {
     HapticFeedback.selectionClick();
@@ -398,7 +452,7 @@ class _MetroMapPageState extends State<MetroMapPage>
     });
   }
 
-  // ── Station sheet ───────────────────────────────────────────────────────
+  // ── Station sheet ─────────────────────────────────────────────────────
 
   void _showStationSheet(Station station) {
     final l10n = AppLocalizations.of(context)!;
@@ -438,7 +492,9 @@ class _MetroMapPageState extends State<MetroMapPage>
         onAdjacentTap: (s) {
           Navigator.pop(context);
           setState(() => _selectedStationId = s.id);
-          _pulseCtrl..reset()..repeat();
+          _pulseCtrl
+            ..reset()
+            ..repeat();
           _zoomToStation(s.id);
           Future.delayed(
               const Duration(milliseconds: 200), () => _showStationSheet(s));
@@ -447,9 +503,9 @@ class _MetroMapPageState extends State<MetroMapPage>
     );
   }
 
-  // ══════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════════════════════
   // BUILD
-  // ══════════════════════════════════════════════════════════════════════════
+  // ════════════════════════════════════════════════════════════════════════
 
   @override
   Widget build(BuildContext context) {
@@ -467,7 +523,7 @@ class _MetroMapPageState extends State<MetroMapPage>
         appBar: _buildAppBar(l10n),
         body: Stack(
           children: [
-            // ── Map ───────────────────────────────────────────────
+            // ── Map ──────────────────────────────────────────────
             if (_loading)
               const Center(
                   child: CircularProgressIndicator(color: Colors.white))
@@ -482,50 +538,77 @@ class _MetroMapPageState extends State<MetroMapPage>
                     minScale: _min,
                     maxScale: _max,
                     boundaryMargin: const EdgeInsets.all(double.infinity),
-                    child: AnimatedBuilder(
-                      animation: Listenable.merge([
-                        _pulseAnim,
-                        _trainCtrl,
-                        _entranceAnim,
-                        _userLocPulseCtrl,
-                      ]),
-                      builder: (context, _) {
-                        final painter = MetroMapPainter(
-                          lines: _lines,
-                          stationMap: _stationMap,
-                          languageCode: lang,
-                          zoom: _scale,
-                          stationPositions: _stationPositions,
-                          visibleLineIds: _visibleLineIds,
-                          selectedStationId: _selectedStationId,
-                          selectionAnimValue: _pulseAnim.value,
-                          trainProgress: _trainCtrl.value,
-                          entranceProgress: _entranceAnim.value,
-                          userLocation: _userLocationCanvas,
-                          userLocPulse: _userLocPulseCtrl.value,
-                        );
-                        _lastPainter = painter;
-
-                        // Update user location projection if needed
-                        if (_userGpsPosition != null &&
-                            _userLocationCanvas == null) {
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            _updateUserCanvasPosition();
-                          });
-                        }
-
-                        return SizedBox(
-                          width: painter.canvasSize.width,
-                          height: painter.canvasSize.height,
-                          child: CustomPaint(painter: painter),
-                        );
-                      },
+                    onInteractionStart: _onInteractionStart,
+                    onInteractionEnd: _onInteractionEnd,
+                    child: SizedBox(
+                      width: _bounds!.size.width,
+                      height: _bounds!.size.height,
+                      child: Stack(
+                        children: [
+                          // ── Static layer (cached) ──────────────
+                          RepaintBoundary(
+                            child: AnimatedBuilder(
+                              animation: _entranceAnim,
+                              builder: (_, __) => CustomPaint(
+                                isComplex: true,
+                                willChange: false,
+                                size: _bounds!.size,
+                                painter: MetroMapStaticPainter(
+                                  lines: _lines,
+                                  stationMap: _stationMap,
+                                  stationPositions: _stationPositions,
+                                  linePaths: _linePaths,
+                                  languageCode: lang,
+                                  visibleLineIds:
+                                      Set<String>.from(_visibleLineIds),
+                                  entranceProgress: _entranceAnim.value,
+                                  canvasSize: _bounds!.size,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // ── Animated layer (lightweight) ───────
+                          RepaintBoundary(
+                            child: AnimatedBuilder(
+                              animation: Listenable.merge([
+                                _trainCtrl,
+                                _pulseAnim,
+                                _userLocPulseCtrl,
+                              ]),
+                              builder: (_, __) {
+                                final selId = _selectedStationId;
+                                return CustomPaint(
+                                  size: _bounds!.size,
+                                  painter: MetroMapAnimPainter(
+                                    trainProgress: _trainCtrl.value,
+                                    trainSamples: _trainSamples,
+                                    lines: _lines,
+                                    visibleLineIds: _visibleLineIds,
+                                    selectedStationId: selId,
+                                    selectedStationPos: selId != null
+                                        ? _stationPositions[selId]
+                                        : null,
+                                    selectedStationColor: selId != null &&
+                                            _stationMap[selId] != null
+                                        ? stationThemeColor(
+                                            _stationMap[selId]!)
+                                        : null,
+                                    selectionAnimValue: _pulseAnim.value,
+                                    userLocation: _userLocationCanvas,
+                                    userLocPulse: _userLocPulseCtrl.value,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
 
-            // ── Vignette ──────────────────────────────────────────
+            // ── Vignette ───────────────────────────────────────
             Positioned.fill(
               child: IgnorePointer(
                 child: DecoratedBox(
@@ -534,10 +617,10 @@ class _MetroMapPageState extends State<MetroMapPage>
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0xFF0A1628).withOpacity(0.8),
+                        const Color(0xCC0A1628),
                         Colors.transparent,
                         Colors.transparent,
-                        const Color(0xFF0A1628).withOpacity(0.85),
+                        const Color(0xD90A1628),
                       ],
                       stops: const [0.0, 0.12, 0.80, 1.0],
                     ),
@@ -546,10 +629,10 @@ class _MetroMapPageState extends State<MetroMapPage>
               ),
             ),
 
-            // ── Search overlay ─────────────────────────────────────
+            // ── Search overlay ──────────────────────────────────
             if (_searchOpen) _buildSearchOverlay(topPad, lang),
 
-            // ── Hint chip ─────────────────────────────────────────
+            // ── Hint chip ───────────────────────────────────────
             if (!_loading && _selectedStationId == null && !_searchOpen)
               Positioned(
                 left: 0,
@@ -563,24 +646,22 @@ class _MetroMapPageState extends State<MetroMapPage>
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.55),
+                        color: const Color(0x8C000000),
                         borderRadius: BorderRadius.circular(20),
-                        border:
-                            Border.all(color: Colors.white.withOpacity(0.1)),
+                        border: Border.all(color: const Color(0x1AFFFFFF)),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.touch_app_rounded,
-                              color: Colors.white.withOpacity(0.65),
-                              size: 16),
+                          const Icon(Icons.touch_app_rounded,
+                              color: Color(0xA6FFFFFF), size: 16),
                           const SizedBox(width: 8),
                           Text(
                             lang == 'ar'
                                 ? 'اضغط على محطة · انقر مرتين للتكبير'
                                 : 'Tap station · Double-tap to zoom',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.65),
+                            style: const TextStyle(
+                              color: Color(0xA6FFFFFF),
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                             ),
@@ -592,14 +673,14 @@ class _MetroMapPageState extends State<MetroMapPage>
                 ),
               ),
 
-            // ── Location button (bottom left) ─────────────────────
+            // ── Location button ─────────────────────────────────
             Positioned(
               left: 16,
               bottom: legendH + 70,
               child: _locationButton(),
             ),
 
-            // ── Station count (bottom left) ───────────────────────
+            // ── Station count ───────────────────────────────────
             if (!_loading && !_searchOpen)
               Positioned(
                 left: 16,
@@ -607,16 +688,18 @@ class _MetroMapPageState extends State<MetroMapPage>
                 child: _stationCountBadge(),
               ),
 
-            // ── Zoom controls ─────────────────────────────────────
+            // ── Zoom controls ───────────────────────────────────
             Positioned(
               right: 16,
               bottom: legendH + 16,
               child: _buildZoomControls(),
             ),
 
-            // ── Legend ─────────────────────────────────────────────
+            // ── Legend ───────────────────────────────────────────
             Positioned(
-              left: 0, right: 0, bottom: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: _buildLegend(l10n, bottomPad),
             ),
           ],
@@ -625,188 +708,160 @@ class _MetroMapPageState extends State<MetroMapPage>
     );
   }
 
-  // ── Location button ─────────────────────────────────────────────────────
+  // ── Location button ───────────────────────────────────────────────────
 
   Widget _locationButton() {
     final hasLoc = _userLocationCanvas != null;
-
-    return ClipRRect(
+    return Material(
+      color: hasLoc ? const Color(0x404285F4) : const Color(0x1AFFFFFF),
       borderRadius: BorderRadius.circular(14),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Material(
-          color: hasLoc
-              ? const Color(0xFF4285F4).withOpacity(0.25)
-              : Colors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(14),
-          child: InkWell(
-            onTap: _locationLoading ? null : _fetchUserLocation,
+      child: InkWell(
+        onTap: _locationLoading ? null : _fetchUserLocation,
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
-            child: Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(
-                  color: hasLoc
-                      ? const Color(0xFF4285F4).withOpacity(0.4)
-                      : Colors.white.withOpacity(0.08),
-                ),
-              ),
-              child: _locationLoading
-                  ? const Padding(
-                      padding: EdgeInsets.all(12),
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white))
-                  : Icon(
-                      hasLoc
-                          ? Icons.my_location_rounded
-                          : Icons.location_searching_rounded,
-                      color: hasLoc
-                          ? const Color(0xFF4285F4)
-                          : Colors.white.withOpacity(0.6),
-                      size: 20),
+            border: Border.all(
+              color: hasLoc ? const Color(0x664285F4) : const Color(0x14FFFFFF),
             ),
           ),
+          child: _locationLoading
+              ? const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white))
+              : Icon(
+                  hasLoc
+                      ? Icons.my_location_rounded
+                      : Icons.location_searching_rounded,
+                  color:
+                      hasLoc ? const Color(0xFF4285F4) : const Color(0x99FFFFFF),
+                  size: 20),
         ),
       ),
     );
   }
 
-  // ── Station count ───────────────────────────────────────────────────────
+  // ── Station count ─────────────────────────────────────────────────────
 
   Widget _stationCountBadge() {
-    final count = _stationMap.length;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(14),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.train_rounded,
-                  color: Colors.white.withOpacity(0.6), size: 14),
-              const SizedBox(width: 6),
-              Text('$count',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700)),
-              const SizedBox(width: 3),
-              Text('stations',
-                  style: TextStyle(
-                      color: Colors.white.withOpacity(0.4),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500)),
-            ],
-          ),
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0x1AFFFFFF),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0x14FFFFFF)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.train_rounded, color: Color(0x99FFFFFF), size: 14),
+          const SizedBox(width: 6),
+          Text('${_stationMap.length}',
+              style: const TextStyle(
+                  color: Color(0xCCFFFFFF),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700)),
+          const SizedBox(width: 3),
+          const Text('stations',
+              style: TextStyle(
+                  color: Color(0x66FFFFFF),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500)),
+        ],
       ),
     );
   }
 
-  // ── Search ──────────────────────────────────────────────────────────────
+  // ── Search overlay ────────────────────────────────────────────────────
 
   Widget _buildSearchOverlay(double topPad, String lang) {
     return Positioned(
-      left: 12, right: 12, top: topPad + 64,
+      left: 12,
+      right: 12,
+      top: topPad + 64,
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A2332).withOpacity(0.95),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.white.withOpacity(0.12)),
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xF21A2332),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0x1FFFFFFF)),
+            ),
+            child: TextField(
+              controller: _searchCtrl,
+              autofocus: true,
+              style: const TextStyle(color: Colors.white, fontSize: 15),
+              decoration: InputDecoration(
+                hintText:
+                    lang == 'ar' ? 'ابحث عن محطة...' : 'Search stations...',
+                hintStyle:
+                    const TextStyle(color: Color(0x59FFFFFF), fontSize: 15),
+                prefixIcon: const Icon(Icons.search_rounded,
+                    color: Color(0x66FFFFFF)),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.close_rounded,
+                      color: Color(0x66FFFFFF), size: 20),
+                  onPressed: () {
+                    _searchCtrl.clear();
+                    setState(() {
+                      _searchOpen = false;
+                      _searchResults = [];
+                    });
+                  },
                 ),
-                child: TextField(
-                  controller: _searchCtrl,
-                  autofocus: true,
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
-                  decoration: InputDecoration(
-                    hintText: lang == 'ar'
-                        ? 'ابحث عن محطة...'
-                        : 'Search stations...',
-                    hintStyle: TextStyle(
-                        color: Colors.white.withOpacity(0.35), fontSize: 15),
-                    prefixIcon: Icon(Icons.search_rounded,
-                        color: Colors.white.withOpacity(0.4)),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.close_rounded,
-                          color: Colors.white.withOpacity(0.4), size: 20),
-                      onPressed: () {
-                        _searchCtrl.clear();
-                        setState(() {
-                          _searchOpen = false;
-                          _searchResults = [];
-                        });
-                      },
-                    ),
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
-                  ),
-                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
             ),
           ),
           if (_searchResults.isNotEmpty) ...[
             const SizedBox(height: 6),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1A2332).withOpacity(0.95),
-                    borderRadius: BorderRadius.circular(14),
-                    border:
-                        Border.all(color: Colors.white.withOpacity(0.08)),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: _searchResults.map((s) {
-                      final c = _colorForStation(s);
-                      return ListTile(
-                        dense: true,
-                        leading: Container(
-                          width: 8, height: 8,
-                          decoration: BoxDecoration(
-                            color: c, shape: BoxShape.circle,
-                            boxShadow: [BoxShadow(color: c.withOpacity(0.5), blurRadius: 4)],
-                          ),
-                        ),
-                        title: Text(s.localizedName(lang),
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600)),
-                        subtitle: Text(lang == 'ar' ? s.nameEn : s.nameAr,
-                            style: TextStyle(
-                                color: Colors.white.withOpacity(0.4),
-                                fontSize: 11)),
-                        trailing: s.isTransfer
-                            ? Icon(Icons.swap_horiz_rounded,
-                                color: Colors.amber.withOpacity(0.6),
-                                size: 16)
-                            : null,
-                        onTap: () => _selectSearchResult(s),
-                      );
-                    }).toList(),
-                  ),
-                ),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xF21A2332),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0x14FFFFFF)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _searchResults.map((s) {
+                  final c = _colorForStation(s);
+                  return ListTile(
+                    dense: true,
+                    leading: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: c,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromRGBO(c.red, c.green, c.blue, 0.5),
+                              blurRadius: 4)
+                        ],
+                      ),
+                    ),
+                    title: Text(s.localizedName(lang),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600)),
+                    subtitle: Text(lang == 'ar' ? s.nameEn : s.nameAr,
+                        style: const TextStyle(
+                            color: Color(0x66FFFFFF), fontSize: 11)),
+                    trailing: s.isTransfer
+                        ? const Icon(Icons.swap_horiz_rounded,
+                            color: Color(0x99FFC107), size: 16)
+                        : null,
+                    onTap: () => _selectSearchResult(s),
+                  );
+                }).toList(),
               ),
             ),
           ],
@@ -818,17 +873,24 @@ class _MetroMapPageState extends State<MetroMapPage>
   Color _colorForStation(Station s) {
     for (final lid in s.lineIds) {
       switch (lid) {
-        case 'L1': return AppTheme.line1;
-        case 'L2': return AppTheme.line2;
-        case 'L3': case 'L3A': case 'L3B': return AppTheme.line3;
-        case 'LRT_MAIN': case 'LRT_BRANCH_NAC': case 'LRT_BRANCH_10TH':
+        case 'L1':
+          return AppTheme.line1;
+        case 'L2':
+          return AppTheme.line2;
+        case 'L3':
+        case 'L3A':
+        case 'L3B':
+          return AppTheme.line3;
+        case 'LRT_MAIN':
+        case 'LRT_BRANCH_NAC':
+        case 'LRT_BRANCH_10TH':
           return AppTheme.lrt;
       }
     }
     return AppTheme.primaryNile;
   }
 
-  // ── App bar ─────────────────────────────────────────────────────────────
+  // ── App bar ───────────────────────────────────────────────────────────
 
   PreferredSizeWidget _buildAppBar(AppLocalizations l10n) {
     return PreferredSize(
@@ -837,7 +899,7 @@ class _MetroMapPageState extends State<MetroMapPage>
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
           child: AppBar(
-            backgroundColor: Colors.black.withOpacity(0.38),
+            backgroundColor: const Color(0x61000000),
             elevation: 0,
             toolbarHeight: 64,
             leading: IconButton(
@@ -856,24 +918,23 @@ class _MetroMapPageState extends State<MetroMapPage>
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.3)),
                 Text(l10n.cairoMetroNetworkLabel,
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(0.55),
-                        fontSize: 11)),
+                    style: const TextStyle(
+                        color: Color(0x8CFFFFFF), fontSize: 11)),
               ],
             ),
             centerTitle: false,
             actions: [
-              _glassIconBtn(Icons.search_rounded,
+              _iconBtn(Icons.search_rounded,
                   () => setState(() => _searchOpen = !_searchOpen)),
               const SizedBox(width: 6),
               ScaleTransition(
                 scale: _resetBtnAnim,
-                child: _glassIconBtn(
+                child: _iconBtn(
                     Icons.center_focus_strong_rounded, _resetView,
                     tooltip: l10n.resetViewLabel),
               ),
               const SizedBox(width: 6),
-              _glassIconBtn(
+              _iconBtn(
                 _legendVisible
                     ? Icons.layers_rounded
                     : Icons.layers_clear_rounded,
@@ -888,30 +949,25 @@ class _MetroMapPageState extends State<MetroMapPage>
     );
   }
 
-  Widget _glassIconBtn(IconData icon, VoidCallback onTap, {String? tooltip}) {
+  Widget _iconBtn(IconData icon, VoidCallback onTap, {String? tooltip}) {
     return Tooltip(
       message: tooltip ?? '',
-      child: ClipRRect(
+      child: Material(
+        color: const Color(0x1FFFFFFF),
         borderRadius: BorderRadius.circular(10),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-          child: Material(
-            color: Colors.white.withOpacity(0.12),
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(10),
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Icon(icon, color: Colors.white, size: 20),
-              ),
-            ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Icon(icon, color: Colors.white, size: 20),
           ),
         ),
       ),
     );
   }
 
-  // ── Zoom controls ───────────────────────────────────────────────────────
+  // ── Zoom controls ─────────────────────────────────────────────────────
 
   Widget _buildZoomControls() {
     return Column(
@@ -924,9 +980,9 @@ class _MetroMapPageState extends State<MetroMapPage>
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.6),
+              color: const Color(0x99000000),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(0.15)),
+              border: Border.all(color: const Color(0x26FFFFFF)),
             ),
             child: Text('${_scale.toStringAsFixed(1)}×',
                 style: const TextStyle(
@@ -938,7 +994,7 @@ class _MetroMapPageState extends State<MetroMapPage>
         ),
         _zoomBtn(Icons.add_rounded, () => _zoomStep(_step), isTop: true),
         Container(
-            width: 44, height: 1, color: Colors.white.withOpacity(0.15)),
+            width: 44, height: 1, color: const Color(0x26FFFFFF)),
         _zoomBtn(Icons.remove_rounded, () => _zoomStep(1 / _step),
             isTop: false),
       ],
@@ -946,96 +1002,91 @@ class _MetroMapPageState extends State<MetroMapPage>
   }
 
   Widget _zoomBtn(IconData icon, VoidCallback onTap, {required bool isTop}) {
-    return ClipRRect(
+    return Material(
+      color: const Color(0x21FFFFFF),
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(isTop ? 14 : 0),
         topRight: Radius.circular(isTop ? 14 : 0),
         bottomLeft: Radius.circular(isTop ? 0 : 14),
         bottomRight: Radius.circular(isTop ? 0 : 14),
       ),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
-        child: Material(
-          color: Colors.white.withOpacity(0.13),
-          child: InkWell(
-            onTap: onTap,
-            splashColor: Colors.white.withOpacity(0.1),
-            child: SizedBox(
-                width: 44,
-                height: 44,
-                child: Icon(icon, color: Colors.white, size: 20)),
-          ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(isTop ? 14 : 0),
+          topRight: Radius.circular(isTop ? 14 : 0),
+          bottomLeft: Radius.circular(isTop ? 0 : 14),
+          bottomRight: Radius.circular(isTop ? 0 : 14),
         ),
+        splashColor: const Color(0x1AFFFFFF),
+        child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Icon(icon, color: Colors.white, size: 20)),
       ),
     );
   }
 
-  // ── Legend + filters ─────────────────────────────────────────────────────
+  // ── Legend + filters ──────────────────────────────────────────────────
 
   Widget _buildLegend(AppLocalizations l10n, double bottomPad) {
     return SizeTransition(
       sizeFactor: _legendAnim,
       axisAlignment: 1,
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-          child: Container(
-            padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + bottomPad),
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.55),
-              border: Border(
-                  top: BorderSide(color: Colors.white.withOpacity(0.08))),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + bottomPad),
+        decoration: const BoxDecoration(
+          color: Color(0xD9101828),
+          border: Border(top: BorderSide(color: Color(0x14FFFFFF))),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 4, bottom: 10),
+              child: Text(l10n.mapLegendLabel.toUpperCase(),
+                  style: const TextStyle(
+                      color: Color(0x66FFFFFF),
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.6)),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _lineFilterChip('L1', 'Line 1', AppTheme.line1, '35'),
+                  const SizedBox(width: 8),
+                  _lineFilterChip('L2', 'Line 2', AppTheme.line2, '20'),
+                  const SizedBox(width: 8),
+                  _lineFilterChip('L3', 'Line 3', AppTheme.line3, '34'),
+                  const SizedBox(width: 8),
+                  _lineFilterChip('LRT', 'LRT', AppTheme.lrt, '19'),
+                  const SizedBox(width: 8),
+                  _transferChip(),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 4, bottom: 10),
-                  child: Text(l10n.mapLegendLabel.toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.4),
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.6)),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _lineFilterChip('L1', 'Line 1', AppTheme.line1, '35'),
-                      const SizedBox(width: 8),
-                      _lineFilterChip('L2', 'Line 2', AppTheme.line2, '20'),
-                      const SizedBox(width: 8),
-                      _lineFilterChip('L3', 'Line 3', AppTheme.line3, '34'),
-                      const SizedBox(width: 8),
-                      _lineFilterChip('LRT', 'LRT', AppTheme.lrt, '19'),
-                      const SizedBox(width: 8),
-                      _transferChip(),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.info_outline_rounded,
-                        color: Colors.white.withOpacity(0.25), size: 12),
-                    const SizedBox(width: 6),
-                    Text(
-                      Localizations.localeOf(context).languageCode == 'ar'
-                          ? 'اضغط على الخط لإظهاره/إخفائه'
-                          : 'Tap a line to show/hide it',
-                      style: TextStyle(
-                          color: Colors.white.withOpacity(0.25),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ],
+                const Icon(Icons.info_outline_rounded,
+                    color: Color(0x40FFFFFF), size: 12),
+                const SizedBox(width: 6),
+                Text(
+                  Localizations.localeOf(context).languageCode == 'ar'
+                      ? 'اضغط على الخط لإظهاره/إخفائه'
+                      : 'Tap a line to show/hide it',
+                  style: const TextStyle(
+                      color: Color(0x40FFFFFF),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -1051,13 +1102,13 @@ class _MetroMapPageState extends State<MetroMapPage>
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: isActive
-              ? color.withOpacity(0.2)
-              : Colors.white.withOpacity(0.05),
+              ? Color.fromRGBO(color.red, color.green, color.blue, 0.2)
+              : const Color(0x0DFFFFFF),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isActive
-                ? color.withOpacity(0.5)
-                : Colors.white.withOpacity(0.08),
+                ? Color.fromRGBO(color.red, color.green, color.blue, 0.5)
+                : const Color(0x14FFFFFF),
           ),
         ),
         child: Row(
@@ -1068,27 +1119,32 @@ class _MetroMapPageState extends State<MetroMapPage>
               width: 24,
               height: 4,
               decoration: BoxDecoration(
-                color: isActive ? color : color.withOpacity(0.3),
+                color: isActive
+                    ? color
+                    : Color.fromRGBO(color.red, color.green, color.blue, 0.3),
                 borderRadius: BorderRadius.circular(2),
                 boxShadow: isActive
-                    ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 6)]
+                    ? [
+                        BoxShadow(
+                            color: Color.fromRGBO(
+                                color.red, color.green, color.blue, 0.5),
+                            blurRadius: 6)
+                      ]
                     : [],
               ),
             ),
             const SizedBox(width: 8),
             Text(name,
                 style: TextStyle(
-                    color: isActive
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.35),
+                    color: isActive ? Colors.white : const Color(0x59FFFFFF),
                     fontSize: 12,
                     fontWeight: FontWeight.w600)),
             const SizedBox(width: 6),
             Text(count,
                 style: TextStyle(
                     color: isActive
-                        ? Colors.white.withOpacity(0.45)
-                        : Colors.white.withOpacity(0.2),
+                        ? const Color(0x73FFFFFF)
+                        : const Color(0x33FFFFFF),
                     fontSize: 10)),
           ],
         ),
@@ -1100,15 +1156,16 @@ class _MetroMapPageState extends State<MetroMapPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: const Color(0x0DFFFFFF),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: const Color(0x14FFFFFF)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 12, height: 12,
+            width: 12,
+            height: 12,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white, width: 2),
@@ -1126,9 +1183,9 @@ class _MetroMapPageState extends State<MetroMapPage>
   }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════════════════════
 // Station Info Bottom Sheet
-// ═══════════════════════════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════════════════════
 
 class _StationInfoSheet extends StatelessWidget {
   final Station station;
@@ -1153,22 +1210,37 @@ class _StationInfoSheet extends StatelessWidget {
 
   Color _themeColor(MetroLine line) {
     switch (line.id) {
-      case 'L1': return AppTheme.line1;
-      case 'L2': return AppTheme.line2;
-      case 'L3': case 'L3A': case 'L3B': return AppTheme.line3;
-      case 'LRT_MAIN': case 'LRT_BRANCH_NAC': case 'LRT_BRANCH_10TH':
+      case 'L1':
+        return AppTheme.line1;
+      case 'L2':
+        return AppTheme.line2;
+      case 'L3':
+      case 'L3A':
+      case 'L3B':
+        return AppTheme.line3;
+      case 'LRT_MAIN':
+      case 'LRT_BRANCH_NAC':
+      case 'LRT_BRANCH_10TH':
         return AppTheme.lrt;
-      default: return line.color;
+      default:
+        return line.color;
     }
   }
 
   Color _stationThemeColor(Station s) {
     for (final lid in s.lineIds) {
       switch (lid) {
-        case 'L1': return AppTheme.line1;
-        case 'L2': return AppTheme.line2;
-        case 'L3': case 'L3A': case 'L3B': return AppTheme.line3;
-        case 'LRT_MAIN': case 'LRT_BRANCH_NAC': case 'LRT_BRANCH_10TH':
+        case 'L1':
+          return AppTheme.line1;
+        case 'L2':
+          return AppTheme.line2;
+        case 'L3':
+        case 'L3A':
+        case 'L3B':
+          return AppTheme.line3;
+        case 'LRT_MAIN':
+        case 'LRT_BRANCH_NAC':
+        case 'LRT_BRANCH_10TH':
           return AppTheme.lrt;
       }
     }
@@ -1193,16 +1265,19 @@ class _StationInfoSheet extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: mainColor.withOpacity(0.15)),
+        border: Border.all(
+            color: Color.fromRGBO(
+                mainColor.red, mainColor.green, mainColor.blue, 0.15)),
         boxShadow: [
           BoxShadow(
-              color: mainColor.withOpacity(0.1),
+              color: Color.fromRGBO(
+                  mainColor.red, mainColor.green, mainColor.blue, 0.1),
               blurRadius: 30,
               offset: const Offset(0, -4)),
-          BoxShadow(
-              color: Colors.black.withOpacity(0.4),
+          const BoxShadow(
+              color: Color(0x66000000),
               blurRadius: 20,
-              offset: const Offset(0, -2)),
+              offset: Offset(0, -2)),
         ],
       ),
       child: Padding(
@@ -1213,9 +1288,10 @@ class _StationInfoSheet extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                width: 40, height: 4,
+                width: 40,
+                height: 4,
                 decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: const Color(0x26FFFFFF),
                     borderRadius: BorderRadius.circular(2)),
               ),
             ),
@@ -1223,13 +1299,16 @@ class _StationInfoSheet extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: 4, height: 44,
+                  width: 4,
+                  height: 44,
                   decoration: BoxDecoration(
                     color: mainColor,
                     borderRadius: BorderRadius.circular(2),
                     boxShadow: [
                       BoxShadow(
-                          color: mainColor.withOpacity(0.4), blurRadius: 8),
+                          color: Color.fromRGBO(mainColor.red, mainColor.green,
+                              mainColor.blue, 0.4),
+                          blurRadius: 8),
                     ],
                   ),
                 ),
@@ -1248,8 +1327,8 @@ class _StationInfoSheet extends StatelessWidget {
                           languageCode == 'ar'
                               ? station.nameEn
                               : station.nameAr,
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.45),
+                          style: const TextStyle(
+                              color: Color(0x73FFFFFF),
                               fontSize: 14,
                               fontWeight: FontWeight.w500)),
                     ],
@@ -1260,7 +1339,7 @@ class _StationInfoSheet extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.08),
+                        color: const Color(0x14FFFFFF),
                         borderRadius: BorderRadius.circular(10)),
                     child: const Icon(Icons.close_rounded,
                         color: Colors.white, size: 18),
@@ -1275,11 +1354,11 @@ class _StationInfoSheet extends StatelessWidget {
               children: [
                 for (final line in stationLines) _lineChip(line),
                 if (station.isTransfer)
-                  _badgeChip(Icons.swap_horiz_rounded, l10n.transferLabel,
-                      Colors.amber),
+                  _badgeChip(
+                      Icons.swap_horiz_rounded, l10n.transferLabel, Colors.amber),
                 if (station.isAccessible)
-                  _badgeChip(Icons.accessible_rounded,
-                      l10n.accessibilityLabel, Colors.blue),
+                  _badgeChip(Icons.accessible_rounded, l10n.accessibilityLabel,
+                      Colors.blue),
               ],
             ),
             if (station.facilities.isNotEmpty) ...[
@@ -1289,20 +1368,17 @@ class _StationInfoSheet extends StatelessWidget {
                 label: l10n.facilitiesTitle,
                 trailing: Wrap(
                   spacing: 6,
-                  children: station.facilities
-                      .map((f) => _facilityIcon(f))
-                      .toList(),
+                  children:
+                      station.facilities.map((f) => _facilityIcon(f)).toList(),
                 ),
               ),
             ],
             if (adjacentStations.isNotEmpty) ...[
               const SizedBox(height: 14),
               Text(
-                languageCode == 'ar'
-                    ? 'المحطات المجاورة'
-                    : 'Adjacent Stations',
-                style: TextStyle(
-                    color: Colors.white.withOpacity(0.4),
+                languageCode == 'ar' ? 'المحطات المجاورة' : 'Adjacent Stations',
+                style: const TextStyle(
+                    color: Color(0x66FFFFFF),
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 0.5),
@@ -1321,15 +1397,19 @@ class _StationInfoSheet extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
-                            color: ac.withOpacity(0.1),
+                            color: Color.fromRGBO(
+                                ac.red, ac.green, ac.blue, 0.1),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: ac.withOpacity(0.2)),
+                            border: Border.all(
+                                color: Color.fromRGBO(
+                                    ac.red, ac.green, ac.blue, 0.2)),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                width: 6, height: 6,
+                                width: 6,
+                                height: 6,
                                 decoration: BoxDecoration(
                                     color: ac, shape: BoxShape.circle),
                               ),
@@ -1340,9 +1420,8 @@ class _StationInfoSheet extends StatelessWidget {
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600)),
                               const SizedBox(width: 6),
-                              Icon(Icons.arrow_forward_ios_rounded,
-                                  color: Colors.white.withOpacity(0.3),
-                                  size: 10),
+                              const Icon(Icons.arrow_forward_ios_rounded,
+                                  color: Color(0x4DFFFFFF), size: 10),
                             ],
                           ),
                         ),
@@ -1373,16 +1452,16 @@ class _StationInfoSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+          color: const Color(0x0DFFFFFF),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         children: [
-          Icon(icon, color: Colors.white.withOpacity(0.4), size: 16),
+          Icon(icon, color: const Color(0x66FFFFFF), size: 16),
           const SizedBox(width: 10),
           Expanded(
               child: Text(label,
                   style: TextStyle(
-                      color: Colors.white.withOpacity(0.55),
+                      color: const Color(0x8CFFFFFF),
                       fontSize: 12,
                       fontFamily: useMono ? 'monospace' : null,
                       fontWeight: FontWeight.w500))),
@@ -1397,18 +1476,25 @@ class _StationInfoSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: c.withOpacity(0.18),
+        color: Color.fromRGBO(c.red, c.green, c.blue, 0.18),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: c.withOpacity(0.35)),
+        border:
+            Border.all(color: Color.fromRGBO(c.red, c.green, c.blue, 0.35)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 10, height: 10,
+            width: 10,
+            height: 10,
             decoration: BoxDecoration(
-              color: c, shape: BoxShape.circle,
-              boxShadow: [BoxShadow(color: c.withOpacity(0.5), blurRadius: 4)],
+              color: c,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(c.red, c.green, c.blue, 0.5),
+                    blurRadius: 4)
+              ],
             ),
           ),
           const SizedBox(width: 8),
@@ -1424,9 +1510,10 @@ class _StationInfoSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: Color.fromRGBO(color.red, color.green, color.blue, 0.12),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.25)),
+        border: Border.all(
+            color: Color.fromRGBO(color.red, color.green, color.blue, 0.25)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -1457,9 +1544,9 @@ class _StationInfoSheet extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.08),
+            color: const Color(0x14FFFFFF),
             borderRadius: BorderRadius.circular(8)),
-        child: Icon(icon, color: Colors.white.withOpacity(0.6), size: 15),
+        child: Icon(icon, color: const Color(0x99FFFFFF), size: 15),
       ),
     );
   }

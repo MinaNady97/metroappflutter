@@ -631,6 +631,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minutesAbbr => 'min';
 
   @override
+  String get exitDialogTitle => 'Leave App?';
+
+  @override
+  String get exitDialogSubtitle => 'Are you sure you want to exit\nCairo Metro Navigator?';
+
+  @override
+  String get exitDialogStay => 'Stay';
+
+  @override
+  String get exitDialogExit => 'Exit';
+
+  @override
   String get egpCurrency => 'EGP';
 
   @override
@@ -1109,4 +1121,166 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stationMapTitle => 'Station Map';
+
+  @override
+  String get allOperationalLabel => 'All lines operational';
+
+  @override
+  String get statusLiveLabel => 'Live';
+
+  @override
+  String get homepageSubtitle => 'Your smart guide for metro and LRT trips';
+
+  @override
+  String get greetingMorning => 'Good morning';
+
+  @override
+  String get greetingAfternoon => 'Good afternoon';
+
+  @override
+  String get greetingEvening => 'Good evening';
+
+  @override
+  String get greetingNight => 'Good night';
+
+  @override
+  String get planYourRouteSubtitle => 'Find the fastest route between stations';
+
+  @override
+  String get recentSearchesLabel => 'Recent Searches';
+
+  @override
+  String get googleMapsLinkDetected => 'Google Maps link detected';
+
+  @override
+  String get pickFromMapLabel => 'Pick from Map';
+
+  @override
+  String get quickActionsTitle => 'Quick Actions';
+
+  @override
+  String get tapToLocateLabel => 'Tap to locate nearest station';
+
+  @override
+  String get touristHighlightsLabel => 'tourist highlights';
+
+  @override
+  String get viewPlansLabel => 'View subscription plans';
+
+  @override
+  String get lrtLineName => 'LRT Line';
+
+  @override
+  String get exploreAreaTitle => 'Explore Area';
+
+  @override
+  String get exploreAreaSubtitle => 'Discover nearby places around metro stations';
+
+  @override
+  String get tapToExploreLabel => 'Tap station to explore';
+
+  @override
+  String get promoMonthlyTitle => 'Monthly Pass';
+
+  @override
+  String get promoMonthlySubtitle => 'Unlimited rides for 30 days';
+
+  @override
+  String get promoMonthlyTag => 'Best Value';
+
+  @override
+  String get promoStudentTitle => 'Student Pass';
+
+  @override
+  String get promoStudentSubtitle => '50% discount for students';
+
+  @override
+  String get promoStudentTag => 'Student';
+
+  @override
+  String get promoFamilyTitle => 'Family Pass';
+
+  @override
+  String get promoFamilySubtitle => 'Travel together, save more';
+
+  @override
+  String get promoFamilyTag => 'Family';
+
+  @override
+  String get buyNowLabel => 'Buy Now';
+
+  @override
+  String get locateMeLabel => 'Locating';
+
+  @override
+  String get locationServicesDisabled => 'Location services are disabled. Please enable them in Settings.';
+
+  @override
+  String get locationPermissionDenied => 'Location permission denied. Please allow it in app settings.';
+
+  @override
+  String get locationError => 'Could not get your location. Please try again.';
+
+  @override
+  String get leaveNowLabel => 'Leave Now';
+
+  @override
+  String get cairoMetroNetworkLabel => 'Cairo Metro Network';
+
+  @override
+  String get resetViewLabel => 'Reset View';
+
+  @override
+  String get mapLegendLabel => 'Map Legend';
+
+  @override
+  String get searchStationsHint => 'Search stations...';
+
+  @override
+  String get noStationsFound => 'No stations found';
+
+  @override
+  String get line1FullName => 'Line 1 — Helwan / New El-Marg';
+
+  @override
+  String get line2FullName => 'Line 2 — Shubra El-Kheima / El-Mounib';
+
+  @override
+  String get line3FullName => 'Line 3 — Adly Mansour / Kit Kat';
+
+  @override
+  String get line4FullName => 'Line 4';
+
+  @override
+  String get monorailEastName => 'East Monorail';
+
+  @override
+  String get monorailWestName => 'West Monorail';
+
+  @override
+  String get allLinesStationsLabel => 'stations';
+
+  @override
+  String get underConstructionLabel => 'Under Construction';
+
+  @override
+  String get plannedLabel => 'Planned';
+
+  @override
+  String get transferLabel => 'Transfer';
+
+  @override
+  String get statusMaintenanceLabel => 'Maintenance';
+
+  @override
+  String get statusDisruptionLabel => 'Disruption';
+
+  @override
+  String get crowdCalmLabel => 'Calm';
+
+  @override
+  String get crowdModerateLabel => 'Moderate';
+
+  @override
+  String get crowdBusyLabel => 'Busy';
 }

@@ -1,0 +1,535 @@
+══════════════════════════════════════════════════════════════════════════════
+  CAIRO METRO TOURIST GUIDE — PLACES & PHOTOS NEEDED
+══════════════════════════════════════════════════════════════════════════════
+
+IMPORTANT: All walking times, descriptions, and details below are approximate
+estimates and may vary. Users MUST verify information officially before visiting.
+
+Save each photo as the filename shown below into:
+   assets/images/tourist/
+
+Recommended photo size: 800x500 px, JPG, landscape orientation.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 1: HISTORICAL & ARCHAEOLOGICAL
+──────────────────────────────────────────────────────────────────────────────
+
+1. Pyramids of Giza & Great Sphinx
+   File: pyramids_giza.jpg
+   Station: GIZA (Line 2) — then bus/taxi ~20 min
+   Walk: ~20 min by transport after metro
+   Description (EN): The last surviving Wonder of the Ancient World. Three
+     iconic pyramids and the Great Sphinx, dating back over 4,500 years.
+   Description (AR): آخر عجائب الدنيا السبع الباقية. ثلاثة أهرامات وأبو الهول،
+     يعود تاريخها لأكثر من 4500 عام.
+
+2. Coptic Cairo (Old Cairo)
+   File: coptic_cairo.jpg
+   Station: MAR GIRGIS (Line 1) — 2 min walk
+   Walk: ~2 min
+   Description (EN): Ancient Christian quarter with churches, a synagogue,
+     and a mosque, all dating back centuries. A UNESCO heritage area.
+   Description (AR): حي مسيحي قديم يضم كنائس وكنيساً يهودياً ومسجداً، يعود
+     تاريخها لقرون. منطقة تراث عالمي لليونسكو.
+
+3. The Citadel of Saladin
+   File: citadel_saladin.jpg
+   Station: SAYEDA ZEINAB (Line 1) — then taxi/bus ~10 min
+   Walk: ~10 min by transport after metro
+   Description (EN): Medieval Islamic fortress built by Saladin in 1176,
+     offering panoramic views of Cairo and housing several museums and mosques.
+   Description (AR): قلعة إسلامية من العصور الوسطى بناها صلاح الدين عام 1176،
+     توفر إطلالات بانورامية على القاهرة وتضم عدة متاحف ومساجد.
+
+4. Al-Muizz Street (Historic Cairo)
+   File: al_muizz_street.jpg
+   Station: BAB EL-SHARIA (Line 3) or ATABA (Line 2/3) — 10 min walk
+   Walk: ~10 min
+   Description (EN): One of the oldest streets in Cairo — a mile-long
+     open-air museum lined with medieval mosques, madrasas, and fountains.
+   Description (AR): من أقدم شوارع القاهرة — متحف مفتوح بطول ميل تصطف عليه
+     مساجد ومدارس ونوافير من العصور الوسطى.
+
+5. Baron Empain Palace
+   File: baron_palace.jpg
+   Station: HELIOPOLIS (Line 3) — 10 min walk
+   Walk: ~10 min
+   Description (EN): A stunning Hindu temple-inspired palace built between
+     1907-1911 by Belgian industrialist Baron Empain. Recently restored.
+   Description (AR): قصر مذهل مستوحى من المعابد الهندوسية بناه البارون إمبان
+     البلجيكي بين 1907-1911. تم ترميمه مؤخراً.
+
+6. Bab Zuweila
+   File: bab_zuweila.jpg
+   Station: ATABA (Line 2/3) — 12 min walk
+   Walk: ~12 min
+   Description (EN): The last remaining southern gate of medieval Cairo's
+     fortified walls, built in 1092. Climb the twin minarets for city views.
+   Description (AR): آخر بوابة جنوبية متبقية من أسوار القاهرة المحصنة من العصور
+     الوسطى، بُنيت عام 1092. يمكن تسلق المئذنتين لرؤية المدينة.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 2: MUSEUMS
+──────────────────────────────────────────────────────────────────────────────
+
+7. Egyptian Museum (Tahrir)
+   File: egyptian_museum.jpg         ← you already have museum.jpg, can reuse
+   Station: SADAT (Line 1 / Line 2) — 3 min walk
+   Walk: ~3 min
+   Description (EN): Home to the world's largest collection of Pharaonic
+     antiquities, with over 120,000 artifacts including Tutankhamun treasures.
+   Description (AR): يضم أكبر مجموعة في العالم من الآثار الفرعونية، مع أكثر من
+     120,000 قطعة أثرية بما في ذلك كنوز توت عنخ آمون.
+
+8. Grand Egyptian Museum (GEM)
+   File: grand_egyptian_museum.jpg
+   Station: GIZA (Line 2) — then bus/taxi ~25 min
+   Walk: ~25 min by transport after metro
+   Description (EN): The world's largest archaeological museum, near the
+     Pyramids. Houses Tutankhamun's complete collection (5,000+ artifacts).
+   Description (AR): أكبر متحف أثري في العالم، بالقرب من الأهرامات. يضم مجموعة
+     توت عنخ آمون الكاملة (أكثر من 5000 قطعة).
+
+9. National Museum of Egyptian Civilization (NMEC)
+   File: nmec_museum.jpg
+   Station: EL-MALEK EL-SALEH (Line 1) — 10 min walk
+   Walk: ~10 min
+   Description (EN): Home to the Royal Mummies Hall. Traces 5,000 years of
+     Egyptian civilization from prehistoric times to the modern era.
+   Description (AR): يضم قاعة المومياوات الملكية. يتتبع 5000 عام من الحضارة
+     المصرية من عصور ما قبل التاريخ إلى العصر الحديث.
+
+10. Museum of Islamic Art
+    File: islamic_art_museum.jpg
+    Station: BAB EL-SHARIA (Line 3) — 5 min walk
+    Walk: ~5 min
+    Description (EN): One of the world's greatest collections of Islamic art,
+      housing over 100,000 artifacts spanning 1,300 years.
+    Description (AR): واحدة من أعظم مجموعات الفن الإسلامي في العالم، تضم أكثر
+      من 100,000 قطعة أثرية تمتد على مدار 1300 عام.
+
+11. Coptic Museum
+    File: coptic_museum.jpg
+    Station: MAR GIRGIS (Line 1) — 2 min walk
+    Walk: ~2 min
+    Description (EN): The world's largest collection of Coptic Christian
+      artifacts, set within the ancient Babylon Fortress in Old Cairo.
+    Description (AR): أكبر مجموعة في العالم من الآثار القبطية المسيحية، داخل
+      حصن بابليون القديم في القاهرة القديمة.
+
+12. Abdeen Palace Museum
+    File: abdeen_palace.jpg
+    Station: MOHAMED NAGUIB (Line 2) or SAAD ZAGHLOUL (Line 1) — 10 min walk
+    Walk: ~10 min
+    Description (EN): 19th-century royal palace, now a museum showcasing
+      presidential gifts, military collections, and royal silver.
+    Description (AR): قصر ملكي من القرن التاسع عشر، الآن متحف يعرض الهدايا
+      الرئاسية والمجموعات العسكرية والفضيات الملكية.
+
+13. Gayer-Anderson Museum
+    File: gayer_anderson_museum.jpg
+    Station: SAYEDA ZEINAB (Line 1) — 15 min walk
+    Walk: ~15 min
+    Description (EN): Two beautifully restored 16th-17th century houses joined
+      together, filled with art, antiques, and oriental furnishings.
+    Description (AR): منزلان تم ترميمهما من القرن 16-17 ضُما معاً، مليئان
+      بالفنون والتحف والأثاث الشرقي.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 3: MOSQUES & RELIGIOUS SITES
+──────────────────────────────────────────────────────────────────────────────
+
+14. Hanging Church (Al-Muallaqa)
+    File: hanging_church.jpg
+    Station: MAR GIRGIS (Line 1) — 3 min walk
+    Walk: ~3 min
+    Description (EN): One of the oldest churches in Egypt, built atop the
+      southern gate of Babylon Fortress. Dates to the 3rd-4th century.
+    Description (AR): واحدة من أقدم الكنائس في مصر، بُنيت فوق البوابة الجنوبية
+      لحصن بابليون. يعود تاريخها للقرن الثالث والرابع.
+
+15. Church of St. George
+    File: st_george_church.jpg
+    Station: MAR GIRGIS (Line 1) — 2 min walk
+    Walk: ~2 min
+    Description (EN): A distinctive circular Greek Orthodox church, one of
+      the few round churches in the Middle East, with stunning interiors.
+    Description (AR): كنيسة يونانية أرثوذكسية دائرية مميزة، واحدة من الكنائس
+      الدائرية القليلة في الشرق الأوسط، بديكورات داخلية مذهلة.
+
+16. Ben Ezra Synagogue
+    File: ben_ezra_synagogue.jpg
+    Station: MAR GIRGIS (Line 1) — 5 min walk
+    Walk: ~5 min
+    Description (EN): Cairo's oldest synagogue, dating to the 9th century.
+      Famous as the site of the Cairo Geniza manuscript discovery.
+    Description (AR): أقدم كنيس يهودي في القاهرة، يعود للقرن التاسع. اشتُهر
+      كموقع اكتشاف مخطوطات جنيزة القاهرة.
+
+17. Al-Azhar Mosque & University
+    File: al_azhar_mosque.jpg
+    Station: ATABA (Line 2/3) or BAB EL-SHARIA (Line 3) — 12 min walk
+    Walk: ~12 min
+    Description (EN): Founded in 970 AD, one of the world's oldest
+      universities and a masterpiece of Fatimid architecture.
+    Description (AR): تأسس عام 970 م، من أقدم الجامعات في العالم وتحفة من
+      العمارة الفاطمية.
+
+18. Al-Hussein Mosque
+    File: al_hussein_mosque.jpg
+    Station: ATABA (Line 2/3) — 10 min walk
+    Walk: ~10 min
+    Description (EN): One of the holiest Islamic sites in Egypt, believed to
+      house the head of Husayn ibn Ali. Vibrant surrounding square at night.
+    Description (AR): من أقدس المواقع الإسلامية في مصر، يُعتقد أنه يضم رأس
+      الحسين بن علي. ميدان نابض بالحياة ليلاً.
+
+19. Sultan Hassan Mosque-Madrasa
+    File: sultan_hassan_mosque.jpg
+    Station: SAYEDA ZEINAB (Line 1) — 15 min walk or taxi
+    Walk: ~15 min
+    Description (EN): Mamluk-era masterpiece from 1356, one of the largest
+      mosques in the world with extraordinary Mamluk architecture.
+    Description (AR): تحفة معمارية من العصر المملوكي عام 1356، واحد من أكبر
+      المساجد في العالم بعمارة مملوكية استثنائية.
+
+20. Ibn Tulun Mosque
+    File: ibn_tulun_mosque.jpg
+    Station: SAYEDA ZEINAB (Line 1) — 15 min walk or taxi
+    Walk: ~15 min
+    Description (EN): The oldest mosque in Cairo surviving in its original
+      form (879 AD). Famous for its unique spiral minaret.
+    Description (AR): أقدم مسجد في القاهرة بشكله الأصلي (879 م). اشتُهر
+      بمئذنته اللولبية الفريدة.
+
+21. Amr Ibn El-As Mosque
+    File: amr_mosque.jpg
+    Station: MAR GIRGIS (Line 1) — 8 min walk
+    Walk: ~8 min
+    Description (EN): The first mosque built in Egypt and all of Africa,
+      founded in 642 AD after the Arab conquest of Egypt.
+    Description (AR): أول مسجد بُني في مصر وأفريقيا كلها، أسسه عمرو بن العاص
+      عام 642 م بعد الفتح العربي لمصر.
+
+22. Sayeda Zeinab Mosque
+    File: sayeda_zeinab_mosque.jpg
+    Station: SAYEDA ZEINAB (Line 1) — 3 min walk
+    Walk: ~3 min
+    Description (EN): Important shrine dedicated to Zeinab, granddaughter of
+      Prophet Muhammad. A major spiritual center in Cairo.
+    Description (AR): ضريح مهم مخصص للسيدة زينب حفيدة النبي محمد. مركز روحي
+      رئيسي في القاهرة.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 4: PARKS & GARDENS
+──────────────────────────────────────────────────────────────────────────────
+
+23. Al-Azhar Park
+    File: al_azhar_park.jpg
+    Station: BAB EL-SHARIA (Line 3) — 15 min walk or taxi
+    Walk: ~15 min
+    Description (EN): A 30-hectare hilltop oasis with stunning views over
+      Islamic Cairo, restaurants, and lush gardens. Built on a centuries-old
+      rubbish tip, now one of the world's 60 great public spaces.
+    Description (AR): واحة على تل بمساحة 30 فداناً مع إطلالات مذهلة على القاهرة
+      الإسلامية ومطاعم وحدائق خضراء.
+
+24. Giza Zoo (Cairo Zoo)
+    File: giza_zoo.jpg
+    Station: CAIRO UNIVERSITY (Line 2) or EL-DOKKI (Line 2) — 10 min walk
+    Walk: ~10 min
+    Description (EN): One of the oldest zoos in Africa, established in 1891.
+      Home to rare animals and beautiful 19th-century gardens.
+    Description (AR): واحدة من أقدم حدائق الحيوان في أفريقيا، أُسست عام 1891.
+      تضم حيوانات نادرة وحدائق جميلة من القرن التاسع عشر.
+
+25. Orman Botanical Garden
+    File: orman_garden.jpg
+    Station: CAIRO UNIVERSITY (Line 2) or EL-DOKKI (Line 2) — 5 min walk
+    Walk: ~5 min
+    Description (EN): Beautiful botanical garden with rare plants from around
+      the world, established in 1875 as part of the Khedive's palace grounds.
+    Description (AR): حديقة نباتية جميلة بها نباتات نادرة من حول العالم، أُسست
+      عام 1875 كجزء من أراضي قصر الخديوي.
+
+26. Japanese Garden (Helwan)
+    File: japanese_garden.jpg
+    Station: AIN HELWAN (Line 1) — 10 min walk
+    Walk: ~10 min
+    Description (EN): A unique Japanese-style garden with Buddha statues,
+      bridges, and pagodas. Built in 1919, it offers a peaceful escape.
+    Description (AR): حديقة فريدة على الطراز الياباني بها تماثيل بوذا وجسور
+      ومعابد. بُنيت عام 1919 وتوفر ملاذاً هادئاً.
+
+27. Al-Fustat Garden
+    File: al_fustat_garden.jpg
+    Station: MAR GIRGIS (Line 1) — 8 min walk
+    Walk: ~8 min
+    Description (EN): One of Cairo's newest and largest parks, near Coptic
+      Cairo, with open spaces, playgrounds, and walking paths.
+    Description (AR): واحدة من أحدث وأكبر حدائق القاهرة، بالقرب من القاهرة
+      القبطية، مع مساحات مفتوحة وملاعب ومسارات للمشي.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 5: SHOPPING & MARKETS
+──────────────────────────────────────────────────────────────────────────────
+
+28. Khan El Khalili
+    File: khan_el_khalili.jpg         ← you already have khan.jpg, can reuse
+    Station: ATABA (Line 2/3) — 10 min walk
+    Walk: ~10 min
+    Description (EN): Cairo's legendary bazaar dating to 1382. Endless alleys
+      of jewelry, spices, perfumes, lamps, and handcrafted souvenirs.
+    Description (AR): بازار القاهرة الأسطوري الذي يعود لعام 1382. أزقة لا
+      تنتهي من المجوهرات والتوابل والعطور والتحف المصنوعة يدوياً.
+
+29. Ataba Market
+    File: ataba_market.jpg
+    Station: ATABA (Line 2/3) — 2 min walk
+    Walk: ~2 min
+    Description (EN): One of Cairo's busiest local markets. Great for
+      electronics, books, stationery, and experiencing everyday Cairo life.
+    Description (AR): من أكثر أسواق القاهرة ازدحاماً. رائع للإلكترونيات والكتب
+      والقرطاسية وتجربة الحياة القاهرية اليومية.
+
+30. Downtown Cairo Shopping (Talaat Harb & Qasr El Nil)
+    File: downtown_shopping.jpg
+    Station: SADAT (Line 1/2) or MOHAMED NAGUIB (Line 2) — walking distance
+    Walk: ~3 min
+    Description (EN): Art deco streets with fashion shops, bookstores, and
+      iconic cafes. The heart of modern Cairo's cultural and shopping scene.
+    Description (AR): شوارع بطراز آرت ديكو بها محلات أزياء ومكتبات ومقاهٍ
+      أيقونية. قلب مشهد الثقافة والتسوق في القاهرة الحديثة.
+
+31. Wekalet El Balah
+    File: wekalet_el_balah.jpg
+    Station: ROUD EL-FARAG (Line 2) — 10 min walk
+    Walk: ~10 min
+    Description (EN): Famous market for fabrics, vintage clothing, curtains,
+      and bargain shopping. A favorite for locals looking for great deals.
+    Description (AR): سوق شهير للأقمشة والملابس القديمة والستائر والتسوق
+      بأسعار مخفضة. مفضل للمحليين الباحثين عن صفقات جيدة.
+
+32. El-Fishawy Cafe
+    File: el_fishawy_cafe.jpg
+    Station: ATABA (Line 2/3) — 10 min walk (inside Khan El Khalili)
+    Walk: ~10 min
+    Description (EN): Cairo's oldest cafe, open since 1773. Famous for mint
+      tea, Turkish coffee, and shisha in the heart of Khan El Khalili.
+    Description (AR): أقدم مقهى في القاهرة، مفتوح منذ 1773. مشهور بالشاي
+      بالنعناع والقهوة التركية والشيشة في قلب خان الخليلي.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 6: CULTURE & ENTERTAINMENT
+──────────────────────────────────────────────────────────────────────────────
+
+33. Cairo Opera House
+    File: cairo_opera_house.jpg
+    Station: OPERA (Line 2) — 5 min walk
+    Walk: ~5 min
+    Description (EN): Egypt's premier performing arts venue on Gezira Island.
+      Hosts concerts, ballet, opera, and art exhibitions year-round.
+    Description (AR): أهم مكان للفنون المسرحية في مصر بجزيرة الزمالك. يستضيف
+      حفلات موسيقية وباليه وأوبرا ومعارض فنية طوال العام.
+
+34. Cairo Tower
+    File: cairo_tower.jpg
+    Station: OPERA (Line 2) — 12 min walk
+    Walk: ~12 min
+    Description (EN): A 187-meter tower on Gezira Island offering 360°
+      panoramic views of Cairo. Best visited at sunset.
+    Description (AR): برج بارتفاع 187 متراً في جزيرة الزمالك يوفر إطلالات
+      بانورامية 360° على القاهرة. يُفضل زيارته عند الغروب.
+
+35. Tahrir Square
+    File: tahrir_square.jpg
+    Station: SADAT (Line 1/2) — 1 min walk
+    Walk: ~1 min
+    Description (EN): Cairo's most famous public square, a historic and
+      cultural landmark. Recently renovated with the Ramses II obelisk.
+    Description (AR): أشهر ميدان عام في القاهرة، معلم تاريخي وثقافي. تم تجديده
+      مؤخراً مع مسلة رمسيس الثاني.
+
+36. Zamalek District
+    File: zamalek_district.jpg
+    Station: OPERA (Line 2) — 10 min walk
+    Walk: ~10 min
+    Description (EN): Upscale island neighborhood with art galleries,
+      boutique shops, international restaurants, and tree-lined streets.
+    Description (AR): حي راقٍ في جزيرة بها معارض فنية ومحلات بوتيك ومطاعم
+      عالمية وشوارع تصطف عليها الأشجار.
+
+37. Maspero Arts & Culture Triangle
+    File: maspero_triangle.jpg
+    Station: MASPERO (Line 3) — 3 min walk
+    Walk: ~3 min
+    Description (EN): Newly developed area along the Nile with restaurants,
+      cultural venues, and stunning riverfront views.
+    Description (AR): منطقة حديثة التطوير على النيل بها مطاعم وأماكن ثقافية
+      وإطلالات نهرية مذهلة.
+
+38. Beit El-Suhaymi
+    File: beit_el_suhaymi.jpg
+    Station: BAB EL-SHARIA (Line 3) or ATABA (Line 2/3) — 15 min walk
+    Walk: ~15 min
+    Description (EN): A beautifully restored 17th-century Ottoman-era house
+      on Al-Muizz Street, showcasing traditional Cairo domestic architecture.
+    Description (AR): منزل عثماني جميل من القرن السابع عشر تم ترميمه في شارع
+      المعز، يعرض العمارة المنزلية القاهرية التقليدية.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 7: NILE EXPERIENCES
+──────────────────────────────────────────────────────────────────────────────
+
+39. Nile Corniche Walk
+    File: nile_corniche.jpg
+    Station: OPERA (Line 2) or MASPERO (Line 3) — walking distance
+    Walk: ~3 min
+    Description (EN): Scenic riverside promenade perfect for sunset walks,
+      street food, and views of Cairo's skyline along the Nile.
+    Description (AR): كورنيش نهري خلاب مثالي للمشي عند الغروب وطعام الشارع
+      ومناظر أفق القاهرة على طول النيل.
+
+40. Felucca Rides
+    File: felucca_ride.jpg
+    Station: OPERA (Line 2) — 10 min walk to docks
+    Walk: ~10 min
+    Description (EN): Traditional Egyptian sailboat experience on the Nile.
+      Especially beautiful at sunset. Boats available near Gezira docks.
+    Description (AR): تجربة قارب شراعي مصري تقليدي على النيل. جميل بشكل خاص
+      عند الغروب. القوارب متاحة بالقرب من أرصفة الجزيرة.
+
+41. Nile Dinner Cruise
+    File: nile_dinner_cruise.jpg
+    Station: SADAT (Line 1/2) or OPERA (Line 2) — varies by dock
+    Walk: ~10 min
+    Description (EN): Evening dinner cruises with live music, belly dancing,
+      and views of illuminated Cairo from the river.
+    Description (AR): رحلات عشاء مسائية مع موسيقى حية ورقص شرقي ومناظر القاهرة
+      المضاءة من النهر.
+
+42. Qasr El Nil Bridge
+    File: qasr_el_nil_bridge.jpg
+    Station: SADAT (Line 1/2) — 5 min walk
+    Walk: ~5 min
+    Description (EN): Famous bridge with iconic lion statues, connecting
+      Tahrir Square to Gezira Island. Popular for evening walks and photos.
+    Description (AR): جسر شهير بتماثيل الأسود الأيقونية، يربط ميدان التحرير
+      بجزيرة الزمالك. شائع للمشي المسائي والتصوير.
+
+──────────────────────────────────────────────────────────────────────────────
+ CATEGORY 8: HIDDEN GEMS & LOCAL FAVORITES
+──────────────────────────────────────────────────────────────────────────────
+
+43. Manial Palace Museum
+    File: manial_palace.jpg
+    Station: SAQYET MAKKI (Line 2) — 15 min walk
+    Walk: ~15 min
+    Description (EN): Elegant royal palace on Roda Island built in early
+      1900s, with diverse architectural styles and beautiful gardens.
+    Description (AR): قصر ملكي أنيق في جزيرة الروضة بُني في أوائل القرن العشرين،
+      بأنماط معمارية متنوعة وحدائق جميلة.
+
+44. Nilometer (Roda Island)
+    File: nilometer.jpg
+    Station: EL-MALEK EL-SALEH (Line 1) — 15 min walk
+    Walk: ~15 min
+    Description (EN): Ancient instrument used to measure the Nile's water
+      level, dating to 861 AD. One of the oldest Islamic-era structures.
+    Description (AR): أداة قديمة لقياس منسوب مياه النيل، تعود لعام 861 م. واحدة
+      من أقدم المنشآت في العصر الإسلامي.
+
+45. Basilica of Our Lady of Heliopolis
+    File: heliopolis_basilica.jpg
+    Station: KOLLEYET EL-BANAT (Line 3) — 10 min walk
+    Walk: ~10 min
+    Description (EN): Beautiful basilica with Byzantine-Romanesque
+      architecture, built in 1910 in the heart of historic Heliopolis.
+    Description (AR): كنيسة جميلة بعمارة بيزنطية رومانسكية، بُنيت عام 1910 في
+      قلب مصر الجديدة التاريخية.
+
+46. Helwan Wax Museum
+    File: helwan_wax_museum.jpg
+    Station: AIN HELWAN (Line 1) — 12 min walk
+    Walk: ~12 min
+    Description (EN): A small but fascinating wax museum depicting key moments
+      in Egyptian history from ancient Pharaohs to the modern era.
+    Description (AR): متحف شمع صغير لكنه رائع يصور لحظات رئيسية في التاريخ
+      المصري من الفراعنة القدماء إلى العصر الحديث.
+
+47. Ain Shams (Heliopolis ancient ruins area)
+    File: ain_shams_obelisk.jpg
+    Station: AIN SHAMS (Line 1) — 8 min walk
+    Walk: ~8 min
+    Description (EN): Site of the ancient city of Heliopolis, one of the
+      oldest cities of antiquity. The obelisk of Senusret I still stands.
+    Description (AR): موقع مدينة هليوبوليس القديمة، واحدة من أقدم مدن العصور
+      القديمة. لا تزال مسلة سنوسرت الأول قائمة.
+
+48. Maadi Grand Mall & Corniche El Maadi
+    File: corniche_maadi.jpg
+    Station: MAADI (Line 1) — 10 min walk
+    Walk: ~10 min
+    Description (EN): Riverside promenade in the leafy Maadi district,
+      popular with families. Nearby restaurants, shops, and river views.
+    Description (AR): كورنيش نهري في حي المعادي الأخضر، شائع بين العائلات.
+      مطاعم ومحلات ومناظر نهرية قريبة.
+
+══════════════════════════════════════════════════════════════════════════════
+ SUMMARY — FILES TO DOWNLOAD
+══════════════════════════════════════════════════════════════════════════════
+
+Folder: assets/images/tourist/
+
+ 1. pyramids_giza.jpg         (or reuse existing pyramids.jpg)
+ 2. coptic_cairo.jpg
+ 3. citadel_saladin.jpg
+ 4. al_muizz_street.jpg
+ 5. baron_palace.jpg
+ 6. bab_zuweila.jpg
+ 7. egyptian_museum.jpg        (or reuse existing museum.jpg)
+ 8. grand_egyptian_museum.jpg
+ 9. nmec_museum.jpg
+10. islamic_art_museum.jpg
+11. coptic_museum.jpg
+12. abdeen_palace.jpg
+13. gayer_anderson_museum.jpg
+14. hanging_church.jpg
+15. st_george_church.jpg
+16. ben_ezra_synagogue.jpg
+17. al_azhar_mosque.jpg
+18. al_hussein_mosque.jpg
+19. sultan_hassan_mosque.jpg
+20. ibn_tulun_mosque.jpg
+21. amr_mosque.jpg
+22. sayeda_zeinab_mosque.jpg
+23. al_azhar_park.jpg
+24. giza_zoo.jpg
+25. orman_garden.jpg
+26. japanese_garden.jpg
+27. al_fustat_garden.jpg
+28. khan_el_khalili.jpg        (or reuse existing khan.jpg)
+29. ataba_market.jpg
+30. downtown_shopping.jpg
+31. wekalet_el_balah.jpg
+32. el_fishawy_cafe.jpg
+33. cairo_opera_house.jpg
+34. cairo_tower.jpg
+35. tahrir_square.jpg
+36. zamalek_district.jpg
+37. maspero_triangle.jpg
+38. beit_el_suhaymi.jpg
+39. nile_corniche.jpg
+40. felucca_ride.jpg
+41. nile_dinner_cruise.jpg
+42. qasr_el_nil_bridge.jpg
+43. manial_palace.jpg
+44. nilometer.jpg
+45. heliopolis_basilica.jpg
+46. helwan_wax_museum.jpg
+47. ain_shams_obelisk.jpg
+48. corniche_maadi.jpg
+
+Total: 48 places, 45 unique photos needed (3 can reuse existing).
+
+══════════════════════════════════════════════════════════════════════════════

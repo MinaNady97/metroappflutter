@@ -53,7 +53,18 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Pick destination on map')),
+      appBar: AppBar(
+        title: const Text('Pick destination on map',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
+        backgroundColor: AppTheme.primaryNile,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded,
+              color: Colors.white, size: 20),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : Stack(

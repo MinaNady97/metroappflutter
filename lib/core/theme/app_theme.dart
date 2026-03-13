@@ -7,14 +7,15 @@ class AppTheme {
   static const Color accentPapyrus = Color(0xFFF4E9D8);
   static const Color backgroundSand = Color(0xFFF9F7F4);
 
-  static const Color line1 = Color(0xFFE30613);
-  static const Color line1Dark = Color(0xFFB0000A);
-  static const Color line2 = Color(0xFFFFD700);
-  static const Color line2Dark = Color(0xFFC9A600);
-  static const Color line3 = Color(0xFF4CAF50);
-  static const Color line3Dark = Color(0xFF2E7D32);
+  static const Color line1 = Color(0xFF105195);
+  static const Color line1Dark = Color(0xFF0A3A6B);
+  static const Color line2 = Color(0xFFC8313A);
+  static const Color line2Dark = Color(0xFF9A2028);
+  static const Color line3 = Color(0xFF09A68E);
+  static const Color line3Dark = Color(0xFF067A68);
   static const Color line4 = Color(0xFF2196F3);
-  static const Color lrt = Color(0xFF9C27B0);
+  static const Color lrt = Color(0xFFA21D32);
+  static const Color lrtDark = Color(0xFF781525);
   static const Color monorail = Color(0xFFFF9800);
 
   static const Color success = Color(0xFF00A86B);
@@ -73,13 +74,15 @@ class AppTheme {
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: primaryNile, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 2,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -97,7 +100,8 @@ class AppTheme {
 
   static TextTheme _buildTextTheme() {
     return const TextTheme(
-      displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: -0.5),
+      displayLarge: TextStyle(
+          fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: -0.5),
       displayMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
       displaySmall: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
       headlineMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),

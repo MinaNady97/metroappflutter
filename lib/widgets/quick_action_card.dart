@@ -117,9 +117,7 @@ class _QuickActionCardState extends State<QuickActionCard>
                           minHeight: 18,
                         ),
                         child: Text(
-                          widget.badgeCount > 9
-                              ? '9+'
-                              : '${widget.badgeCount}',
+                          widget.badgeCount > 9 ? '9+' : '${widget.badgeCount}',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 9,

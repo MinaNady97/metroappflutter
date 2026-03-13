@@ -5,7 +5,6 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:metroappflutter/Pages/homepage.dart';
 import 'package:metroappflutter/Controllers/homepagecontroller.dart';
 import 'package:metroappflutter/Controllers/languagecontroller.dart';
-import 'package:metroappflutter/Controllers/locationservice.dart';
 import 'package:metroappflutter/data/datasources/metro_local_datasource.dart';
 import 'package:metroappflutter/data/repositories/metro_repository_impl.dart';
 import 'package:metroappflutter/domain/repositories/metro_repository.dart';
@@ -21,6 +20,7 @@ void main() async {
   final savedLangCode = prefs.getString('language_code') ?? 'en';
 
   // ── Register global singletons before the widget tree is built ──
+
   // This ensures every Get.find<T>() call in widgets succeeds.
 
   // Data layer
@@ -33,7 +33,6 @@ void main() async {
   // Controllers
   Get.put(HomepageController(), permanent: true);
   Get.put(LanguageController(), permanent: true);
-  Get.put(LocationService(), permanent: true);
 
   runApp(MyApp(savedLangCode: savedLangCode));
 }

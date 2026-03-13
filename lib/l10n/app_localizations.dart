@@ -1307,6 +1307,30 @@ abstract class AppLocalizations {
   /// **'min'**
   String get minutesAbbr;
 
+  /// No description provided for @exitDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave App?'**
+  String get exitDialogTitle;
+
+  /// No description provided for @exitDialogSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit\nCairo Metro Navigator?'**
+  String get exitDialogSubtitle;
+
+  /// No description provided for @exitDialogStay.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay'**
+  String get exitDialogStay;
+
+  /// No description provided for @exitDialogExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit'**
+  String get exitDialogExit;
+
   /// No description provided for @egpCurrency.
   ///
   /// In en, this message translates to:
@@ -2254,6 +2278,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Station Map'**
   String get stationMapTitle;
+
+  /// No description provided for @allOperationalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'All lines operational'**
+  String get allOperationalLabel;
+
+  /// No description provided for @statusLiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get statusLiveLabel;
+
+  /// No description provided for @homepageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your smart guide for metro and LRT trips'**
+  String get homepageSubtitle;
+
+  /// No description provided for @greetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get greetingMorning;
+
+  /// No description provided for @greetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get greetingAfternoon;
+
+  /// No description provided for @greetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get greetingEvening;
+
+  /// No description provided for @greetingNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Good night'**
+  String get greetingNight;
+
+  /// No description provided for @planYourRouteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the fastest route between stations'**
+  String get planYourRouteSubtitle;
+
+  /// No description provided for @recentSearchesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Searches'**
+  String get recentSearchesLabel;
+
+  /// No description provided for @googleMapsLinkDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Maps link detected'**
+  String get googleMapsLinkDetected;
+
+  /// No description provided for @pickFromMapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick from Map'**
+  String get pickFromMapLabel;
+
+  /// No description provided for @quickActionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActionsTitle;
+
+  /// No description provided for @tapToLocateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to locate nearest station'**
+  String get tapToLocateLabel;
+
+  /// No description provided for @touristHighlightsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'tourist highlights'**
+  String get touristHighlightsLabel;
+
+  /// No description provided for @viewPlansLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'View subscription plans'**
+  String get viewPlansLabel;
+
+  /// No description provided for @lrtLineName.
+  ///
+  /// In en, this message translates to:
+  /// **'LRT Line'**
+  String get lrtLineName;
+
+  /// No description provided for @exploreAreaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore Area'**
+  String get exploreAreaTitle;
+
+  /// No description provided for @exploreAreaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover nearby places around metro stations'**
+  String get exploreAreaSubtitle;
+
+  /// No description provided for @tapToExploreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap station to explore'**
+  String get tapToExploreLabel;
+
+  /// No description provided for @promoMonthlyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Pass'**
+  String get promoMonthlyTitle;
+
+  /// No description provided for @promoMonthlySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited rides for 30 days'**
+  String get promoMonthlySubtitle;
+
+  /// No description provided for @promoMonthlyTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get promoMonthlyTag;
+
+  /// No description provided for @promoStudentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Student Pass'**
+  String get promoStudentTitle;
+
+  /// No description provided for @promoStudentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'50% discount for students'**
+  String get promoStudentSubtitle;
+
+  /// No description provided for @promoStudentTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Student'**
+  String get promoStudentTag;
+
+  /// No description provided for @promoFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Family Pass'**
+  String get promoFamilyTitle;
+
+  /// No description provided for @promoFamilySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel together, save more'**
+  String get promoFamilySubtitle;
+
+  /// No description provided for @promoFamilyTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get promoFamilyTag;
+
+  /// No description provided for @buyNowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Now'**
+  String get buyNowLabel;
+
+  /// No description provided for @locateMeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Locating'**
+  String get locateMeLabel;
+
+  /// No description provided for @locationServicesDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location services are disabled. Please enable them in Settings.'**
+  String get locationServicesDisabled;
+
+  /// No description provided for @locationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission denied. Please allow it in app settings.'**
+  String get locationPermissionDenied;
+
+  /// No description provided for @locationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get your location. Please try again.'**
+  String get locationError;
+
+  /// No description provided for @leaveNowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Now'**
+  String get leaveNowLabel;
+
+  /// No description provided for @cairoMetroNetworkLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cairo Metro Network'**
+  String get cairoMetroNetworkLabel;
+
+  /// No description provided for @resetViewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset View'**
+  String get resetViewLabel;
+
+  /// No description provided for @mapLegendLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Map Legend'**
+  String get mapLegendLabel;
+
+  /// No description provided for @searchStationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search stations...'**
+  String get searchStationsHint;
+
+  /// No description provided for @noStationsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No stations found'**
+  String get noStationsFound;
+
+  /// No description provided for @line1FullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 1 — Helwan / New El-Marg'**
+  String get line1FullName;
+
+  /// No description provided for @line2FullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 2 — Shubra El-Kheima / El-Mounib'**
+  String get line2FullName;
+
+  /// No description provided for @line3FullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 3 — Adly Mansour / Kit Kat'**
+  String get line3FullName;
+
+  /// No description provided for @line4FullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 4'**
+  String get line4FullName;
+
+  /// No description provided for @monorailEastName.
+  ///
+  /// In en, this message translates to:
+  /// **'East Monorail'**
+  String get monorailEastName;
+
+  /// No description provided for @monorailWestName.
+  ///
+  /// In en, this message translates to:
+  /// **'West Monorail'**
+  String get monorailWestName;
+
+  /// No description provided for @allLinesStationsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'stations'**
+  String get allLinesStationsLabel;
+
+  /// No description provided for @underConstructionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Construction'**
+  String get underConstructionLabel;
+
+  /// No description provided for @plannedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Planned'**
+  String get plannedLabel;
+
+  /// No description provided for @transferLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
+  String get transferLabel;
+
+  /// No description provided for @statusMaintenanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance'**
+  String get statusMaintenanceLabel;
+
+  /// No description provided for @statusDisruptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Disruption'**
+  String get statusDisruptionLabel;
+
+  /// No description provided for @crowdCalmLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm'**
+  String get crowdCalmLabel;
+
+  /// No description provided for @crowdModerateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate'**
+  String get crowdModerateLabel;
+
+  /// No description provided for @crowdBusyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy'**
+  String get crowdBusyLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

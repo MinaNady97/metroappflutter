@@ -631,6 +631,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get minutesAbbr => 'دقيقة';
 
   @override
+  String get exitDialogTitle => 'مغادرة التطبيق؟';
+
+  @override
+  String get exitDialogSubtitle => 'هل أنت متأكد من الخروج من\nمتنقل مترو القاهرة؟';
+
+  @override
+  String get exitDialogStay => 'البقاء';
+
+  @override
+  String get exitDialogExit => 'خروج';
+
+  @override
   String get egpCurrency => 'جنيه';
 
   @override
@@ -1109,4 +1121,166 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stationMapTitle => 'خريطة المحطة';
+
+  @override
+  String get allOperationalLabel => 'جميع الخطوط تعمل';
+
+  @override
+  String get statusLiveLabel => 'مباشر';
+
+  @override
+  String get homepageSubtitle => 'دليلك الذكي لرحلات المترو والقطار الكهربائي';
+
+  @override
+  String get greetingMorning => 'صباح الخير';
+
+  @override
+  String get greetingAfternoon => 'مساء الخير';
+
+  @override
+  String get greetingEvening => 'مساء الخير';
+
+  @override
+  String get greetingNight => 'تصبح على خير';
+
+  @override
+  String get planYourRouteSubtitle => 'ابحث عن أسرع مسار بين المحطات';
+
+  @override
+  String get recentSearchesLabel => 'عمليات البحث الأخيرة';
+
+  @override
+  String get googleMapsLinkDetected => 'تم اكتشاف رابط خرائط جوجل';
+
+  @override
+  String get pickFromMapLabel => 'اختر من الخريطة';
+
+  @override
+  String get quickActionsTitle => 'إجراءات سريعة';
+
+  @override
+  String get tapToLocateLabel => 'اضغط للعثور على أقرب محطة';
+
+  @override
+  String get touristHighlightsLabel => 'معلم سياحي';
+
+  @override
+  String get viewPlansLabel => 'عرض خطط الاشتراك';
+
+  @override
+  String get lrtLineName => 'خط القطار الخفيف';
+
+  @override
+  String get exploreAreaTitle => 'استكشاف المنطقة';
+
+  @override
+  String get exploreAreaSubtitle => 'اكتشف الأماكن القريبة من محطات المترو';
+
+  @override
+  String get tapToExploreLabel => 'اضغط على المحطة للاستكشاف';
+
+  @override
+  String get promoMonthlyTitle => 'تذكرة شهرية';
+
+  @override
+  String get promoMonthlySubtitle => 'رحلات غير محدودة لمدة 30 يومًا';
+
+  @override
+  String get promoMonthlyTag => 'الأفضل قيمة';
+
+  @override
+  String get promoStudentTitle => 'تذكرة الطالب';
+
+  @override
+  String get promoStudentSubtitle => 'خصم 50٪ للطلاب';
+
+  @override
+  String get promoStudentTag => 'طالب';
+
+  @override
+  String get promoFamilyTitle => 'تذكرة العائلة';
+
+  @override
+  String get promoFamilySubtitle => 'سافروا معًا ووفّروا أكثر';
+
+  @override
+  String get promoFamilyTag => 'عائلة';
+
+  @override
+  String get buyNowLabel => 'اشترِ الآن';
+
+  @override
+  String get locateMeLabel => 'جارٍ تحديد الموقع';
+
+  @override
+  String get locationServicesDisabled => 'خدمات الموقع معطلة. يرجى تفعيلها من الإعدادات.';
+
+  @override
+  String get locationPermissionDenied => 'تم رفض إذن الموقع. يرجى السماح به من إعدادات التطبيق.';
+
+  @override
+  String get locationError => 'تعذر تحديد موقعك. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get leaveNowLabel => 'اذهب الآن';
+
+  @override
+  String get cairoMetroNetworkLabel => 'شبكة مترو القاهرة';
+
+  @override
+  String get resetViewLabel => 'إعادة ضبط العرض';
+
+  @override
+  String get mapLegendLabel => 'مفتاح الخريطة';
+
+  @override
+  String get searchStationsHint => 'ابحث عن محطة...';
+
+  @override
+  String get noStationsFound => 'لا توجد محطات';
+
+  @override
+  String get line1FullName => 'الخط الأول — حلوان / الجزء الجديد';
+
+  @override
+  String get line2FullName => 'الخط الثاني — شبرا الخيمة / المنيب';
+
+  @override
+  String get line3FullName => 'الخط الثالث — عدلي منصور / كيت كات';
+
+  @override
+  String get line4FullName => 'الخط الرابع';
+
+  @override
+  String get monorailEastName => 'المونوريل الشرقي';
+
+  @override
+  String get monorailWestName => 'المونوريل الغربي';
+
+  @override
+  String get allLinesStationsLabel => 'محطة';
+
+  @override
+  String get underConstructionLabel => 'تحت الإنشاء';
+
+  @override
+  String get plannedLabel => 'مخطط';
+
+  @override
+  String get transferLabel => 'تحويل';
+
+  @override
+  String get statusMaintenanceLabel => 'صيانة';
+
+  @override
+  String get statusDisruptionLabel => 'توقف';
+
+  @override
+  String get crowdCalmLabel => 'هادئ';
+
+  @override
+  String get crowdModerateLabel => 'معتدل';
+
+  @override
+  String get crowdBusyLabel => 'مزدحم';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:metroappflutter/l10n/app_localizations.dart';
 
 // ─── Data models ────────────────────────────────────────────────────────────
 
@@ -72,6 +73,39 @@ const Map<String, LineMetadata> kLineMetadata = {
     transferCount: 1,
     firstTrain: '06:00',
     lastTrain: '22:00',
+    crowdLevel: CrowdLevel.calm,
+    status: LineStatus.operational,
+  ),
+  '4': LineMetadata(
+    terminus1: 'Hadayek Al-Ashgar',
+    terminus2: 'New Cairo',
+    distanceKm: 19.0,
+    travelMinutes: 30,
+    transferCount: 2,
+    firstTrain: '—',
+    lastTrain: '—',
+    crowdLevel: CrowdLevel.calm,
+    status: LineStatus.operational,
+  ),
+  'ME': LineMetadata(
+    terminus1: 'Stadium',
+    terminus2: 'New Capital',
+    distanceKm: 56.5,
+    travelMinutes: 52,
+    transferCount: 1,
+    firstTrain: '—',
+    lastTrain: '—',
+    crowdLevel: CrowdLevel.calm,
+    status: LineStatus.operational,
+  ),
+  'MW': LineMetadata(
+    terminus1: 'New October',
+    terminus2: 'Wadi El-Nil',
+    distanceKm: 42.0,
+    travelMinutes: 40,
+    transferCount: 1,
+    firstTrain: '—',
+    lastTrain: '—',
     crowdLevel: CrowdLevel.calm,
     status: LineStatus.operational,
   ),
@@ -220,10 +254,11 @@ class _LinePreviewCardState extends State<LinePreviewCard>
   }
 
   Widget _buildStatusBadge(LineStatus status) {
+    final l10n = AppLocalizations.of(context);
     final (label, color) = switch (status) {
-      LineStatus.operational => ('●  Live', const Color(0xFF00A86B)),
-      LineStatus.maintenance => ('⚙  Maint.', Colors.orange),
-      LineStatus.disruption => ('⚠  Delay', Colors.red),
+      LineStatus.operational => ('●  ${l10n?.statusLiveLabel ?? 'Live'}', const Color(0xFF00A86B)),
+      LineStatus.maintenance => ('⚙  ${l10n?.statusMaintenanceLabel ?? 'Maint.'}', Colors.orange),
+      LineStatus.disruption => ('⚠  ${l10n?.statusDisruptionLabel ?? 'Delay'}', Colors.red),
     };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
@@ -311,15 +346,16 @@ class _LinePreviewCardState extends State<LinePreviewCard>
   }
 
   Widget _buildFooter(LineMetadata meta) {
+    final l10n = AppLocalizations.of(context);
     final crowdColor = switch (meta.crowdLevel) {
       CrowdLevel.calm => const Color(0xFF00A86B),
       CrowdLevel.moderate => Colors.orange,
       CrowdLevel.busy => Colors.red,
     };
     final crowdLabel = switch (meta.crowdLevel) {
-      CrowdLevel.calm => 'Calm',
-      CrowdLevel.moderate => 'Moderate',
-      CrowdLevel.busy => 'Busy',
+      CrowdLevel.calm => l10n?.crowdCalmLabel ?? 'Calm',
+      CrowdLevel.moderate => l10n?.crowdModerateLabel ?? 'Moderate',
+      CrowdLevel.busy => l10n?.crowdBusyLabel ?? 'Busy',
     };
 
     return Row(

@@ -24,117 +24,163 @@ class RouteTimeline extends StatefulWidget {
 class _RouteTimelineState extends State<RouteTimeline> {
   bool _showAllStops = false;
 
+  // ── Extract per-segment station name lists from routeData ──────────────────
+  List<List<String>> _buildStationNames() {
+    final rd = widget.routeData;
+    final routeType = int.tryParse(rd['Route type']?.toString() ?? '1') ?? 1;
+
+    List<String> _parse(String key) =>
+        (rd[key] as List<dynamic>? ?? []).map((e) => e.toString()).toList();
+
+    if (routeType == 1) {
+      return [_parse('Intermediate Stations')];
+    } else if (routeType == 2) {
+      return [
+        _parse('First Intermediate Stations'),
+        _parse('Second Intermediate Stations'),
+      ];
+    } else {
+      return [
+        _parse('First Intermediate Stations'),
+        _parse('Second Intermediate Stations'),
+        _parse('Third Intermediate Stations'),
+      ];
+    }
+  }
+
+  // ── Build ──────────────────────────────────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
     final routeType =
         int.tryParse(widget.routeData['Route type']?.toString() ?? '1') ?? 1;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: widget.isFirst
-              ? AppTheme.accentGold.withOpacity(0.5)
-              : Colors.grey.shade200,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: widget.isFirst
+                ? AppTheme.accentGold.withOpacity(0.18)
+                : Colors.black.withOpacity(0.04),
+            blurRadius: widget.isFirst ? 24 : 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(context),
-          const SizedBox(height: 12),
-          if (routeType == 1) ..._singleLine(context),
-          if (routeType == 2) ..._twoLine(),
-          if (routeType == 3) ..._threeLine(),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                    Get.to(() =>
-                        Stationspage(serializedData: widget.serializedData));
-                  },
-                  icon: const Icon(Icons.map_outlined),
-                  label: Text(AppLocalizations.of(context)!.viewFullMap),
+          // Top accent bar — clipped cleanly by card's own border radius
+          if (widget.isFirst)
+            Container(
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFD4AF37), Color(0xFFF5D76E)],
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppTheme.accentGold.withOpacity(0.45),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-            ],
+            ),
+
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(context, l10n),
+                const SizedBox(height: 14),
+                if (routeType == 1) ..._singleLine(context),
+                if (routeType == 2) ..._twoLine(context),
+                if (routeType == 3) ..._threeLine(context),
+                const SizedBox(height: 14),
+                _buildMapButton(l10n),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  // ── Header ─────────────────────────────────────────────────────────────────
+
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
     final isAr = l10n.locale == 'ar';
     final stops = widget.routeData['No. of stations']?.toString() ?? '-';
     final time = widget.routeData['Estimated travel time']?.toString() ?? '-';
     final fare = widget.routeData['Ticket Price']?.toString() ?? '-';
-    final chips = Wrap(
-      spacing: 6,
-      runSpacing: 6,
-      alignment: WrapAlignment.end,
-      children: [
-        _infoChip(
-          icon: Icons.train,
-          label: '${isAr ? 'محطات' : 'Stops'} $stops',
-        ),
-        _infoChip(
-          icon: Icons.access_time,
-          label: '${isAr ? 'وقت' : 'Time'} $time',
-        ),
-        _infoChip(
-          icon: Icons.payments_outlined,
-          label: '${isAr ? 'سعر' : 'Fare'} $fare',
-        ),
-      ],
-    );
 
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.isFirst)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+            margin: const EdgeInsets.only(right: 2),
             decoration: BoxDecoration(
-              color: AppTheme.accentGold.withOpacity(0.15),
+              gradient: const LinearGradient(
+                colors: [AppTheme.accentGold, Color(0xFFF5C842)],
+              ),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text(
-              'Best',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.star_rounded, size: 11, color: Colors.white),
+                const SizedBox(width: 4),
+                Text(
+                  isAr ? 'الأفضل' : 'Best',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
             ),
           ),
-        if (widget.isFirst) const SizedBox(height: 8),
-        Align(
-          alignment: AlignmentDirectional.centerEnd,
-          child: chips,
+        const Spacer(),
+        Wrap(
+          spacing: 5,
+          runSpacing: 5,
+          alignment: WrapAlignment.end,
+          children: [
+            _chip(Icons.train_rounded, '${isAr ? 'محطات' : 'Stops'} $stops'),
+            _chip(Icons.access_time_rounded, '${isAr ? 'وقت' : 'Time'} $time'),
+            _chip(Icons.payments_rounded, '${isAr ? 'سعر' : 'Fare'} $fare'),
+          ],
         ),
       ],
     );
   }
 
-  Widget _infoChip({required IconData icon, required String label}) {
+  Widget _chip(IconData icon, String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Colors.grey.shade50,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 13, color: Colors.grey.shade700),
+          Icon(icon, size: 12, color: Colors.grey.shade600),
           const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey.shade800,
+              color: Colors.grey.shade700,
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),
@@ -143,6 +189,8 @@ class _RouteTimelineState extends State<RouteTimeline> {
       ),
     );
   }
+
+  // ── Timeline ───────────────────────────────────────────────────────────────
 
   List<Widget> _singleLine(BuildContext context) {
     final dep = widget.routeData['Departure']?.toString() ?? '';
@@ -153,23 +201,23 @@ class _RouteTimelineState extends State<RouteTimeline> {
             .map((e) => e.toString())
             .toList();
     final color = _lineColor(line);
+    final isAr = AppLocalizations.of(context)!.locale == 'ar';
+
+    // hidden = all stops except first and last
     final hiddenStops = stations.length > 2
         ? stations.sublist(1, stations.length - 1)
         : <String>[];
-    final isAr = AppLocalizations.of(context)!.locale == 'ar';
 
     return [
-      Text(line, style: const TextStyle(fontWeight: FontWeight.w600)),
-      const SizedBox(height: 6),
+      _lineLabel(line, color),
+      const SizedBox(height: 8),
       _point(dep, true, color),
       if (hiddenStops.isNotEmpty)
         AnimatedCrossFade(
           duration: const Duration(milliseconds: 220),
-          firstChild: _hiddenStopsPreview(hiddenStops.length, color),
+          firstChild: _collapsedPreview(hiddenStops.length, color),
           secondChild: Column(
-            children: [
-              for (final s in hiddenStops) _point(s, false, color),
-            ],
+            children: [for (final s in hiddenStops) _point(s, false, color)],
           ),
           crossFadeState: _showAllStops
               ? CrossFadeState.showSecond
@@ -179,15 +227,22 @@ class _RouteTimelineState extends State<RouteTimeline> {
         Align(
           alignment: AlignmentDirectional.centerStart,
           child: TextButton.icon(
+            style: TextButton.styleFrom(
+              foregroundColor: color,
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            ),
             onPressed: () => setState(() => _showAllStops = !_showAllStops),
             icon: Icon(
-              _showAllStops ? Icons.expand_less : Icons.more_horiz,
-              size: 18,
+              _showAllStops
+                  ? Icons.expand_less_rounded
+                  : Icons.more_horiz_rounded,
+              size: 16,
             ),
             label: Text(
               _showAllStops
                   ? (isAr ? 'إخفاء المحطات' : 'Hide stops')
-                  : '${isAr ? 'عرض المحطات' : 'Show stops'} (${hiddenStops.length})',
+                  : '${isAr ? 'عرض' : 'Show'} ${hiddenStops.length} ${isAr ? 'محطات' : 'stops'}',
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -195,47 +250,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
     ];
   }
 
-  Widget _hiddenStopsPreview(int count, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 12,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _dot(color),
-                const SizedBox(height: 3),
-                _dot(color.withOpacity(0.75)),
-                const SizedBox(height: 3),
-                _dot(color.withOpacity(0.55)),
-              ],
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            '$count stops hidden',
-            style: TextStyle(
-              color: Colors.grey.shade700,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _dot(Color color) {
-    return Container(
-      width: 6,
-      height: 6,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-    );
-  }
-
-  List<Widget> _twoLine() {
+  List<Widget> _twoLine(BuildContext context) {
     final first = widget.routeData['First take']?.toString() ?? '';
     final second = widget.routeData['Second take']?.toString() ?? '';
     final firstStations =
@@ -250,17 +265,19 @@ class _RouteTimelineState extends State<RouteTimeline> {
             .toList();
     final changeAt = widget.routeData['You will change at']?.toString() ?? '';
     return [
-      Text(first, style: const TextStyle(fontWeight: FontWeight.w600)),
+      _lineLabel(first, _lineColor(first)),
+      const SizedBox(height: 8),
       if (firstStations.isNotEmpty)
         _point(firstStations.first, true, _lineColor(first)),
       if (changeAt.isNotEmpty) _transfer(changeAt, first, second),
-      Text(second, style: const TextStyle(fontWeight: FontWeight.w600)),
+      _lineLabel(second, _lineColor(second)),
+      const SizedBox(height: 8),
       if (secondStations.isNotEmpty)
         _point(secondStations.last, true, _lineColor(second)),
     ];
   }
 
-  List<Widget> _threeLine() {
+  List<Widget> _threeLine(BuildContext context) {
     final first = widget.routeData['First take']?.toString() ?? '';
     final second = widget.routeData['Second take']?.toString() ?? '';
     final third = widget.routeData['Third take']?.toString() ?? '';
@@ -280,47 +297,170 @@ class _RouteTimelineState extends State<RouteTimeline> {
             .map((e) => e.toString())
             .toList();
     return [
-      Text(first, style: const TextStyle(fontWeight: FontWeight.w600)),
+      _lineLabel(first, _lineColor(first)),
+      const SizedBox(height: 8),
       if (firstStations.isNotEmpty)
         _point(firstStations.first, true, _lineColor(first)),
       if (secondStations.isNotEmpty)
         _transfer(secondStations.first, first, second),
-      Text(second, style: const TextStyle(fontWeight: FontWeight.w600)),
+      _lineLabel(second, _lineColor(second)),
+      const SizedBox(height: 8),
       if (thirdStations.isNotEmpty)
         _transfer(thirdStations.first, second, third),
-      Text(third, style: const TextStyle(fontWeight: FontWeight.w600)),
+      _lineLabel(third, _lineColor(third)),
+      const SizedBox(height: 8),
       if (thirdStations.isNotEmpty)
         _point(thirdStations.last, true, _lineColor(third)),
     ];
   }
 
+  // ── Sub-widgets ────────────────────────────────────────────────────────────
+
+  Widget _lineLabel(String name, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 14,
+          height: 4,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          name,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _point(String station, bool major, Color color) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         children: [
           Container(
-            width: major ? 12 : 8,
-            height: major ? 12 : 8,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            width: major ? 11 : 7,
+            height: major ? 11 : 7,
+            decoration: BoxDecoration(
+              color: major ? color : Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: color, width: major ? 0 : 1.5),
+              boxShadow: major
+                  ? [BoxShadow(color: color.withOpacity(0.3), blurRadius: 4)]
+                  : null,
+            ),
           ),
           const SizedBox(width: 10),
-          Expanded(child: Text(station)),
+          Expanded(
+            child: Text(
+              station,
+              style: TextStyle(
+                fontSize: major ? 14 : 13,
+                fontWeight: major ? FontWeight.w600 : FontWeight.w400,
+                color: major ? Colors.grey.shade900 : Colors.grey.shade700,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
+  Widget _collapsedPreview(int count, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 11,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _dot(color),
+                const SizedBox(height: 3),
+                _dot(color.withOpacity(0.6)),
+                const SizedBox(height: 3),
+                _dot(color.withOpacity(0.35)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            '$count stops',
+            style: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dot(Color color) => Container(
+        width: 5,
+        height: 5,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      );
+
   Widget _transfer(String at, String from, String to) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: AppTheme.accentGold.withOpacity(0.12),
+        color: AppTheme.accentGold.withOpacity(0.08),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text('Transfer at $at ($from → $to)',
-          style: const TextStyle(fontSize: 12)),
+      child: Row(
+        children: [
+          const Icon(Icons.swap_horiz_rounded,
+              size: 15, color: AppTheme.accentGold),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Transfer at $at',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey.shade700,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMapButton(AppLocalizations l10n) {
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton.icon(
+        onPressed: () {
+          HapticFeedback.selectionClick();
+          Get.to(() => Stationspage(
+                serializedData: widget.serializedData,
+                stationNames: _buildStationNames(),
+              ));
+        },
+        icon: const Icon(Icons.route_rounded, size: 16),
+        label: Text(l10n.viewFullMap),
+        style: FilledButton.styleFrom(
+          backgroundColor: AppTheme.primaryNile,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 13),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+      ),
     );
   }
 

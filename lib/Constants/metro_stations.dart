@@ -417,6 +417,35 @@ List<String> getAllMetroStations(BuildContext context) {
   ];
 }
 
+/// Returns a map of localised station name → list of line labels it belongs to.
+/// Labels: '1', '2', '3', 'LRT'
+Map<String, List<String>> getStationLineMap(BuildContext context) {
+  final line1 = getMetroLine1Stations(context);
+  final line2 = getMetroLine2Stations(context);
+  final line3a = getMetroLine3Branch1Stations(context);
+  final line3b = getMetroLine3Branch2Stations(context);
+  final lrtMain = getLrtMainStations(context);
+  final lrtNac = getLrtNacBranchStations(context);
+  final lrt10th = getLrt10thBranchStations(context);
+
+  final map = <String, List<String>>{};
+
+  void add(String station, String line) {
+    final lines = map[station] ??= [];
+    if (!lines.contains(line)) lines.add(line);
+  }
+
+  for (final s in line1) add(s, '1');
+  for (final s in line2) add(s, '2');
+  for (final s in line3a) add(s, '3');
+  for (final s in line3b) add(s, '3');
+  for (final s in lrtMain) add(s, 'LRT');
+  for (final s in lrtNac) add(s, 'LRT');
+  for (final s in lrt10th) add(s, 'LRT');
+
+  return map;
+}
+
 const List<List<double>> metroLine1StationsCoordinates = [
   [29.848982, 31.334231], // Helwan
   [29.8626524, 31.3250527], // Ain Helwan

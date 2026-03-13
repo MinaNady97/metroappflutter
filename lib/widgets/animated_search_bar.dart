@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
+import 'package:metroappflutter/core/theme/app_theme.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AnimatedSearchBar  — tap-to-open bottom-sheet station picker
+// ─────────────────────────────────────────────────────────────────────────────
 
 class AnimatedSearchBar extends StatefulWidget {
   final String hint;
@@ -8,6 +12,11 @@ class AnimatedSearchBar extends StatefulWidget {
   final List<String> suggestions;
   final ValueChanged<String> onSelected;
   final String selectedText;
+  final Map<String, List<String>>? stationLines;
+
+  /// Maximum height of the dropdown list in logical pixels (unused now, kept
+  /// for API compat).
+  final double maxDropdownHeight;
 
   const AnimatedSearchBar({
     super.key,
@@ -16,6 +25,8 @@ class AnimatedSearchBar extends StatefulWidget {
     required this.suggestions,
     required this.onSelected,
     this.selectedText = '',
+    this.stationLines,
+    this.maxDropdownHeight = 320,
   });
 
   @override
@@ -23,147 +34,448 @@ class AnimatedSearchBar extends StatefulWidget {
 }
 
 class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
-  late final TextEditingController _controller;
-  late final FocusNode _focusNode;
-  final RxBool isExpanded = false.obs;
-  final RxList<String> filteredSuggestions = <String>[].obs;
   bool _flashHighlight = false;
 
+  // ── External update ───────────────────────────────────────────────────────
+
   @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-    _focusNode = FocusNode();
-    filteredSuggestions.assignAll(widget.suggestions);
-    _focusNode.addListener(_onFocusChange);
-    _controller.addListener(_onTextChanged);
-  }
-
-  void _onFocusChange() {
-    if (_focusNode.hasFocus) {
-      isExpanded.value = true;
-    } else {
-      Future<void>.delayed(const Duration(milliseconds: 120), () {
-        if (mounted) isExpanded.value = false;
-      });
+  void didUpdateWidget(covariant AnimatedSearchBar old) {
+    super.didUpdateWidget(old);
+    if (old.selectedText != widget.selectedText &&
+        widget.selectedText.isNotEmpty) {
+      _flash();
     }
   }
 
-  void _onTextChanged() {
-    final query = _controller.text.toLowerCase().trim();
-    if (query.isEmpty) {
-      filteredSuggestions.assignAll(widget.suggestions);
-      return;
-    }
-    filteredSuggestions.assignAll(
-      widget.suggestions.where((s) => s.toLowerCase().contains(query)),
+  // ── Open bottom sheet ─────────────────────────────────────────────────────
+
+  Future<void> _openSearch() async {
+    HapticFeedback.selectionClick();
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _StationSearchSheet(
+        suggestions: widget.suggestions,
+        stationLines: widget.stationLines,
+        selectedText: widget.selectedText,
+        hint: widget.hint,
+        icon: widget.icon,
+      ),
     );
-  }
-
-  @override
-  void didUpdateWidget(covariant AnimatedSearchBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.selectedText != widget.selectedText &&
-        widget.selectedText != _controller.text) {
-      _controller.text = widget.selectedText;
-      _controller.selection = TextSelection.collapsed(offset: _controller.text.length);
-      if (widget.selectedText.isNotEmpty) {
-        _triggerHighlightFlash();
-      }
-      setState(() {});
+    if (result != null && mounted) {
+      widget.onSelected(result);
+      _flash();
     }
   }
 
-  void _triggerHighlightFlash() {
+  void _flash() {
     _flashHighlight = true;
     if (mounted) setState(() {});
-    Future<void>.delayed(const Duration(milliseconds: 360), () {
+    Future<void>.delayed(const Duration(milliseconds: 380), () {
       if (!mounted) return;
       _flashHighlight = false;
       setState(() {});
     });
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
+  // ── Build ─────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOut,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: _flashHighlight ? const Color(0xFFE8F7EF) : Colors.transparent,
-          ),
-          child: TextField(
-            controller: _controller,
-            focusNode: _focusNode,
-            decoration: InputDecoration(
-              hintText: widget.hint,
-              prefixIcon: Icon(widget.icon),
-              suffixIcon: _controller.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _controller.clear();
-                        widget.onSelected('');
-                        HapticFeedback.lightImpact();
-                        setState(() {});
-                      },
-                    )
-                  : null,
-            ),
-            onChanged: (_) => setState(() {}),
+    final hasValue = widget.selectedText.isNotEmpty;
+    return GestureDetector(
+      onTap: _openSearch,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: _flashHighlight
+              ? const Color(0xFFE8F7EF)
+              : hasValue
+                  ? Colors.white
+                  : const Color(0xFFF3F7F8),
+          border: Border.all(
+            color: hasValue ? AppTheme.primaryNile : const Color(0xFFDDE6E8),
+            width: hasValue ? 1.5 : 1.0,
           ),
         ),
-        Obx(
-          () => AnimatedSize(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOut,
-            child: isExpanded.value && filteredSuggestions.isNotEmpty
-                ? Container(
-                    margin: const EdgeInsets.only(top: 8),
-                    constraints: const BoxConstraints(maxHeight: 220),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: filteredSuggestions.length,
-                      itemBuilder: (_, index) {
-                        final suggestion = filteredSuggestions[index];
-                        return ListTile(
-                          leading: const Icon(Icons.location_on_outlined),
-                          title: Text(suggestion),
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            widget.onSelected(suggestion);
-                            _controller.text = suggestion;
-                            _focusNode.unfocus();
-                          },
-                        );
-                      },
-                    ),
-                  )
-                : const SizedBox.shrink(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 13),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Icon(
+                  widget.icon,
+                  size: 17,
+                  color:
+                      hasValue ? AppTheme.primaryNile : Colors.grey.shade400,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  hasValue ? widget.selectedText : widget.hint,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: hasValue ? FontWeight.w600 : FontWeight.w400,
+                    color: hasValue
+                        ? const Color(0xFF1A535C)
+                        : Colors.grey.shade400,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (hasValue)
+                GestureDetector(
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    widget.onSelected('');
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Icon(Icons.close_rounded,
+                        size: 16, color: Colors.grey.shade400),
+                  ),
+                ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Bottom-sheet station picker
+// ═══════════════════════════════════════════════════════════════════════════════
+
+class _StationSearchSheet extends StatefulWidget {
+  final List<String> suggestions;
+  final Map<String, List<String>>? stationLines;
+  final String selectedText;
+  final String hint;
+  final IconData icon;
+
+  const _StationSearchSheet({
+    required this.suggestions,
+    this.stationLines,
+    required this.selectedText,
+    required this.hint,
+    required this.icon,
+  });
+
+  @override
+  State<_StationSearchSheet> createState() => _StationSearchSheetState();
+}
+
+class _StationSearchSheetState extends State<_StationSearchSheet> {
+  late final TextEditingController _searchCtrl;
+  late final FocusNode _searchFocus;
+  List<String> _filtered = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchCtrl = TextEditingController();
+    _searchFocus = FocusNode();
+    _filtered = List.from(widget.suggestions);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _searchFocus.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    _searchFocus.dispose();
+    super.dispose();
+  }
+
+  void _filter(String query) {
+    final q = query.toLowerCase().trim();
+    setState(() {
+      _filtered = q.isEmpty
+          ? List.from(widget.suggestions)
+          : widget.suggestions
+              .where((s) => s.toLowerCase().contains(q))
+              .toList();
+    });
+  }
+
+  // ── Build ─────────────────────────────────────────────────────────────────
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+
+    return GestureDetector(
+      // Dismiss keyboard if user taps blank area inside sheet
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Container(
+        // Constrain to at most 75 % of screen, adjust for keyboard
+        constraints: BoxConstraints(
+          maxHeight:
+              MediaQuery.of(context).size.height * 0.75 ,
+        ),
+        padding: EdgeInsets.only(bottom: bottomInset),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _handle(),
+            _searchField(),
+            if (_filtered.isEmpty) _emptyState() else _stationList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── Drag handle ───────────────────────────────────────────────────────────
+
+  Widget _handle() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, bottom: 4),
+      child: Center(
+        child: Container(
+          width: 36,
+          height: 4,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Search field ──────────────────────────────────────────────────────────
+
+  Widget _searchField() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: TextField(
+        controller: _searchCtrl,
+        focusNode: _searchFocus,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF1A535C),
+        ),
+        decoration: InputDecoration(
+          hintText: widget.hint,
+          hintStyle: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey.shade400,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Icon(widget.icon, size: 18, color: AppTheme.primaryNile),
+          ),
+          prefixIconConstraints:
+              const BoxConstraints(minWidth: 42, minHeight: 0),
+          suffixIcon: _searchCtrl.text.isNotEmpty
+              ? IconButton(
+                  icon: Icon(Icons.close_rounded,
+                      size: 16, color: Colors.grey.shade400),
+                  onPressed: () {
+                    _searchCtrl.clear();
+                    _filter('');
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: const Color(0xFFF3F7F8),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide:
+                const BorderSide(color: Color(0xFFDDE6E8), width: 1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide:
+                const BorderSide(color: AppTheme.primaryNile, width: 1.5),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 4, vertical: 13),
+        ),
+        onChanged: (v) {
+          _filter(v);
+          setState(() {}); // update suffix icon
+        },
+      ),
+    );
+  }
+
+  // ── Station list ──────────────────────────────────────────────────────────
+
+  Widget _stationList() {
+    return Expanded(
+      child: ListView.builder(
+        padding: const EdgeInsets.only(top: 4, bottom: 16),
+        itemCount: _filtered.length,
+        itemBuilder: (_, i) => _buildItem(_filtered[i]),
+      ),
+    );
+  }
+
+  Widget _buildItem(String name) {
+    final isSelected = name == widget.selectedText;
+    final lines = widget.stationLines?[name] ?? <String>[];
+
+    return InkWell(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        Navigator.pop(context, name);
+      },
+      splashColor: AppTheme.primaryNile.withOpacity(0.06),
+      highlightColor: AppTheme.primaryNile.withOpacity(0.04),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
+        color:
+            isSelected ? AppTheme.primaryNile.withOpacity(0.07) : null,
+        child: Row(
+          children: [
+            _buildLineIndicator(lines, isSelected),
+            const SizedBox(width: 11),
+            Expanded(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected
+                      ? AppTheme.primaryNile
+                      : const Color(0xFF3D5A60),
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (isSelected) ...[
+              const SizedBox(width: 6),
+              Icon(Icons.check_rounded,
+                  size: 16, color: AppTheme.primaryNile),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── Empty state ───────────────────────────────────────────────────────────
+
+  Widget _emptyState() {
+    return Expanded(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.search_off_rounded,
+                  size: 40, color: Colors.grey.shade300),
+              const SizedBox(height: 8),
+              Text(
+                'No stations found',
+                style: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // ── Line indicator ────────────────────────────────────────────────────────
+
+  Widget _buildLineIndicator(List<String> lines, bool isSelected) {
+    if (lines.isEmpty) {
+      return Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppTheme.primaryNile.withOpacity(0.14)
+              : const Color(0xFFF0F5F6),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.directions_subway_rounded,
+          size: 14,
+          color: isSelected ? AppTheme.primaryNile : Colors.grey.shade500,
+        ),
+      );
+    }
+
+    if (lines.length == 1) {
+      return _lineCircle(lines[0], 30);
+    }
+
+    const size = 24.0;
+    const shift = 14.0;
+    final totalW = size + (lines.length - 1) * shift;
+
+    return SizedBox(
+      width: totalW,
+      height: size,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: List.generate(lines.length, (i) {
+          return Positioned(
+            left: i * shift,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: _lineCircle(lines[i], size),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _lineCircle(String line, double size) {
+    final color = _lineColor(line);
+    final isLrt = line == 'LRT';
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      child: Center(
+        child: Text(
+          isLrt ? 'L' : line,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size * (isLrt ? 0.33 : 0.40),
+            fontWeight: FontWeight.w900,
+            letterSpacing: -0.5,
+            height: 1,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _lineColor(String line) => switch (line) {
+        '1' => AppTheme.line1,
+        '2' => AppTheme.line2,
+        '3' => AppTheme.line3,
+        'LRT' => AppTheme.lrt,
+        _ => AppTheme.primaryNile,
+      };
 }

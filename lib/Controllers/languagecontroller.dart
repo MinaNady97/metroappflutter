@@ -1,33 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageController extends GetxController {
-  var selectedLanguage = 'en'.obs; // Default language is English
-  final storage = GetStorage();
+  static const _prefKey = 'language_code';
+
+  var selectedLanguage = 'en'.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Retrieve saved language from local storage on initialization
-    String? savedLang = storage.read('selectedLanguage');
-    if (savedLang != null) {
-      selectedLanguage.value = savedLang;
-      _setLocale(savedLang);
-    }
+    _load();
   }
 
-  // Method to switch languages
-  void switchLanguage(String langCode) {
+  Future<void> _load() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getString(_prefKey) ?? 'en';
+    selectedLanguage.value = saved;
+    Get.updateLocale(Locale(saved));
+  }
+
+  Future<void> switchLanguage(String langCode) async {
     selectedLanguage.value = langCode;
-    _setLocale(langCode);
-    // Save the selected language to local storage
-    storage.write('selectedLanguage', langCode);
-  }
-
-  // Method to update the locale in the app
-  void _setLocale(String langCode) {
-    Locale locale = Locale(langCode);
-    Get.updateLocale(locale);
+    Get.updateLocale(Locale(langCode));
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_prefKey, langCode);
   }
 }

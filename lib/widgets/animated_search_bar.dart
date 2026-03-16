@@ -84,6 +84,17 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
   @override
   Widget build(BuildContext context) {
     final hasValue = widget.selectedText.isNotEmpty;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    Color bgColor;
+    if (_flashHighlight) {
+      bgColor = isDark ? AppTheme.darkFlashHighlight : const Color(0xFFE8F7EF);
+    } else if (hasValue) {
+      bgColor = isDark ? AppTheme.darkCard : AppTheme.lightCard;
+    } else {
+      bgColor = isDark ? AppTheme.darkSurface : AppTheme.lightSubtle;
+    }
+
     return GestureDetector(
       onTap: _openSearch,
       child: AnimatedContainer(
@@ -91,13 +102,11 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: _flashHighlight
-              ? const Color(0xFFE8F7EF)
-              : hasValue
-                  ? Colors.white
-                  : const Color(0xFFF3F7F8),
+          color: bgColor,
           border: Border.all(
-            color: hasValue ? AppTheme.primaryNile : const Color(0xFFDDE6E8),
+            color: hasValue
+                ? AppTheme.primaryNile
+                : (isDark ? AppTheme.darkBorder : AppTheme.lightBorder),
             width: hasValue ? 1.5 : 1.0,
           ),
         ),
@@ -110,8 +119,11 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                 child: Icon(
                   widget.icon,
                   size: 17,
-                  color:
-                      hasValue ? AppTheme.primaryNile : Colors.grey.shade400,
+                  color: hasValue
+                      ? AppTheme.primaryNile
+                      : (isDark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade400),
                 ),
               ),
               Expanded(
@@ -121,8 +133,12 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                     fontSize: 13,
                     fontWeight: hasValue ? FontWeight.w600 : FontWeight.w400,
                     color: hasValue
-                        ? const Color(0xFF1A535C)
-                        : Colors.grey.shade400,
+                        ? (isDark
+                            ? AppTheme.darkPrimary
+                            : AppTheme.primaryNile)
+                        : (isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -136,7 +152,10 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Icon(Icons.close_rounded,
-                        size: 16, color: Colors.grey.shade400),
+                        size: 16,
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400),
                   ),
                 ),
             ],
@@ -209,6 +228,8 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final sheetBg = isDark ? AppTheme.darkSurface : AppTheme.lightCard;
 
     return GestureDetector(
       // Dismiss keyboard if user taps blank area inside sheet
@@ -217,12 +238,12 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
         // Constrain to at most 75 % of screen, adjust for keyboard
         constraints: BoxConstraints(
           maxHeight:
-              MediaQuery.of(context).size.height * 0.75 ,
+              MediaQuery.of(context).size.height * 0.75,
         ),
         padding: EdgeInsets.only(bottom: bottomInset),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+        decoration: BoxDecoration(
+          color: sheetBg,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -239,6 +260,7 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   // ── Drag handle ───────────────────────────────────────────────────────────
 
   Widget _handle() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 4),
       child: Center(
@@ -246,7 +268,7 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
           width: 36,
           height: 4,
           decoration: BoxDecoration(
-            color: Colors.grey.shade300,
+            color: isDark ? AppTheme.darkBorder : Colors.grey.shade300,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
@@ -257,22 +279,23 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   // ── Search field ──────────────────────────────────────────────────────────
 
   Widget _searchField() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: TextField(
         controller: _searchCtrl,
         focusNode: _searchFocus,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
-          color: Color(0xFF1A535C),
+          color: isDark ? AppTheme.darkPrimary : const Color(0xFF1A535C),
         ),
         decoration: InputDecoration(
           hintText: widget.hint,
           hintStyle: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w400,
-            color: Colors.grey.shade400,
+            color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
           ),
           prefixIcon: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -283,7 +306,10 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
           suffixIcon: _searchCtrl.text.isNotEmpty
               ? IconButton(
                   icon: Icon(Icons.close_rounded,
-                      size: 16, color: Colors.grey.shade400),
+                      size: 16,
+                      color: isDark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade400),
                   onPressed: () {
                     _searchCtrl.clear();
                     _filter('');
@@ -291,15 +317,20 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
                 )
               : null,
           filled: true,
-          fillColor: const Color(0xFFF3F7F8),
+          fillColor:
+              isDark ? AppTheme.darkElevated : AppTheme.lightSubtle,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
             borderSide: BorderSide.none,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide:
-                const BorderSide(color: Color(0xFFDDE6E8), width: 1),
+            borderSide: BorderSide(
+              color: isDark
+                  ? AppTheme.darkBorder
+                  : AppTheme.lightBorder,
+              width: 1,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -332,18 +363,20 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   Widget _buildItem(String name) {
     final isSelected = name == widget.selectedText;
     final lines = widget.stationLines?[name] ?? <String>[];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
         Navigator.pop(context, name);
       },
-      splashColor: AppTheme.primaryNile.withOpacity(0.06),
-      highlightColor: AppTheme.primaryNile.withOpacity(0.04),
+      splashColor: AppTheme.primaryNile.withOpacity(0.08),
+      highlightColor: AppTheme.primaryNile.withOpacity(0.05),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
-        color:
-            isSelected ? AppTheme.primaryNile.withOpacity(0.07) : null,
+        color: isSelected
+            ? AppTheme.primaryNile.withOpacity(isDark ? 0.15 : 0.07)
+            : null,
         child: Row(
           children: [
             _buildLineIndicator(lines, isSelected),
@@ -356,7 +389,9 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   color: isSelected
                       ? AppTheme.primaryNile
-                      : const Color(0xFF3D5A60),
+                      : (isDark
+                          ? AppTheme.darkTextSub
+                          : AppTheme.lightStationText),
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -375,6 +410,7 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   // ── Empty state ───────────────────────────────────────────────────────────
 
   Widget _emptyState() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Expanded(
       child: Center(
         child: Padding(
@@ -383,12 +419,17 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.search_off_rounded,
-                  size: 40, color: Colors.grey.shade300),
+                  size: 40,
+                  color: isDark
+                      ? AppTheme.darkBorder
+                      : Colors.grey.shade300),
               const SizedBox(height: 8),
               Text(
                 'No stations found',
                 style: TextStyle(
-                    color: Colors.grey.shade400,
+                    color: isDark
+                        ? AppTheme.darkTextTertiary
+                        : Colors.grey.shade400,
                     fontSize: 14,
                     fontWeight: FontWeight.w500),
               ),
@@ -402,6 +443,7 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
   // ── Line indicator ────────────────────────────────────────────────────────
 
   Widget _buildLineIndicator(List<String> lines, bool isSelected) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (lines.isEmpty) {
       return Container(
         width: 30,
@@ -409,13 +451,15 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
         decoration: BoxDecoration(
           color: isSelected
               ? AppTheme.primaryNile.withOpacity(0.14)
-              : const Color(0xFFF0F5F6),
+              : (isDark ? AppTheme.darkElevated : const Color(0xFFF0F5F6)),
           shape: BoxShape.circle,
         ),
         child: Icon(
           Icons.directions_subway_rounded,
           size: 14,
-          color: isSelected ? AppTheme.primaryNile : Colors.grey.shade500,
+          color: isSelected
+              ? AppTheme.primaryNile
+              : (isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500),
         ),
       );
     }
@@ -427,6 +471,8 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
     const size = 24.0;
     const shift = 14.0;
     final totalW = size + (lines.length - 1) * shift;
+    final borderColor =
+        isDark ? AppTheme.darkSurface : AppTheme.lightCard;
 
     return SizedBox(
       width: totalW,
@@ -439,7 +485,7 @@ class _StationSearchSheetState extends State<_StationSearchSheet> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2),
+                border: Border.all(color: borderColor, width: 2),
               ),
               child: _lineCircle(lines[i], size),
             ),

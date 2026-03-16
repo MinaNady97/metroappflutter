@@ -6,7 +6,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_it.dart';
+import 'app_localizations_ja.dart';
+import 'app_localizations_pt.dart';
+import 'app_localizations_ru.dart';
+import 'app_localizations_tr.dart';
+import 'app_localizations_zh.dart';
 
 // ignore_for_file: type=lint
 
@@ -92,7 +101,16 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
-    Locale('en')
+    Locale('de'),
+    Locale('en'),
+    Locale('es'),
+    Locale('fr'),
+    Locale('it'),
+    Locale('ja'),
+    Locale('pt'),
+    Locale('ru'),
+    Locale('tr'),
+    Locale('zh')
   ];
 
   /// No description provided for @locale.
@@ -2602,6 +2620,420 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Busy'**
   String get crowdBusyLabel;
+
+  /// No description provided for @locationDialogNoThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'No thanks'**
+  String get locationDialogNoThanks;
+
+  /// No description provided for @locationDialogTurnOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get locationDialogTurnOn;
+
+  /// No description provided for @locationDialogOpenSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get locationDialogOpenSettings;
+
+  /// No description provided for @touristGuidePlacesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'places to explore'**
+  String get touristGuidePlacesCount;
+
+  /// No description provided for @touristGuideDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Times, distances, and details are approximate and may vary. Please verify officially before visiting.'**
+  String get touristGuideDisclaimer;
+
+  /// No description provided for @touristGuideSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search places or stations...'**
+  String get touristGuideSearchHint;
+
+  /// No description provided for @touristGuideCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get touristGuideCategoryAll;
+
+  /// No description provided for @touristGuideNoPlaces.
+  ///
+  /// In en, this message translates to:
+  /// **'No places found'**
+  String get touristGuideNoPlaces;
+
+  /// No description provided for @touristGuideNoPlacesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different search or category'**
+  String get touristGuideNoPlacesSub;
+
+  /// No description provided for @photographyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photography'**
+  String get photographyTitle;
+
+  /// No description provided for @photographyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Photography is not allowed inside metro stations. Some attractions may charge a camera fee.'**
+  String get photographyDescription;
+
+  /// No description provided for @bestTimeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Best Time to Visit'**
+  String get bestTimeTitle;
+
+  /// No description provided for @bestTimeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'October to April offers the best weather. Visit outdoor sites early morning or late afternoon.'**
+  String get bestTimeDescription;
+
+  /// No description provided for @phrase4.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you'**
+  String get phrase4;
+
+  /// No description provided for @phrase4Translation.
+  ///
+  /// In en, this message translates to:
+  /// **'شكراً (Shukran)'**
+  String get phrase4Translation;
+
+  /// No description provided for @phrase5.
+  ///
+  /// In en, this message translates to:
+  /// **'How much?'**
+  String get phrase5;
+
+  /// No description provided for @phrase5Translation.
+  ///
+  /// In en, this message translates to:
+  /// **'بكام؟ (Bikam?)'**
+  String get phrase5Translation;
+
+  /// No description provided for @phrase6.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is...?'**
+  String get phrase6;
+
+  /// No description provided for @phrase6Translation.
+  ///
+  /// In en, this message translates to:
+  /// **'فين...؟ (Fein...?)'**
+  String get phrase6Translation;
+
+  /// No description provided for @phrase7.
+  ///
+  /// In en, this message translates to:
+  /// **'I want to go to...'**
+  String get phrase7;
+
+  /// No description provided for @phrase7Translation.
+  ///
+  /// In en, this message translates to:
+  /// **'أنا عايز أروح... (Ana aayez aroh...)'**
+  String get phrase7Translation;
+
+  /// No description provided for @phrase8.
+  ///
+  /// In en, this message translates to:
+  /// **'Is it far?'**
+  String get phrase8;
+
+  /// No description provided for @phrase8Translation.
+  ///
+  /// In en, this message translates to:
+  /// **'هو بعيد؟ (Howwa baeed?)'**
+  String get phrase8Translation;
+
+  /// No description provided for @planRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Route'**
+  String get planRoute;
+
+  /// No description provided for @lineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Line'**
+  String get lineLabel;
+
+  /// No description provided for @categoryHistorical.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical'**
+  String get categoryHistorical;
+
+  /// No description provided for @categoryMuseum.
+  ///
+  /// In en, this message translates to:
+  /// **'Museums'**
+  String get categoryMuseum;
+
+  /// No description provided for @categoryReligious.
+  ///
+  /// In en, this message translates to:
+  /// **'Religious'**
+  String get categoryReligious;
+
+  /// No description provided for @categoryPark.
+  ///
+  /// In en, this message translates to:
+  /// **'Parks'**
+  String get categoryPark;
+
+  /// No description provided for @categoryShopping.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping'**
+  String get categoryShopping;
+
+  /// No description provided for @categoryCulture.
+  ///
+  /// In en, this message translates to:
+  /// **'Culture'**
+  String get categoryCulture;
+
+  /// No description provided for @categoryNile.
+  ///
+  /// In en, this message translates to:
+  /// **'Nile'**
+  String get categoryNile;
+
+  /// No description provided for @categoryHiddenGem.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden Gems'**
+  String get categoryHiddenGem;
+
+  /// No description provided for @facilityCommercial.
+  ///
+  /// In en, this message translates to:
+  /// **'Commercial'**
+  String get facilityCommercial;
+
+  /// No description provided for @facilityCultural.
+  ///
+  /// In en, this message translates to:
+  /// **'Cultural'**
+  String get facilityCultural;
+
+  /// No description provided for @facilityEducational.
+  ///
+  /// In en, this message translates to:
+  /// **'Educational'**
+  String get facilityEducational;
+
+  /// No description provided for @facilityLandmarks.
+  ///
+  /// In en, this message translates to:
+  /// **'Landmarks'**
+  String get facilityLandmarks;
+
+  /// No description provided for @facilityMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical'**
+  String get facilityMedical;
+
+  /// No description provided for @facilityPublicInstitutions.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Institutions'**
+  String get facilityPublicInstitutions;
+
+  /// No description provided for @facilityPublicSpaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Public Spaces'**
+  String get facilityPublicSpaces;
+
+  /// No description provided for @facilityReligious.
+  ///
+  /// In en, this message translates to:
+  /// **'Religious'**
+  String get facilityReligious;
+
+  /// No description provided for @facilityServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get facilityServices;
+
+  /// No description provided for @facilitySportFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Sport Facilities'**
+  String get facilitySportFacilities;
+
+  /// No description provided for @facilityStreets.
+  ///
+  /// In en, this message translates to:
+  /// **'Streets'**
+  String get facilityStreets;
+
+  /// No description provided for @facilitySearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search places...'**
+  String get facilitySearchHint;
+
+  /// No description provided for @facilityNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No facility data available for this station yet'**
+  String get facilityNoData;
+
+  /// No description provided for @facilityDataSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Data will be added soon'**
+  String get facilityDataSoon;
+
+  /// No description provided for @facilityClearFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filter'**
+  String get facilityClearFilter;
+
+  /// No description provided for @facilityPlacesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'places'**
+  String get facilityPlacesCount;
+
+  /// No description provided for @facilityZoomHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinch and drag to zoom'**
+  String get facilityZoomHint;
+
+  /// No description provided for @facilityCategoriesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'categories'**
+  String get facilityCategoriesLabel;
+
+  /// No description provided for @sortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get sortBy;
+
+  /// No description provided for @sortStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops'**
+  String get sortStops;
+
+  /// No description provided for @sortTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get sortTime;
+
+  /// No description provided for @sortFare.
+  ///
+  /// In en, this message translates to:
+  /// **'Fare'**
+  String get sortFare;
+
+  /// No description provided for @sortLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines'**
+  String get sortLines;
+
+  /// No description provided for @bestRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Best'**
+  String get bestRoute;
+
+  /// No description provided for @hideStops.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide stops'**
+  String get hideStops;
+
+  /// No description provided for @showLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get showLabel;
+
+  /// No description provided for @stopsWord.
+  ///
+  /// In en, this message translates to:
+  /// **'stops'**
+  String get stopsWord;
+
+  /// No description provided for @minuteShort.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minuteShort;
+
+  /// No description provided for @detectingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Detecting your location...'**
+  String get detectingLocation;
+
+  /// No description provided for @tapToExplore.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to explore'**
+  String get tapToExplore;
+
+  /// No description provided for @couldNotOpenMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Google Maps'**
+  String get couldNotOpenMaps;
+
+  /// No description provided for @couldNotGetLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get your location. Check location permission.'**
+  String get couldNotGetLocation;
+
+  /// No description provided for @googleMapsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Maps'**
+  String get googleMapsLabel;
+
+  /// No description provided for @couldNotFindNearestStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not find nearest station'**
+  String get couldNotFindNearestStation;
+
+  /// No description provided for @zoomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom'**
+  String get zoomLabel;
+
+  /// No description provided for @transferAtStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer at {station}'**
+  String transferAtStation(Object station);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -2613,7 +3045,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['ar', 'en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['ar', 'de', 'en', 'es', 'fr', 'it', 'ja', 'pt', 'ru', 'tr', 'zh'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -2625,7 +3057,16 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'ar': return AppLocalizationsAr();
+    case 'de': return AppLocalizationsDe();
     case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
+    case 'fr': return AppLocalizationsFr();
+    case 'it': return AppLocalizationsIt();
+    case 'ja': return AppLocalizationsJa();
+    case 'pt': return AppLocalizationsPt();
+    case 'ru': return AppLocalizationsRu();
+    case 'tr': return AppLocalizationsTr();
+    case 'zh': return AppLocalizationsZh();
   }
 
   throw FlutterError(

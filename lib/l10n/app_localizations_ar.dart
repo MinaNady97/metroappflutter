@@ -1283,4 +1283,213 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get crowdBusyLabel => 'مزدحم';
+
+  @override
+  String get locationDialogNoThanks => 'لا شكراً';
+
+  @override
+  String get locationDialogTurnOn => 'تشغيل';
+
+  @override
+  String get locationDialogOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get touristGuidePlacesCount => 'مكان للاستكشاف';
+
+  @override
+  String get touristGuideDisclaimer => 'الأوقات والمسافات والتفاصيل تقريبية وقد تختلف. يُرجى التحقق رسمياً قبل الزيارة.';
+
+  @override
+  String get touristGuideSearchHint => 'ابحث عن مكان أو محطة...';
+
+  @override
+  String get touristGuideCategoryAll => 'الكل';
+
+  @override
+  String get touristGuideNoPlaces => 'لا توجد نتائج';
+
+  @override
+  String get touristGuideNoPlacesSub => 'جرب بحثاً مختلفاً أو فئة أخرى';
+
+  @override
+  String get photographyTitle => 'التصوير';
+
+  @override
+  String get photographyDescription => 'التصوير غير مسموح داخل محطات المترو. بعض المعالم قد تفرض رسوم كاميرا.';
+
+  @override
+  String get bestTimeTitle => 'أفضل وقت للزيارة';
+
+  @override
+  String get bestTimeDescription => 'أكتوبر إلى أبريل يوفر أفضل طقس. زُر المواقع المفتوحة صباحاً باكراً أو عصراً.';
+
+  @override
+  String get phrase4 => 'شكراً';
+
+  @override
+  String get phrase4Translation => 'شكراً (Shukran)';
+
+  @override
+  String get phrase5 => 'بكام؟';
+
+  @override
+  String get phrase5Translation => 'بكام؟ (Bikam?)';
+
+  @override
+  String get phrase6 => 'فين...؟';
+
+  @override
+  String get phrase6Translation => 'فين...؟ (Fein...?)';
+
+  @override
+  String get phrase7 => 'أنا عايز أروح...';
+
+  @override
+  String get phrase7Translation => 'أنا عايز أروح... (Ana aayez aroh...)';
+
+  @override
+  String get phrase8 => 'هو بعيد؟';
+
+  @override
+  String get phrase8Translation => 'هو بعيد؟ (Howwa baeed?)';
+
+  @override
+  String get planRoute => 'خطط الرحلة';
+
+  @override
+  String get lineLabel => 'خط';
+
+  @override
+  String get categoryHistorical => 'تاريخي';
+
+  @override
+  String get categoryMuseum => 'متاحف';
+
+  @override
+  String get categoryReligious => 'ديني';
+
+  @override
+  String get categoryPark => 'حدائق';
+
+  @override
+  String get categoryShopping => 'تسوق';
+
+  @override
+  String get categoryCulture => 'ثقافي';
+
+  @override
+  String get categoryNile => 'النيل';
+
+  @override
+  String get categoryHiddenGem => 'جواهر خفية';
+
+  @override
+  String get facilityCommercial => 'تجاري';
+
+  @override
+  String get facilityCultural => 'ثقافي';
+
+  @override
+  String get facilityEducational => 'تعليمي';
+
+  @override
+  String get facilityLandmarks => 'معالم';
+
+  @override
+  String get facilityMedical => 'طبي';
+
+  @override
+  String get facilityPublicInstitutions => 'مؤسسات عامة';
+
+  @override
+  String get facilityPublicSpaces => 'مساحات عامة';
+
+  @override
+  String get facilityReligious => 'ديني';
+
+  @override
+  String get facilityServices => 'خدمات';
+
+  @override
+  String get facilitySportFacilities => 'مرافق رياضية';
+
+  @override
+  String get facilityStreets => 'شوارع';
+
+  @override
+  String get facilitySearchHint => 'ابحث عن مكان...';
+
+  @override
+  String get facilityNoData => 'لا تتوفر بيانات لهذه المحطة حتى الآن';
+
+  @override
+  String get facilityDataSoon => 'سيتم إضافة البيانات قريباً';
+
+  @override
+  String get facilityClearFilter => 'مسح الفلتر';
+
+  @override
+  String get facilityPlacesCount => 'مكان';
+
+  @override
+  String get facilityZoomHint => 'قرّب واسحب لاستكشاف الصورة';
+
+  @override
+  String get facilityCategoriesLabel => 'فئة';
+
+  @override
+  String get sortBy => 'ترتيب حسب';
+
+  @override
+  String get sortStops => 'المحطات';
+
+  @override
+  String get sortTime => 'الوقت';
+
+  @override
+  String get sortFare => 'السعر';
+
+  @override
+  String get sortLines => 'الخطوط';
+
+  @override
+  String get bestRoute => 'الأفضل';
+
+  @override
+  String get hideStops => 'إخفاء المحطات';
+
+  @override
+  String get showLabel => 'عرض';
+
+  @override
+  String get stopsWord => 'محطات';
+
+  @override
+  String get minuteShort => 'د';
+
+  @override
+  String get detectingLocation => 'جاري تحديد موقعك...';
+
+  @override
+  String get tapToExplore => 'اضغط للاستكشاف';
+
+  @override
+  String get couldNotOpenMaps => 'لم نتمكن من فتح خرائط جوجل';
+
+  @override
+  String get couldNotGetLocation => 'لم نتمكن من تحديد موقعك. تحقق من إذن الموقع.';
+
+  @override
+  String get googleMapsLabel => 'خرائط جوجل';
+
+  @override
+  String get couldNotFindNearestStation => 'لم نتمكن من تحديد أقرب محطة';
+
+  @override
+  String get zoomLabel => 'تكبير';
+
+  @override
+  String transferAtStation(Object station) {
+    return 'تحويل في $station';
+  }
 }

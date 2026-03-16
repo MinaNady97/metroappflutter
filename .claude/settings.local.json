@@ -5,7 +5,9 @@
       "Bash(flutter analyze:*)",
       "WebFetch(domain:grokipedia.com)",
       "Bash(cd \"C:\\\\Users\\\\menan\\\\Downloads\\\\OutWork\\\\metroappflutter\" && flutter gen-l10n 2>&1)",
-      "Bash(cd \"C:\\\\Users\\\\menan\\\\Downloads\\\\OutWork\\\\metroappflutter\" && flutter build apk --debug 2>&1 | tail -20)"
+      "Bash(cd \"C:\\\\Users\\\\menan\\\\Downloads\\\\OutWork\\\\metroappflutter\" && flutter build apk --debug 2>&1 | tail -20)",
+      "Bash(wc:*)",
+      "Bash(cat:*)"
     ]
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
 
 // ─── Data models ────────────────────────────────────────────────────────────
@@ -165,6 +166,8 @@ class _LinePreviewCardState extends State<LinePreviewCard>
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final meta = _meta;
     return GestureDetector(
       onTapDown: (_) => _pressCtrl.forward(),
@@ -182,12 +185,15 @@ class _LinePreviewCardState extends State<LinePreviewCard>
           width: 200,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cs.surface,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.grey.shade100),
+            border: Border.all(
+                color: isDark
+                    ? AppTheme.darkBorder
+                    : Colors.grey.shade100),
             boxShadow: [
               BoxShadow(
-                color: widget.color.withOpacity(0.12),
+                color: widget.color.withOpacity(isDark ? 0.25 : 0.12),
                 blurRadius: 14,
                 offset: const Offset(0, 5),
               ),
@@ -201,15 +207,17 @@ class _LinePreviewCardState extends State<LinePreviewCard>
                 const SizedBox(height: 10),
                 _buildTerminusRail(meta),
                 const SizedBox(height: 10),
-                _buildStatsRow(meta),
+                _buildStatsRow(meta, isDark),
                 const SizedBox(height: 8),
-                _buildFooter(meta),
+                _buildFooter(meta, isDark),
               ] else ...[
                 const Spacer(),
                 Text(
                   '${widget.stations} stations',
                   style: TextStyle(
-                    color: Colors.grey.shade600,
+                    color: isDark
+                        ? AppTheme.darkTextSub
+                        : Colors.grey.shade600,
                     fontSize: 12,
                   ),
                 ),
@@ -312,40 +320,46 @@ class _LinePreviewCardState extends State<LinePreviewCard>
         ),
       );
 
-  Widget _buildStatsRow(LineMetadata meta) {
+  Widget _buildStatsRow(LineMetadata meta, bool isDark) {
     return Row(
       children: [
-        _statChip(Icons.straighten, '${meta.distanceKm.toStringAsFixed(0)}km'),
+        _statChip(Icons.straighten, '${meta.distanceKm.toStringAsFixed(0)}km',
+            isDark),
         const SizedBox(width: 6),
-        _statChip(Icons.schedule, '${meta.travelMinutes}m'),
+        _statChip(Icons.schedule, '${meta.travelMinutes}m', isDark),
         const SizedBox(width: 6),
-        _statChip(Icons.sync_alt, '${meta.transferCount}x'),
+        _statChip(Icons.sync_alt, '${meta.transferCount}x', isDark),
       ],
     );
   }
 
-  Widget _statChip(IconData icon, String label) {
+  Widget _statChip(IconData icon, String label, bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: isDark ? AppTheme.darkElevated : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 10, color: Colors.grey.shade600),
+          Icon(icon,
+              size: 10,
+              color: isDark ? AppTheme.darkTextSub : Colors.grey.shade600),
           const SizedBox(width: 3),
           Text(
             label,
-            style: TextStyle(fontSize: 10, color: Colors.grey.shade700),
+            style: TextStyle(
+                fontSize: 10,
+                color:
+                    isDark ? AppTheme.darkTextSub : Colors.grey.shade700),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFooter(LineMetadata meta) {
+  Widget _buildFooter(LineMetadata meta, bool isDark) {
     final l10n = AppLocalizations.of(context);
     final crowdColor = switch (meta.crowdLevel) {
       CrowdLevel.calm => const Color(0xFF00A86B),
@@ -360,11 +374,17 @@ class _LinePreviewCardState extends State<LinePreviewCard>
 
     return Row(
       children: [
-        Icon(Icons.access_time, size: 11, color: Colors.grey.shade500),
+        Icon(Icons.access_time,
+            size: 11,
+            color:
+                isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500),
         const SizedBox(width: 3),
         Text(
           '${meta.firstTrain}–${meta.lastTrain}',
-          style: TextStyle(fontSize: 10, color: Colors.grey.shade600),
+          style: TextStyle(
+              fontSize: 10,
+              color:
+                  isDark ? AppTheme.darkTextSub : Colors.grey.shade600),
         ),
         const Spacer(),
         Container(

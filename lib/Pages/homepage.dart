@@ -17,12 +17,14 @@ import 'package:metroappflutter/Pages/station_explorer.dart';
 import 'package:metroappflutter/Pages/station_facilities.dart';
 import 'package:metroappflutter/Pages/location_picker_page.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
+import 'package:metroappflutter/core/theme/theme_controller.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:metroappflutter/widgets/animated_search_bar.dart';
 import 'package:metroappflutter/widgets/all_lines_modal.dart';
 import 'package:metroappflutter/widgets/line_preview_card.dart';
 import 'package:metroappflutter/widgets/metro_map_preview.dart';
 import 'package:metroappflutter/widgets/quick_action_card.dart';
+import 'package:metroappflutter/widgets/location_permission_dialog.dart';
 
 import '../Constants/metro_stations.dart';
 
@@ -233,7 +235,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         if (!didPop) _showExitDialog(context, l10n);
       },
       child: Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       floatingActionButton: _buildFab(l10n),
       body: RefreshIndicator(
         color: AppTheme.primaryNile,
@@ -306,7 +307,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 32),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(ctx).brightness == Brightness.dark
+                  ? AppTheme.darkSurface
+                  : AppTheme.lightCard,
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
                 BoxShadow(
@@ -377,7 +380,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey.shade600,
+                            color: Theme.of(ctx).brightness == Brightness.dark
+                                ? AppTheme.darkTextSub
+                                : Colors.grey.shade600,
                             height: 1.6,
                           ),
                         ),
@@ -393,19 +398,29 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 15),
                                   side: BorderSide(
-                                      color: Colors.grey.shade200,
+                                      color: Theme.of(ctx).brightness ==
+                                              Brightness.dark
+                                          ? AppTheme.darkBorder
+                                          : Colors.grey.shade200,
                                       width: 1.5),
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(16)),
-                                  backgroundColor: Colors.grey.shade50,
+                                  backgroundColor:
+                                      Theme.of(ctx).brightness ==
+                                              Brightness.dark
+                                          ? AppTheme.darkElevated
+                                          : Colors.grey.shade50,
                                 ),
                                 child: Text(
                                   l10n.exitDialogStay,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
-                                    color: Colors.grey.shade700,
+                                    color: Theme.of(ctx).brightness ==
+                                            Brightness.dark
+                                        ? AppTheme.darkTextSub
+                                        : Colors.grey.shade700,
                                   ),
                                 ),
                               ),
@@ -490,6 +505,16 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         _buildActionBtn(Icons.info_outline, () => _showInfo(context, l10n)),
         const SizedBox(width: 8),
         _buildActionBtn(Icons.language, () => _showLangPicker(context, l10n)),
+        const SizedBox(width: 8),
+        Obx(() {
+          final themeCtrl = Get.find<ThemeController>();
+          return _buildActionBtn(
+            themeCtrl.isDark
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded,
+            () => themeCtrl.toggleTheme(),
+          );
+        }),
         const SizedBox(width: 16),
       ],
       flexibleSpace: LayoutBuilder(
@@ -708,7 +733,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppTheme.lightCard,
         borderRadius: BorderRadius.circular(16),
         border: Border(
           left: BorderSide(
@@ -783,12 +808,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     IconData? icon,
     bool showPulse = false,
   }) {
-    return Container(
+    return Builder(builder: (context) {
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: bg,
+        color: isDark ? fg.withOpacity(0.15) : bg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: fg.withOpacity(0.15), width: 0.5),
+        border: Border.all(color: fg.withOpacity(0.25), width: 0.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -804,22 +831,25 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ],
       ),
     );
+    }); // Builder
   }
 
   // Replace _buildHeroCard with this:
 
   Widget _buildWelcomeHeader(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border(
           left: BorderSide(color: AppTheme.primaryNile, width: 4),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -835,14 +865,18 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   '👋 ${_getGreeting(l10n)}',
                   style: TextStyle(
                     fontSize: 13,
-                    color: AppTheme.primaryNile,
+                    color: isDark ? AppTheme.darkPrimary : AppTheme.primaryNile,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   l10n.homepageSubtitle,
-                  style: _TS.bodySecondary,
+                  style: _TS.bodySecondary.copyWith(
+                    color: isDark
+                        ? AppTheme.darkTextSub
+                        : const Color(0xFF78909C),
+                  ),
                 ),
               ],
             ),
@@ -884,14 +918,16 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   // ═══════════════════════════════════════════════════════════════════════════
 
   Widget _buildRoutePlanner(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -1024,7 +1060,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.history, size: 13, color: Colors.grey.shade500),
+                Icon(Icons.history,
+                  size: 13,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppTheme.darkTextTertiary
+                      : Colors.grey.shade500),
                 const SizedBox(width: 4),
                 Text(
                   l10n.recentSearchesLabel,
@@ -1091,9 +1131,16 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      valid ? AppTheme.primaryNile : Colors.grey.shade300,
-                  foregroundColor: valid ? Colors.white : Colors.grey.shade600,
+                  backgroundColor: valid
+                      ? AppTheme.primaryNile
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkElevated
+                          : Colors.grey.shade300),
+                  foregroundColor: valid
+                      ? Colors.white
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade600),
                   elevation: valid ? 2 : 0,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
@@ -1126,14 +1173,16 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   // ═══════════════════════════════════════════════════════════════════════════
 
   Widget _buildArrivalFinder(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.03),
             blurRadius: 16,
             offset: const Offset(0, 6),
           ),
@@ -1148,12 +1197,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
+                  color: isDark ? AppTheme.darkElevated : Colors.grey.shade50,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   Icons.search_rounded,
-                  color: Colors.grey.shade700,
+                  color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
                   size: 18,
                 ),
               ),
@@ -1168,7 +1217,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.grey.shade200, width: 1),
+              border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppTheme.darkBorder
+                      : Colors.grey.shade200,
+                  width: 1),
             ),
             child: TextField(
               controller: _destCtrl,
@@ -1332,6 +1385,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   Widget _buildFeatureBannerCard(_QuickAction a) {
+    return Builder(builder: (context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -1409,7 +1464,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   // Subtitle
                   Text(
                     a.subtitle,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: isDark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade600,
+                    ),
                   ),
                   // CTA
                   Row(
@@ -1434,6 +1494,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ),
       ),
     );
+    }); // Builder
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1519,9 +1580,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       AppLocalizations l10n,
       bool underConstruction) {
     final meta = kLineMetadata[id];
-    final cardColor = underConstruction ? Colors.grey.shade50 : Colors.white;
-    final textColor =
-        underConstruction ? Colors.grey.shade500 : Colors.grey.shade800;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = underConstruction
+        ? (isDark ? AppTheme.darkBackground : Colors.grey.shade50)
+        : (isDark ? AppTheme.darkCard : AppTheme.lightCard);
+    final textColor = underConstruction
+        ? (isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500)
+        : (isDark ? AppTheme.darkText : Colors.grey.shade800);
 
     return GestureDetector(
       onTap: () {
@@ -1699,17 +1764,24 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   Widget _miniChip(IconData icon, String label, Color color) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 11, color: color.withOpacity(0.7)),
-        const SizedBox(width: 3),
-        Text(
-          label,
-          style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-        ),
-      ],
-    );
+    return Builder(builder: (context) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 11, color: color.withOpacity(0.7)),
+          const SizedBox(width: 3),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkTextSub
+                  : Colors.grey.shade600,
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _terminusDot(Color color, bool underConstruction) {
@@ -1733,20 +1805,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
     // Featured stations with their facility counts
     final featured = <(String, String, int)>[
-      (
-        'SAFAA HEGAZI',
-        isAr ? l10n.metroStationSAFAA_HEGAZI : 'SAFAA HEGAZI',
-        82
-      ),
-      ('KIT KAT', isAr ? l10n.metroStationKIT_KAT : 'KIT KAT', 72),
-      ('ABASIA', isAr ? l10n.metroStationABASIA : 'ABASIA', 70),
-      ('ABDO BASHA', isAr ? l10n.metroStationABDO_BASHA : 'ABDO BASHA', 56),
-      (
-        'GAMAL ABD EL-NASSER',
-        isAr ? l10n.metroStationGAMAL_ABD_EL_NASSER : 'GAMAL ABD EL-NASSER',
-        54
-      ),
-      ('ATABA', isAr ? l10n.metroStationATABA : 'ATABA', 51),
+      ('SAFAA HEGAZI', l10n.metroStationSAFAA_HEGAZI, 82),
+      ('KIT KAT', l10n.metroStationKIT_KAT, 72),
+      ('ABASIA', l10n.metroStationABASIA, 70),
+      ('ABDO BASHA', l10n.metroStationABDO_BASHA, 56),
+      ('GAMAL ABD EL-NASSER', l10n.metroStationGAMAL_ABD_EL_NASSER, 54),
+      ('ATABA', l10n.metroStationATABA, 51),
     ];
 
     return Column(
@@ -1780,7 +1844,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
             l10n.exploreAreaSubtitle,
             style: TextStyle(
               fontSize: 12,
-              color: Colors.grey.shade500,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkTextTertiary
+                  : Colors.grey.shade500,
             ),
           ),
         ),
@@ -1924,7 +1990,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    isAr ? 'اضغط للاستكشاف' : 'Tap to explore',
+                    AppLocalizations.of(context)!.tapToExplore,
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.white.withOpacity(0.75),
@@ -2021,9 +2087,10 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   // ═══════════════════════════════════════════════════════════════════════════
 
   Widget _buildSkeleton() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Shimmer.fromColors(
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
+      baseColor: isDark ? AppTheme.darkCard : Colors.grey.shade300,
+      highlightColor: isDark ? AppTheme.darkElevated : Colors.grey.shade100,
       child: Padding(
         padding: const EdgeInsets.all(18),
         child: Column(
@@ -2080,6 +2147,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   Widget _buildLocationFab(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fabColor = isDark ? AppTheme.darkPrimary : AppTheme.accentGold;
     return AnimatedBuilder(
       animation: _fabScale,
       builder: (_, child) =>
@@ -2089,17 +2158,17 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppTheme.accentGold.withOpacity(0.3),
+              color: fabColor.withOpacity(isDark ? 0.25 : 0.3),
               blurRadius: 8,
               spreadRadius: 1,
             ),
           ],
         ),
         child: FloatingActionButton(
-          backgroundColor: AppTheme.accentGold,
+          backgroundColor: fabColor,
           foregroundColor: Colors.white,
           elevation: 6,
-          mini: true, // This makes it smaller!
+          mini: true,
           onPressed: () => _locateMe(context, l10n),
           child: const Icon(Icons.my_location_rounded, size: 18),
         ),
@@ -2108,22 +2177,21 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   Widget _buildLocationLoadingFab(AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final fabColor = isDark ? AppTheme.darkPrimary : AppTheme.accentGold;
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            AppTheme.accentGold.withOpacity(0.8),
-            AppTheme.accentGold,
-          ],
+          colors: [fabColor.withOpacity(0.8), fabColor],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: AppTheme.accentGold.withOpacity(0.4),
+            color: fabColor.withOpacity(0.4),
             blurRadius: 12,
             spreadRadius: 2,
           ),
@@ -2159,7 +2227,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   Widget _sectionTitle(BuildContext context, String text) => Text(
         text,
-        style: _TS.sectionHeader,
+        style: _TS.sectionHeader.copyWith(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppTheme.darkPrimary
+              : AppTheme.primaryNile,
+        ),
       );
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -2186,9 +2258,31 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       if (!context.mounted) return;
       final msg = e.toString();
       if (msg.contains('disabled')) {
-        _snack(context, l10n.locationServicesDisabled, error: true);
+        final enabled = await requestLocationServiceNative();
+        if (enabled && context.mounted) {
+          // Service is now on — retry immediately
+          await _ctrl.updateUserLocation(context);
+          final s = _ctrl.depStation.value;
+          if (s.isNotEmpty && context.mounted) {
+            _snack(context, '${l10n.nearestStationFound}: $s');
+          }
+        }
+      } else if (msg.contains('permanently')) {
+        await showLocationDialog(
+          context,
+          type: LocationDialogType.permissionPermanentlyDenied,
+          noThanksLabel: l10n.locationDialogNoThanks,
+          turnOnLabel: l10n.locationDialogTurnOn,
+          openSettingsLabel: l10n.locationDialogOpenSettings,
+        );
       } else if (msg.contains('denied')) {
-        _snack(context, l10n.locationPermissionDenied, error: true);
+        await showLocationDialog(
+          context,
+          type: LocationDialogType.permissionDenied,
+          noThanksLabel: l10n.locationDialogNoThanks,
+          turnOnLabel: l10n.locationDialogTurnOn,
+          openSettingsLabel: l10n.locationDialogOpenSettings,
+        );
       } else {
         _snack(context, l10n.locationError, error: true);
       }
@@ -2239,54 +2333,105 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 
   void _showLangPicker(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const accent = Color(0xFF4A90D9);
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(26))),
-      builder: (_) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 8),
-            Container(
-              width: 38,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(4),
-              ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      backgroundColor: isDark ? const Color(0xFF1E1E2E) : Colors.white,
+      builder: (_) {
+        final langs = [
+          ('en', 'English',  '🇬🇧'),
+          ('ar', 'العربية',  '🇪🇬'),
+          ('fr', 'Français', '🇫🇷'),
+          ('es', 'Español',  '🇪🇸'),
+          ('de', 'Deutsch',  '🇩🇪'),
+          ('ru', 'Русский',  '🇷🇺'),
+          ('it', 'Italiano', '🇮🇹'),
+          ('pt', 'Português','🇵🇹'),
+          ('zh', '中文',      '🇨🇳'),
+          ('tr', 'Türkçe',   '🇹🇷'),
+          ('ja', '日本語',   '🇯🇵'),
+        ];
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // drag handle
+                Container(
+                  width: 40, height: 4,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Row(
+                  children: [
+                    Icon(Icons.language_rounded,
+                        color: accent, size: 22),
+                    const SizedBox(width: 8),
+                    Text(
+                      l10n.languageSwitchTitle,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
+                ...langs.map((lang) {
+                  final isSelected =
+                      _langCtrl.selectedLanguage.value == lang.$1;
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      _langCtrl.switchLanguage(lang.$1);
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
+                      child: Row(
+                        children: [
+                          Text(lang.$3,
+                              style: const TextStyle(fontSize: 26)),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Text(
+                              lang.$2,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isSelected
+                                    ? accent
+                                    : (isDark
+                                        ? Colors.white70
+                                        : Colors.black87),
+                              ),
+                            ),
+                          ),
+                          if (isSelected)
+                            const Icon(Icons.check_rounded,
+                                color: accent, size: 20),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ],
             ),
-            const SizedBox(height: 14),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Color(0xFFE3F2FD),
-                child: Text('EN',
-                    style: TextStyle(
-                        color: Colors.blue, fontWeight: FontWeight.bold)),
-              ),
-              title: const Text('English'),
-              onTap: () {
-                _langCtrl.switchLanguage('en');
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Color(0xFFFFF9C4),
-                child: Text('AR',
-                    style: TextStyle(
-                        color: Color(0xFFB8860B), fontWeight: FontWeight.bold)),
-              ),
-              title: const Text('العربية'),
-              onTap: () {
-                _langCtrl.switchLanguage('ar');
-                Navigator.pop(context);
-              },
-            ),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

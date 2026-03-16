@@ -435,14 +435,22 @@ class _AllLinesModalState extends State<AllLinesModal> {
       _scrollToLine(widget.initialLineId!);
     }
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final sheetBg = isDark ? AppTheme.darkSurface : AppTheme.backgroundSand;
+    final handleColor = isDark ? AppTheme.darkBorder : Colors.grey.shade300;
+    final titleColor = isDark ? AppTheme.darkPrimary : const Color(0xFF184D56);
+    final subtitleColor = isDark ? AppTheme.darkTextSub : Colors.grey.shade600;
+    final closeBg = isDark ? AppTheme.darkElevated : Colors.grey.shade100;
+    final closeIconColor = isDark ? AppTheme.darkTextSub : Colors.grey.shade700;
+
     return DraggableScrollableSheet(
       initialChildSize: 0.92,
       minChildSize: 0.5,
       maxChildSize: 0.96,
       builder: (_, sheetCtrl) => Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFFF9F7F4),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        decoration: BoxDecoration(
+          color: sheetBg,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         ),
         child: Column(
           children: [
@@ -452,7 +460,7 @@ class _AllLinesModalState extends State<AllLinesModal> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: handleColor,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -479,10 +487,10 @@ class _AllLinesModalState extends State<AllLinesModal> {
                       children: [
                         Text(
                           l10n.allMetroLines,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF184D56),
+                            color: titleColor,
                           ),
                         ),
                         Text(
@@ -490,7 +498,7 @@ class _AllLinesModalState extends State<AllLinesModal> {
                           '$totalStations ${l10n.allLinesStationsLabel}',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey.shade600,
+                            color: subtitleColor,
                           ),
                         ),
                       ],
@@ -498,9 +506,9 @@ class _AllLinesModalState extends State<AllLinesModal> {
                   ),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
+                    icon: Icon(Icons.close, color: closeIconColor),
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.grey.shade100,
+                      backgroundColor: closeBg,
                       shape: const CircleBorder(),
                       minimumSize: const Size(36, 36),
                     ),
@@ -509,7 +517,7 @@ class _AllLinesModalState extends State<AllLinesModal> {
               ),
             ),
             const SizedBox(height: 12),
-            const Divider(height: 1),
+            Divider(height: 1, color: isDark ? AppTheme.darkDivider : null),
 
             // ── Line list
             Expanded(
@@ -601,15 +609,34 @@ class _LineSectionState extends State<_LineSection>
   Widget build(BuildContext context) {
     final d = widget.data;
     final l10n = widget.l10n;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isConstruction = d.status != LineStatus.operational;
+
+    final cardBg = isDark
+        ? (isConstruction ? AppTheme.darkBackground : AppTheme.darkCard)
+        : (isConstruction ? const Color(0xFFF5F5F5) : Colors.white);
+    final nameColor = isDark
+        ? (isConstruction ? AppTheme.darkTextTertiary : AppTheme.darkText)
+        : (isConstruction ? Colors.grey.shade600 : const Color(0xFF184D56));
+    final constructionTerminusColor =
+        isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400;
+    final chevronColor = isDark ? AppTheme.darkBorder : Colors.grey.shade500;
+    final dashedLineColor = isConstruction
+        ? (isDark ? AppTheme.darkBorder : Colors.grey.shade300)
+        : d.color.withOpacity(0.4);
+    final dotBorderColor = isDark ? AppTheme.darkCard : Colors.white;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cardBg,
         borderRadius: BorderRadius.circular(20),
+        border: isDark
+            ? Border.all(color: AppTheme.darkDivider, width: 1)
+            : null,
         boxShadow: [
           BoxShadow(
-            color: d.color.withOpacity(0.10),
+            color: d.color.withOpacity(isDark ? 0.05 : 0.10),
             blurRadius: 14,
             offset: const Offset(0, 5),
           ),
@@ -625,7 +652,14 @@ class _LineSectionState extends State<_LineSection>
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  border: Border(left: BorderSide(color: d.color, width: 4)),
+                  border: Border(
+                    left: BorderSide(
+                      color: isConstruction
+                          ? d.color.withOpacity(0.45)
+                          : d.color,
+                      width: 4,
+                    ),
+                  ),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -637,9 +671,9 @@ class _LineSectionState extends State<_LineSection>
                           width: 36,
                           height: 36,
                           decoration: BoxDecoration(
-                            color: d.status == LineStatus.operational
-                                ? d.color
-                                : d.color.withOpacity(0.4),
+                            color: isConstruction
+                                ? d.color.withOpacity(0.4)
+                                : d.color,
                             shape: BoxShape.circle,
                           ),
                           child: Center(
@@ -660,9 +694,7 @@ class _LineSectionState extends State<_LineSection>
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 14,
-                              color: d.status == LineStatus.operational
-                                  ? const Color(0xFF184D56)
-                                  : Colors.grey.shade600,
+                              color: nameColor,
                             ),
                           ),
                         ),
@@ -686,7 +718,7 @@ class _LineSectionState extends State<_LineSection>
                         RotationTransition(
                           turns: _rotate,
                           child: Icon(Icons.keyboard_arrow_down_rounded,
-                              color: Colors.grey.shade500),
+                              color: chevronColor),
                         ),
                       ],
                     ),
@@ -694,8 +726,7 @@ class _LineSectionState extends State<_LineSection>
                     // ── Terminus rail
                     Row(
                       children: [
-                        _terminusDot(
-                            d.color, d.status != LineStatus.operational),
+                        _terminusDot(d.color, isConstruction, dotBorderColor),
                         const SizedBox(width: 4),
                         Flexible(
                           child: Text(
@@ -703,9 +734,9 @@ class _LineSectionState extends State<_LineSection>
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: d.status == LineStatus.operational
-                                  ? d.color
-                                  : Colors.grey.shade400,
+                              color: isConstruction
+                                  ? constructionTerminusColor
+                                  : d.color,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -716,11 +747,7 @@ class _LineSectionState extends State<_LineSection>
                             padding: const EdgeInsets.symmetric(horizontal: 6),
                             child: CustomPaint(
                               size: const Size(double.infinity, 8),
-                              painter: _ModalDashedLine(
-                                color: d.status == LineStatus.operational
-                                    ? d.color.withOpacity(0.4)
-                                    : Colors.grey.shade300,
-                              ),
+                              painter: _ModalDashedLine(color: dashedLineColor),
                             ),
                           ),
                         ),
@@ -730,9 +757,9 @@ class _LineSectionState extends State<_LineSection>
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: d.status == LineStatus.operational
-                                  ? d.color
-                                  : Colors.grey.shade400,
+                              color: isConstruction
+                                  ? constructionTerminusColor
+                                  : d.color,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -740,8 +767,7 @@ class _LineSectionState extends State<_LineSection>
                           ),
                         ),
                         const SizedBox(width: 4),
-                        _terminusDot(
-                            d.color, d.status != LineStatus.operational),
+                        _terminusDot(d.color, isConstruction, dotBorderColor),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -819,21 +845,27 @@ class _LineSectionState extends State<_LineSection>
         ),
       );
 
-  Widget _terminusDot(Color color, bool faded) => Container(
-        width: 9,
-        height: 9,
-        decoration: BoxDecoration(
-          color: faded ? Colors.grey.shade300 : color,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: (faded ? Colors.grey : color).withOpacity(0.35),
-              blurRadius: 4,
-            ),
-          ],
-        ),
-      );
+  Widget _terminusDot(Color color, bool faded, Color borderColor) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final dotColor = faded
+        ? (isDark ? AppTheme.darkBorder : Colors.grey.shade300)
+        : color;
+    return Container(
+      width: 9,
+      height: 9,
+      decoration: BoxDecoration(
+        color: dotColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: borderColor, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: (faded ? Colors.grey : color).withOpacity(0.35),
+            blurRadius: 4,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // ── Station list ──────────────────────────────────────────────────────────────
@@ -853,31 +885,32 @@ class _StationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Divider(height: 20, color: Colors.grey.shade200),
+          Divider(
+              height: 20,
+              color: isDark ? AppTheme.darkDivider : Colors.grey.shade200),
           Text(
             l10n.intermediateStationsTitle,
             style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 13,
-              color: Colors.grey.shade700,
+              color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
             ),
           ),
           const SizedBox(height: 10),
-          ...stations
-              .asMap()
-              .entries
-              .map((e) => _stationRow(e.key, e.value, stations.length, lineId)),
+          ...stations.asMap().entries.map(
+              (e) => _stationRow(e.key, e.value, stations.length, lineId, isDark)),
         ],
       ),
     );
   }
 
-  Widget _stationRow(int idx, StationEntry s, int total, String currentLineId) {
+  Widget _stationRow(int idx, StationEntry s, int total, String currentLineId, bool isDark) {
     final isFirst = idx == 0;
     final isLast = idx == total - 1;
     final isTerminus = isFirst || isLast;
@@ -897,16 +930,19 @@ class _StationList extends StatelessWidget {
     // Dot size & fill
     final double dotSize = isTerminus ? 12 : (s.isTransfer ? 11 : 7);
     final Color dotFill = s.isUnderConstruction
-        ? Colors.grey.shade400
+        ? (isDark ? AppTheme.darkBorder : Colors.grey.shade400)
         : (isTerminus
             ? color
-            : (s.isTransfer ? Colors.white : color.withOpacity(0.55)));
+            : (s.isTransfer
+                ? (isDark ? AppTheme.darkCard : Colors.white)
+                : color.withOpacity(0.55)));
     final Color dotBorder = s.isUnderConstruction
         ? Colors.grey.shade400
         : (s.isTransfer && !isTerminus ? otherLineColor : color);
 
-    final railColor =
-        s.isUnderConstruction ? Colors.grey.shade300 : color.withOpacity(0.35);
+    final railColor = s.isUnderConstruction
+        ? (isDark ? AppTheme.darkBorder : Colors.grey.shade300)
+        : color.withOpacity(0.35);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -954,16 +990,27 @@ class _StationList extends StatelessWidget {
                             ? FontWeight.w700
                             : FontWeight.w500,
                         color: s.isUnderConstruction
-                            ? Colors.grey.shade500
+                            ? (isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade500)
                             : (isTerminus
-                                ? const Color(0xFF184D56)
-                                : Colors.grey.shade800),
+                                ? (isDark
+                                    ? AppTheme.darkText
+                                    : const Color(0xFF184D56))
+                                : (isDark
+                                    ? AppTheme.darkTextSub
+                                    : Colors.grey.shade800)),
                       ),
                     ),
                     if (s.isUnderConstruction) ...[
                       const SizedBox(width: 6),
-                      _badge(l10n.underConstructionLabel,
-                          Colors.orange.shade700, Colors.orange.shade50),
+                      _badge(
+                        l10n.underConstructionLabel,
+                        Colors.orange.shade700,
+                        isDark
+                            ? Colors.orange.withOpacity(0.15)
+                            : Colors.orange.shade50,
+                      ),
                     ],
                     if (transferLineIds.isNotEmpty) ...[
                       const SizedBox(width: 8),
@@ -1029,8 +1076,12 @@ class _StationList extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     color: s.isUnderConstruction
-                        ? Colors.grey.shade400
-                        : Colors.grey.shade600,
+                        ? (isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400)
+                        : (isDark
+                            ? AppTheme.darkTextSub
+                            : Colors.grey.shade600),
                     fontWeight: isTerminus || s.isTransfer
                         ? FontWeight.w600
                         : FontWeight.normal,

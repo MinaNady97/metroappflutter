@@ -26,12 +26,13 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(l10n),
+          _buildAppBar(l10n, isDark),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
@@ -43,9 +44,11 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                     l10n.whereToBuyTitle,
                     Icons.storefront_rounded,
                     AppTheme.primaryNile,
+                    cs,
+                    isDark,
                   ),
                   const SizedBox(height: 10),
-                  _infoCard(l10n.whereToBuyDescription),
+                  _infoCard(l10n.whereToBuyDescription, cs, isDark),
                   const SizedBox(height: 28),
 
                   // Ticket types
@@ -53,6 +56,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                     l10n.ticketsTitle,
                     Icons.confirmation_number_rounded,
                     AppTheme.line2,
+                    cs,
+                    isDark,
                   ),
                   const SizedBox(height: 10),
                   _expandableCard(
@@ -66,6 +71,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                       l10n.ticketsBullet3,
                     ],
                     l10n: l10n,
+                    cs: cs,
+                    isDark: isDark,
                   ),
                   const SizedBox(height: 12),
                   _expandableCard(
@@ -81,6 +88,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                       l10n.walletBullet5,
                     ],
                     l10n: l10n,
+                    cs: cs,
+                    isDark: isDark,
                   ),
                   const SizedBox(height: 12),
                   _expandableCard(
@@ -101,6 +110,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                       l10n.specialNeedsReq,
                     ],
                     l10n: l10n,
+                    cs: cs,
+                    isDark: isDark,
                   ),
                   const SizedBox(height: 28),
 
@@ -109,6 +120,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                     'Fare Zones',
                     Icons.map_rounded,
                     AppTheme.lrt,
+                    cs,
+                    isDark,
                   ),
                   const SizedBox(height: 10),
                   _fareZonesCard(),
@@ -127,7 +140,7 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
 
   // ── App bar ────────────────────────────────────────────────────────────────
 
-  Widget _buildAppBar(AppLocalizations l10n) {
+  Widget _buildAppBar(AppLocalizations l10n, bool isDark) {
     const expandedH = 150.0;
 
     return SliverAppBar(
@@ -164,16 +177,22 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
             fit: StackFit.expand,
             children: [
               // ── Gradient background ──────────────────────────────────────
-              const DecoratedBox(
+              DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF0D3B52),
-                      AppTheme.primaryNile,
-                      Color(0xFF1E7A8A),
-                    ],
+                    colors: isDark
+                        ? [
+                            const Color(0xFF060D1A),
+                            const Color(0xFF0D1F2F),
+                            const Color(0xFF0A2030),
+                          ]
+                        : [
+                            const Color(0xFF0D3B52),
+                            AppTheme.primaryNile,
+                            const Color(0xFF1E7A8A),
+                          ],
                   ),
                 ),
               ),
@@ -266,7 +285,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
 
   // ── Section label ──────────────────────────────────────────────────────────
 
-  Widget _sectionLabel(String label, IconData icon, Color color) {
+  Widget _sectionLabel(
+      String label, IconData icon, Color color, ColorScheme cs, bool isDark) {
     return Row(
       children: [
         Container(
@@ -283,7 +303,7 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
-            color: Colors.grey.shade800,
+            color: cs.onSurface,
             letterSpacing: -0.2,
           ),
         ),
@@ -293,16 +313,16 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
 
   // ── Info card ──────────────────────────────────────────────────────────────
 
-  Widget _infoCard(String text) {
+  Widget _infoCard(String text, ColorScheme cs, bool isDark) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.25 : 0.04),
             blurRadius: 16,
             offset: const Offset(0, 4),
           ),
@@ -312,7 +332,7 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
         text,
         style: TextStyle(
           fontSize: 14,
-          color: Colors.grey.shade700,
+          color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
           height: 1.6,
         ),
       ),
@@ -328,6 +348,8 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
     required String title,
     required List<String> bullets,
     required AppLocalizations l10n,
+    required ColorScheme cs,
+    required bool isDark,
   }) {
     final isOpen = _expandedIndex == index;
 
@@ -335,13 +357,13 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
       duration: const Duration(milliseconds: 280),
       curve: Curves.easeOut,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: isOpen
                 ? color.withOpacity(0.12)
-                : Colors.black.withOpacity(0.04),
+                : Colors.black.withOpacity(isDark ? 0.25 : 0.04),
             blurRadius: isOpen ? 20 : 12,
             offset: const Offset(0, 4),
           ),
@@ -376,7 +398,7 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: Colors.grey.shade800,
+                        color: cs.onSurface,
                       ),
                     ),
                   ),
@@ -388,12 +410,18 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                       decoration: BoxDecoration(
                         color: isOpen
                             ? color.withOpacity(0.1)
-                            : Colors.grey.shade100,
+                            : isDark
+                                ? AppTheme.darkDivider
+                                : Colors.grey.shade100,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         Icons.keyboard_arrow_down_rounded,
-                        color: isOpen ? color : Colors.grey.shade400,
+                        color: isOpen
+                            ? color
+                            : isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade400,
                         size: 18,
                       ),
                     ),
@@ -463,7 +491,9 @@ class _SubscriptionInfoPageState extends State<SubscriptionInfoPage> {
                                 bullet,
                                 style: TextStyle(
                                   fontSize: 13.5,
-                                  color: Colors.grey.shade700,
+                                  color: isDark
+                                      ? AppTheme.darkTextSub
+                                      : Colors.grey.shade700,
                                   height: 1.55,
                                 ),
                               ),

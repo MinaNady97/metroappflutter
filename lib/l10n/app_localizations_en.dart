@@ -1283,4 +1283,213 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get crowdBusyLabel => 'Busy';
+
+  @override
+  String get locationDialogNoThanks => 'No thanks';
+
+  @override
+  String get locationDialogTurnOn => 'Turn on';
+
+  @override
+  String get locationDialogOpenSettings => 'Open Settings';
+
+  @override
+  String get touristGuidePlacesCount => 'places to explore';
+
+  @override
+  String get touristGuideDisclaimer => 'Times, distances, and details are approximate and may vary. Please verify officially before visiting.';
+
+  @override
+  String get touristGuideSearchHint => 'Search places or stations...';
+
+  @override
+  String get touristGuideCategoryAll => 'All';
+
+  @override
+  String get touristGuideNoPlaces => 'No places found';
+
+  @override
+  String get touristGuideNoPlacesSub => 'Try a different search or category';
+
+  @override
+  String get photographyTitle => 'Photography';
+
+  @override
+  String get photographyDescription => 'Photography is not allowed inside metro stations. Some attractions may charge a camera fee.';
+
+  @override
+  String get bestTimeTitle => 'Best Time to Visit';
+
+  @override
+  String get bestTimeDescription => 'October to April offers the best weather. Visit outdoor sites early morning or late afternoon.';
+
+  @override
+  String get phrase4 => 'Thank you';
+
+  @override
+  String get phrase4Translation => 'شكراً (Shukran)';
+
+  @override
+  String get phrase5 => 'How much?';
+
+  @override
+  String get phrase5Translation => 'بكام؟ (Bikam?)';
+
+  @override
+  String get phrase6 => 'Where is...?';
+
+  @override
+  String get phrase6Translation => 'فين...؟ (Fein...?)';
+
+  @override
+  String get phrase7 => 'I want to go to...';
+
+  @override
+  String get phrase7Translation => 'أنا عايز أروح... (Ana aayez aroh...)';
+
+  @override
+  String get phrase8 => 'Is it far?';
+
+  @override
+  String get phrase8Translation => 'هو بعيد؟ (Howwa baeed?)';
+
+  @override
+  String get planRoute => 'Plan Route';
+
+  @override
+  String get lineLabel => 'Line';
+
+  @override
+  String get categoryHistorical => 'Historical';
+
+  @override
+  String get categoryMuseum => 'Museums';
+
+  @override
+  String get categoryReligious => 'Religious';
+
+  @override
+  String get categoryPark => 'Parks';
+
+  @override
+  String get categoryShopping => 'Shopping';
+
+  @override
+  String get categoryCulture => 'Culture';
+
+  @override
+  String get categoryNile => 'Nile';
+
+  @override
+  String get categoryHiddenGem => 'Hidden Gems';
+
+  @override
+  String get facilityCommercial => 'Commercial';
+
+  @override
+  String get facilityCultural => 'Cultural';
+
+  @override
+  String get facilityEducational => 'Educational';
+
+  @override
+  String get facilityLandmarks => 'Landmarks';
+
+  @override
+  String get facilityMedical => 'Medical';
+
+  @override
+  String get facilityPublicInstitutions => 'Public Institutions';
+
+  @override
+  String get facilityPublicSpaces => 'Public Spaces';
+
+  @override
+  String get facilityReligious => 'Religious';
+
+  @override
+  String get facilityServices => 'Services';
+
+  @override
+  String get facilitySportFacilities => 'Sport Facilities';
+
+  @override
+  String get facilityStreets => 'Streets';
+
+  @override
+  String get facilitySearchHint => 'Search places...';
+
+  @override
+  String get facilityNoData => 'No facility data available for this station yet';
+
+  @override
+  String get facilityDataSoon => 'Data will be added soon';
+
+  @override
+  String get facilityClearFilter => 'Clear filter';
+
+  @override
+  String get facilityPlacesCount => 'places';
+
+  @override
+  String get facilityZoomHint => 'Pinch and drag to zoom';
+
+  @override
+  String get facilityCategoriesLabel => 'categories';
+
+  @override
+  String get sortBy => 'Sort by';
+
+  @override
+  String get sortStops => 'Stops';
+
+  @override
+  String get sortTime => 'Time';
+
+  @override
+  String get sortFare => 'Fare';
+
+  @override
+  String get sortLines => 'Lines';
+
+  @override
+  String get bestRoute => 'Best';
+
+  @override
+  String get hideStops => 'Hide stops';
+
+  @override
+  String get showLabel => 'Show';
+
+  @override
+  String get stopsWord => 'stops';
+
+  @override
+  String get minuteShort => 'min';
+
+  @override
+  String get detectingLocation => 'Detecting your location...';
+
+  @override
+  String get tapToExplore => 'Tap to explore';
+
+  @override
+  String get couldNotOpenMaps => 'Could not open Google Maps';
+
+  @override
+  String get couldNotGetLocation => 'Could not get your location. Check location permission.';
+
+  @override
+  String get googleMapsLabel => 'Google Maps';
+
+  @override
+  String get couldNotFindNearestStation => 'Could not find nearest station';
+
+  @override
+  String get zoomLabel => 'Zoom';
+
+  @override
+  String transferAtStation(Object station) {
+    return 'Transfer at $station';
+  }
 }

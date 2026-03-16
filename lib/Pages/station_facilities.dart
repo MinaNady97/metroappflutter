@@ -6,6 +6,23 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
 
+String _translateFacilityCategory(String name, AppLocalizations l10n) {
+  switch (name) {
+    case 'Commercial': return l10n.facilityCommercial;
+    case 'Cultural': return l10n.facilityCultural;
+    case 'Educational': return l10n.facilityEducational;
+    case 'Landmarks': return l10n.facilityLandmarks;
+    case 'Medical': return l10n.facilityMedical;
+    case 'Public Institutions': return l10n.facilityPublicInstitutions;
+    case 'Public Spaces': return l10n.facilityPublicSpaces;
+    case 'Religious': return l10n.facilityReligious;
+    case 'Services': return l10n.facilityServices;
+    case 'Sport Facilities': return l10n.facilitySportFacilities;
+    case 'Streets': return l10n.facilityStreets;
+    default: return name;
+  }
+}
+
 // ── Data models ──────────────────────────────────────────────────────────────
 
 class _FacilityCategory {
@@ -120,7 +137,8 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
     final Map<String, dynamic> allData = json.decode(jsonStr);
     final locale = AppLocalizations.of(context)!.locale;
     final key = '${locale}_metroStation${widget.stationNameEN}';
-    final stationData = allData[key] as Map<String, dynamic>?;
+    final stationData = (allData[key] ?? allData['en_metroStation${widget.stationNameEN}'])
+        as Map<String, dynamic>?;
 
     if (stationData == null || stationData.isEmpty) {
       setState(() {
@@ -199,7 +217,6 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
     final isAr = l10n.locale == 'ar';
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       body: CustomScrollView(
         slivers: [
           _buildAppBar(l10n, isAr),
@@ -226,6 +243,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
   String get _imagePath => 'assets/stations/line3/${widget.stationNameEN}.jpg';
 
   void _openImageViewer(bool isAr) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog<void>(
       context: context,
       barrierColor: Colors.black87,
@@ -273,7 +291,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
-                      isAr ? 'قرّب واسحب لاستكشاف الصورة' : 'Pinch and drag to zoom',
+                      l10n.facilityZoomHint,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -408,14 +426,14 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: Colors.white.withOpacity(0.18)),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.zoom_in_rounded, size: 14, color: Colors.white),
-                      SizedBox(width: 4),
+                      const Icon(Icons.zoom_in_rounded, size: 14, color: Colors.white),
+                      const SizedBox(width: 4),
                       Text(
-                        'Zoom',
-                        style: TextStyle(
+                        AppLocalizations.of(context)!.zoomLabel,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -448,9 +466,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                       Opacity(
                         opacity: subtitleOpacity,
                         child: Text(
-                          isAr
-                              ? '$totalPlaces مكان • ${_categories.length} فئة'
-                              : '$totalPlaces places • ${_categories.length} categories',
+                          '$totalPlaces ${l10n.facilityPlacesCount} • ${_categories.length} ${l10n.facilityCategoriesLabel}',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.65),
                             fontSize: 11,
@@ -479,6 +495,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
   // ── No data state ──────────────────────────────────────────────────────────
 
   Widget _buildNoData(AppLocalizations l10n, bool isAr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(40),
@@ -486,23 +503,25 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.location_off_rounded,
-                size: 64, color: Colors.grey.shade300),
+                size: 64,
+                color: isDark ? AppTheme.darkBorder : Colors.grey.shade300),
             const SizedBox(height: 16),
             Text(
-              isAr
-                  ? 'لا تتوفر بيانات لهذه المحطة حالياً'
-                  : 'No facility data available for this station yet',
+              l10n.facilityNoData,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey.shade500,
+                color: isDark ? AppTheme.darkTextSub : Colors.grey.shade500,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              isAr ? 'سيتم إضافة البيانات قريباً' : 'Data will be added soon',
-              style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
+              l10n.facilityDataSoon,
+              style: TextStyle(
+                  fontSize: 13,
+                  color:
+                      isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400),
             ),
           ],
         ),
@@ -513,26 +532,35 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
   // ── Search bar ─────────────────────────────────────────────────────────────
 
   Widget _buildSearchBar(AppLocalizations l10n, bool isAr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? AppTheme.darkCard : AppTheme.lightCard,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.grey.shade200),
+          border: Border.all(
+              color: isDark ? AppTheme.darkBorder : Colors.grey.shade200),
         ),
         child: TextField(
           controller: _searchCtrl,
-          style: TextStyle(color: Colors.grey.shade900, fontSize: 14),
+          style: TextStyle(
+              color: isDark ? AppTheme.darkText : Colors.grey.shade900,
+              fontSize: 14),
           decoration: InputDecoration(
-            hintText: isAr ? 'ابحث عن مكان...' : 'Search places...',
-            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+            hintText: l10n.facilitySearchHint,
+            hintStyle: TextStyle(
+                color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
+                fontSize: 14),
             prefixIcon: Icon(Icons.search_rounded,
                 color: AppTheme.primaryNile, size: 20),
             suffixIcon: _searchCtrl.text.isNotEmpty
                 ? IconButton(
                     icon: Icon(Icons.close_rounded,
-                        color: Colors.grey.shade400, size: 18),
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400,
+                        size: 18),
                     onPressed: () {
                       _searchCtrl.clear();
                       FocusScope.of(context).unfocus();
@@ -560,10 +588,11 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
         itemCount: _categories.length + 1,
         separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (_, i) {
+          final l10n = AppLocalizations.of(context)!;
           if (i == 0) {
             final isActive = _activeFilter == null;
             return _chip(
-              label: 'All',
+              label: l10n.touristGuideCategoryAll,
               icon: Icons.grid_view_rounded,
               color: AppTheme.primaryNile,
               isActive: isActive,
@@ -573,7 +602,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
           final cat = _categories[i - 1];
           final isActive = _activeFilter == cat.name;
           return _chip(
-            label: cat.name,
+            label: _translateFacilityCategory(cat.name, l10n),
             icon: cat.icon,
             color: cat.color,
             isActive: isActive,
@@ -600,10 +629,18 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: isActive ? color : Colors.white,
+          color: isActive
+              ? color
+              : (Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkElevated
+                  : AppTheme.lightCard),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isActive ? color : Colors.grey.shade200,
+            color: isActive
+                ? color
+                : (Theme.of(context).brightness == Brightness.dark
+                    ? AppTheme.darkBorder
+                    : Colors.grey.shade200),
           ),
           boxShadow: isActive
               ? [BoxShadow(color: color.withOpacity(0.25), blurRadius: 8)]
@@ -619,7 +656,11 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isActive ? Colors.white : Colors.grey.shade700,
+                color: isActive
+                    ? Colors.white
+                    : (Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.darkTextSub
+                        : Colors.grey.shade700),
               ),
             ),
           ],
@@ -644,7 +685,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              isAr ? '$filteredCount مكان' : '$filteredCount places',
+              '$filteredCount ${l10n.facilityPlacesCount}',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -674,7 +715,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                     Icon(Icons.close_rounded, size: 12, color: AppTheme.error),
                     const SizedBox(width: 4),
                     Text(
-                      isAr ? 'مسح الفلتر' : 'Clear filter',
+                      l10n.facilityClearFilter,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -695,6 +736,9 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
 
   List<Widget> _buildFacilityList() {
     final cats = _filtered;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     if (cats.isEmpty) {
       return [
         SliverFillRemaining(
@@ -704,11 +748,17 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.search_off_rounded,
-                    size: 48, color: Colors.grey.shade300),
+                    size: 48,
+                    color: isDark
+                        ? AppTheme.darkBorder
+                        : Colors.grey.shade300),
                 const SizedBox(height: 12),
-                Text('No results',
-                    style:
-                        TextStyle(color: Colors.grey.shade400, fontSize: 14)),
+                Text(AppLocalizations.of(context)!.touristGuideNoPlaces,
+                    style: TextStyle(
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400,
+                        fontSize: 14)),
               ],
             ),
           ),
@@ -735,11 +785,13 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  cat.name,
+                  _translateFacilityCategory(cat.name, l10n),
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Colors.grey.shade800,
+                    color: isDark
+                        ? AppTheme.darkText
+                        : Colors.grey.shade800,
                   ),
                 ),
               ),
@@ -778,11 +830,12 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
 
   Widget _facilityCard(_FacilityItem item, Color catColor) {
     final isStreet = item.category?.toLowerCase() == 'streets';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Material(
-        color: Colors.white,
+        color: isDark ? AppTheme.darkCard : AppTheme.lightCard,
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: () => _showDetails(item, catColor),
@@ -819,7 +872,9 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey.shade800,
+                          color: isDark
+                              ? AppTheme.darkText
+                              : Colors.grey.shade800,
                         ),
                       ),
                       if (item.description != null &&
@@ -831,7 +886,9 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey.shade500,
+                            color: isDark
+                                ? AppTheme.darkTextSub
+                                : Colors.grey.shade500,
                             height: 1.3,
                           ),
                         ),
@@ -899,7 +956,9 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (_) => Padding(
+      builder: (_) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        return Padding(
         padding: EdgeInsets.fromLTRB(
             20, 16, 20, MediaQuery.of(context).padding.bottom + 16),
         child: Column(
@@ -912,7 +971,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: isDark ? AppTheme.darkBorder : Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -941,12 +1000,14 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                         style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w700,
-                          color: Colors.grey.shade800,
+                          color: isDark
+                              ? AppTheme.darkText
+                              : Colors.grey.shade800,
                         ),
                       ),
                       if (item.category != null)
                         Text(
-                          item.category!,
+                          _translateFacilityCategory(item.category!, l10n),
                           style: TextStyle(
                             fontSize: 12,
                             color: catColor,
@@ -966,7 +1027,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                 item.description!,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey.shade700,
+                  color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
                   height: 1.5,
                 ),
               ),
@@ -1009,14 +1070,19 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
               Row(
                 children: [
                   Icon(Icons.info_outline_rounded,
-                      size: 14, color: Colors.grey.shade400),
+                      size: 14,
+                      color: isDark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade400),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
                       item.mapHint!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey.shade500,
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade500,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -1039,7 +1105,7 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                       },
                       icon: const Icon(Icons.map_rounded, size: 18),
                       label: Text(
-                        isAr ? 'خرائط جوجل' : 'Google Maps',
+                        l10n.googleMapsLabel,
                         style: const TextStyle(fontSize: 13),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -1057,9 +1123,14 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.grey.shade600,
+                      foregroundColor: isDark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade600,
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Colors.grey.shade300),
+                      side: BorderSide(
+                          color: isDark
+                              ? AppTheme.darkBorder
+                              : Colors.grey.shade300),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -1072,7 +1143,8 @@ class _StationFacilitiesPageState extends State<StationFacilitiesPage> {
             ),
           ],
         ),
-      ),
+      );
+      }, // builder
     );
   }
 

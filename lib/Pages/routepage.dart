@@ -12,11 +12,11 @@ import 'package:metroappflutter/widgets/skeleton_loader.dart';
 enum _SortBy { stops, time, fare, lines }
 
 extension _SortByX on _SortBy {
-  String label(bool isAr) => switch (this) {
-        _SortBy.stops => isAr ? 'المحطات' : 'Stops',
-        _SortBy.time => isAr ? 'الوقت' : 'Time',
-        _SortBy.fare => isAr ? 'السعر' : 'Fare',
-        _SortBy.lines => isAr ? 'الخطوط' : 'Lines',
+  String label(AppLocalizations l10n) => switch (this) {
+        _SortBy.stops => l10n.sortStops,
+        _SortBy.time => l10n.sortTime,
+        _SortBy.fare => l10n.sortFare,
+        _SortBy.lines => l10n.sortLines,
       };
 
   IconData get icon => switch (this) {
@@ -78,11 +78,10 @@ class _RoutepageState extends State<Routepage> {
     final arr = args['ArrivalStation'] ?? '';
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       body: Column(
         children: [
           _buildHeader(context, l10n, dep, arr),
-          _buildFilterBar(l10n),
+          _buildFilterBar(context, l10n),
           Expanded(
             child: FutureBuilder<Map<String, dynamic>>(
               future: getRoutes(
@@ -136,12 +135,15 @@ class _RoutepageState extends State<Routepage> {
 
   Widget _buildHeader(BuildContext context, AppLocalizations l10n,
       String dep, String arr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF0D3B52), AppTheme.primaryNile],
+          colors: isDark
+              ? [const Color(0xFF060D1A), const Color(0xFF0D1F2F)]
+              : [const Color(0xFF0D3B52), AppTheme.primaryNile],
         ),
       ),
       child: SafeArea(
@@ -244,11 +246,13 @@ class _RoutepageState extends State<Routepage> {
 
   // ── Filter bar ─────────────────────────────────────────────────────────────
 
-  Widget _buildFilterBar(AppLocalizations l10n) {
+  Widget _buildFilterBar(BuildContext context, AppLocalizations l10n) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isAr = l10n.locale == 'ar';
 
     return Container(
-      color: Colors.white,
+      color: cs.surface,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -270,7 +274,7 @@ class _RoutepageState extends State<Routepage> {
                           size: 14, color: AppTheme.primaryNile),
                       const SizedBox(width: 5),
                       Text(
-                        isAr ? 'ترتيب حسب' : 'Sort by',
+                        AppLocalizations.of(context)!.sortBy,
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
@@ -286,12 +290,12 @@ class _RoutepageState extends State<Routepage> {
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: Text(
-                    _sortBy.label(isAr),
+                    _sortBy.label(AppLocalizations.of(context)!),
                     key: ValueKey(_sortBy),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade500,
+                      color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
                     ),
                   ),
                 ),
@@ -306,18 +310,19 @@ class _RoutepageState extends State<Routepage> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               children: _SortBy.values
-                  .map((s) => _filterChip(s, isAr))
+                  .map((s) => _filterChip(context, s, isAr))
                   .toList(),
             ),
           ),
           const SizedBox(height: 10),
-          Divider(height: 1, color: Colors.grey.shade100),
+          Divider(height: 1, color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
         ],
       ),
     );
   }
 
-  Widget _filterChip(_SortBy sort, bool isAr) {
+  Widget _filterChip(BuildContext context, _SortBy sort, bool isAr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isActive = _sortBy == sort;
 
     return Padding(
@@ -326,11 +331,14 @@ class _RoutepageState extends State<Routepage> {
         duration: const Duration(milliseconds: 220),
         curve: Curves.easeOut,
         decoration: BoxDecoration(
-          color: isActive ? AppTheme.primaryNile : Colors.grey.shade50,
+          color: isActive
+              ? AppTheme.primaryNile
+              : (isDark ? AppTheme.darkElevated : Colors.grey.shade50),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color:
-                isActive ? AppTheme.primaryNile : Colors.grey.shade200,
+            color: isActive
+                ? AppTheme.primaryNile
+                : (isDark ? AppTheme.darkBorder : Colors.grey.shade200),
             width: 1.5,
           ),
           boxShadow: isActive
@@ -360,8 +368,9 @@ class _RoutepageState extends State<Routepage> {
                     sort.icon,
                     key: ValueKey(isActive),
                     size: 15,
-                    color:
-                        isActive ? Colors.white : Colors.grey.shade500,
+                    color: isActive
+                        ? Colors.white
+                        : (isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500),
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -371,10 +380,12 @@ class _RoutepageState extends State<Routepage> {
                     fontSize: 13,
                     fontWeight:
                         isActive ? FontWeight.w700 : FontWeight.w500,
-                    color: isActive ? Colors.white : Colors.grey.shade600,
+                    color: isActive
+                        ? Colors.white
+                        : (isDark ? AppTheme.darkTextSub : Colors.grey.shade600),
                     fontFamily: 'Tajawal',
                   ),
-                  child: Text(sort.label(isAr)),
+                  child: Text(sort.label(AppLocalizations.of(context)!)),
                 ),
                 if (isActive) ...[
                   const SizedBox(width: 6),
@@ -398,6 +409,7 @@ class _RoutepageState extends State<Routepage> {
   // ── States ─────────────────────────────────────────────────────────────────
 
   Widget _errorState(AppLocalizations l10n, Object? error) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -410,7 +422,10 @@ class _RoutepageState extends State<Routepage> {
             Text(
               '${l10n.error} $error',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+              style: TextStyle(
+                color: isDark ? AppTheme.darkTextSub : Colors.grey.shade600,
+                fontSize: 14,
+              ),
             ),
           ],
         ),
@@ -419,17 +434,23 @@ class _RoutepageState extends State<Routepage> {
   }
 
   Widget _emptyState(AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.route_rounded, size: 48, color: Colors.grey.shade300),
+            Icon(Icons.route_rounded,
+                size: 48,
+                color: isDark ? AppTheme.darkBorder : Colors.grey.shade300),
             const SizedBox(height: 12),
             Text(
               l10n.noRoutesFound,
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 14),
+              style: TextStyle(
+                color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+                fontSize: 14,
+              ),
             ),
           ],
         ),

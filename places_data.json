@@ -1,0 +1,242 @@
+[
+  {
+    "id": "pyramids_giza",
+    "nameEn": "Pyramids of Giza & Great Sphinx",
+    "descEn": "The last surviving Wonder of the Ancient World. Three iconic pyramids and the Great Sphinx, dating back over 4,500 years."
+  },
+  {
+    "id": "coptic_cairo",
+    "nameEn": "Coptic Cairo (Old Cairo)",
+    "descEn": "Ancient Christian quarter with churches, a synagogue, and a mosque, all dating back centuries. A UNESCO heritage area."
+  },
+  {
+    "id": "citadel_saladin",
+    "nameEn": "The Citadel of Saladin",
+    "descEn": "Medieval Islamic fortress built by Saladin in 1176, offering panoramic views of Cairo and housing several museums and mosques."
+  },
+  {
+    "id": "al_muizz_street",
+    "nameEn": "Al-Muizz Street (Historic Cairo)",
+    "descEn": "One of the oldest streets in Cairo — a mile-long open-air museum lined with medieval mosques, madrasas, and fountains."
+  },
+  {
+    "id": "baron_palace",
+    "nameEn": "Baron Empain Palace",
+    "descEn": "A stunning Hindu temple-inspired palace built between 1907–1911 by Belgian industrialist Baron Empain. Recently restored and open to visitors."
+  },
+  {
+    "id": "bab_zuweila",
+    "nameEn": "Bab Zuweila",
+    "descEn": "The last remaining southern gate of medieval Cairo\\"
+  },
+  {
+    "id": "egyptian_museum",
+    "nameEn": "Egyptian Museum (Tahrir)",
+    "descEn": "Home to the world\\"
+  },
+  {
+    "id": "grand_egyptian_museum",
+    "nameEn": "Grand Egyptian Museum (GEM)",
+    "descEn": "The world\\"
+  },
+  {
+    "id": "nmec_museum",
+    "nameEn": "National Museum of Egyptian Civilization",
+    "descEn": "Home to the Royal Mummies Hall. Traces 5,000 years of Egyptian civilization from prehistoric times to the modern era."
+  },
+  {
+    "id": "islamic_art_museum",
+    "nameEn": "Museum of Islamic Art",
+    "descEn": "One of the world\\"
+  },
+  {
+    "id": "coptic_museum",
+    "nameEn": "Coptic Museum",
+    "descEn": "The world\\"
+  },
+  {
+    "id": "abdeen_palace",
+    "nameEn": "Abdeen Palace Museum",
+    "descEn": "19th-century royal palace, now a museum showcasing presidential gifts, military collections, and royal silver."
+  },
+  {
+    "id": "gayer_anderson_museum",
+    "nameEn": "Gayer-Anderson Museum",
+    "descEn": "Two beautifully restored 16th–17th century houses joined together, filled with art, antiques, and oriental furnishings."
+  },
+  {
+    "id": "hanging_church",
+    "nameEn": "Hanging Church (Al-Muallaqa)",
+    "descEn": "One of the oldest churches in Egypt, built atop the southern gate of Babylon Fortress. Dates to the 3rd–4th century."
+  },
+  {
+    "id": "st_george_church",
+    "nameEn": "Church of St. George",
+    "descEn": "A distinctive circular Greek Orthodox church, one of the few round churches in the Middle East, with stunning interiors."
+  },
+  {
+    "id": "ben_ezra_synagogue",
+    "nameEn": "Ben Ezra Synagogue",
+    "descEn": "Cairo\\"
+  },
+  {
+    "id": "al_azhar_mosque",
+    "nameEn": "Al-Azhar Mosque & University",
+    "descEn": "Founded in 970 AD, one of the world\\"
+  },
+  {
+    "id": "al_hussein_mosque",
+    "nameEn": "Al-Hussein Mosque",
+    "descEn": "One of the holiest Islamic sites in Egypt, believed to house the head of Husayn ibn Ali. Vibrant surrounding square at night."
+  },
+  {
+    "id": "sultan_hassan_mosque",
+    "nameEn": "Sultan Hassan Mosque-Madrasa",
+    "descEn": "Mamluk-era masterpiece from 1356, one of the largest mosques in the world with extraordinary architecture."
+  },
+  {
+    "id": "ibn_tulun_mosque",
+    "nameEn": "Ibn Tulun Mosque",
+    "descEn": "The oldest mosque in Cairo surviving in its original form (879 AD). Famous for its unique spiral minaret."
+  },
+  {
+    "id": "amr_mosque",
+    "nameEn": "Amr Ibn El-As Mosque",
+    "descEn": "The first mosque built in Egypt and all of Africa, founded in 642 AD after the Arab conquest of Egypt."
+  },
+  {
+    "id": "sayeda_zeinab_mosque",
+    "nameEn": "Sayeda Zeinab Mosque",
+    "descEn": "Important shrine dedicated to Zeinab, granddaughter of Prophet Muhammad. A major spiritual center in Cairo."
+  },
+  {
+    "id": "al_azhar_park",
+    "nameEn": "Al-Azhar Park",
+    "descEn": "A 30-hectare hilltop oasis with stunning views over Islamic Cairo, restaurants, and lush gardens. One of the world\\"
+  },
+  {
+    "id": "giza_zoo",
+    "nameEn": "Giza Zoo (Cairo Zoo)",
+    "descEn": "One of the oldest zoos in Africa, established in 1891. Home to rare animals and beautiful 19th-century gardens."
+  },
+  {
+    "id": "orman_garden",
+    "nameEn": "Orman Botanical Garden",
+    "descEn": "Beautiful botanical garden with rare plants from around the world, established in 1875 as part of the Khedive\\"
+  },
+  {
+    "id": "japanese_garden",
+    "nameEn": "Japanese Garden (Helwan)",
+    "descEn": "A unique Japanese-style garden with Buddha statues, bridges, and pagodas. Built in 1919, it offers a peaceful escape."
+  },
+  {
+    "id": "al_fustat_garden",
+    "nameEn": "Al-Fustat Garden",
+    "descEn": "One of Cairo\\"
+  },
+  {
+    "id": "khan_el_khalili",
+    "nameEn": "Khan El Khalili",
+    "descEn": "Cairo\\"
+  },
+  {
+    "id": "ataba_market",
+    "nameEn": "Ataba Market",
+    "descEn": "One of Cairo\\"
+  },
+  {
+    "id": "downtown_shopping",
+    "nameEn": "Downtown Cairo (Talaat Harb)",
+    "descEn": "Art deco streets with fashion shops, bookstores, and iconic cafes. The heart of modern Cairo\\"
+  },
+  {
+    "id": "wekalet_el_balah",
+    "nameEn": "Wekalet El Balah",
+    "descEn": "Famous market for fabrics, vintage clothing, curtains, and bargain shopping. A favorite for locals looking for great deals."
+  },
+  {
+    "id": "el_fishawy_cafe",
+    "nameEn": "El-Fishawy Cafe",
+    "descEn": "Cairo\\"
+  },
+  {
+    "id": "cairo_opera_house",
+    "nameEn": "Cairo Opera House",
+    "descEn": "Egypt\\"
+  },
+  {
+    "id": "cairo_tower",
+    "nameEn": "Cairo Tower",
+    "descEn": "A 187-meter tower on Gezira Island offering 360° panoramic views of Cairo. Best visited at sunset."
+  },
+  {
+    "id": "tahrir_square",
+    "nameEn": "Tahrir Square",
+    "descEn": "Cairo\\"
+  },
+  {
+    "id": "zamalek_district",
+    "nameEn": "Zamalek District",
+    "descEn": "Upscale island neighborhood with art galleries, boutique shops, international restaurants, and tree-lined streets."
+  },
+  {
+    "id": "maspero_triangle",
+    "nameEn": "Maspero Arts & Culture Triangle",
+    "descEn": "Newly developed area along the Nile with restaurants, cultural venues, and stunning riverfront views."
+  },
+  {
+    "id": "beit_el_suhaymi",
+    "nameEn": "Beit El-Suhaymi",
+    "descEn": "A beautifully restored 17th-century Ottoman-era house on Al-Muizz Street, showcasing traditional Cairo domestic architecture."
+  },
+  {
+    "id": "nile_corniche",
+    "nameEn": "Nile Corniche Walk",
+    "descEn": "Scenic riverside promenade perfect for sunset walks, street food, and views of Cairo\\"
+  },
+  {
+    "id": "felucca_ride",
+    "nameEn": "Felucca Rides",
+    "descEn": "Traditional Egyptian sailboat experience on the Nile. Especially beautiful at sunset. Boats available near Gezira docks."
+  },
+  {
+    "id": "nile_dinner_cruise",
+    "nameEn": "Nile Dinner Cruise",
+    "descEn": "Evening dinner cruises with live music, belly dancing, and views of illuminated Cairo from the river."
+  },
+  {
+    "id": "qasr_el_nil_bridge",
+    "nameEn": "Qasr El Nil Bridge",
+    "descEn": "Famous bridge with iconic lion statues, connecting Tahrir Square to Gezira Island. Popular for evening walks and photos."
+  },
+  {
+    "id": "manial_palace",
+    "nameEn": "Manial Palace Museum",
+    "descEn": "Elegant royal palace on Roda Island built in early 1900s, with diverse architectural styles and beautiful gardens."
+  },
+  {
+    "id": "nilometer",
+    "nameEn": "Nilometer (Roda Island)",
+    "descEn": "Ancient instrument used to measure the Nile\\"
+  },
+  {
+    "id": "heliopolis_basilica",
+    "nameEn": "Basilica of Our Lady (Heliopolis)",
+    "descEn": "Beautiful basilica with Byzantine-Romanesque architecture, built in 1910 in the heart of historic Heliopolis."
+  },
+  {
+    "id": "helwan_wax_museum",
+    "nameEn": "Helwan Wax Museum",
+    "descEn": "A small but fascinating wax museum depicting key moments in Egyptian history from ancient Pharaohs to the modern era."
+  },
+  {
+    "id": "ain_shams_obelisk",
+    "nameEn": "Obelisk of Senusret I (Ancient Heliopolis)",
+    "descEn": "Site of the ancient city of Heliopolis, one of the oldest cities of antiquity. The obelisk of Senusret I still stands after 4,000 years."
+  },
+  {
+    "id": "corniche_maadi",
+    "nameEn": "Corniche El Maadi",
+    "descEn": "Riverside promenade in the leafy Maadi district, popular with families. Nearby restaurants, shops, and river views."
+  }
+]

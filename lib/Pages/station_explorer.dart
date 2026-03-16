@@ -161,9 +161,10 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isAr = l10n.locale == 'ar';
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       body: CustomScrollView(
         slivers: [
           // ── App bar ──
@@ -195,16 +196,22 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                   fit: StackFit.expand,
                   children: [
                     // Gradient background
-                    const DecoratedBox(
+                    DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF0D3B52),
-                            AppTheme.primaryNile,
-                            Color(0xFF1E7A8A),
-                          ],
+                          colors: isDark
+                              ? [
+                                  const Color(0xFF060D1A),
+                                  const Color(0xFF0D1F2F),
+                                  const Color(0xFF0A2030),
+                                ]
+                              : [
+                                  const Color(0xFF0D3B52),
+                                  AppTheme.primaryNile,
+                                  const Color(0xFF1E7A8A),
+                                ],
                         ),
                       ),
                     ),
@@ -296,23 +303,32 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: cs.surface,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: Colors.grey.shade200),
+                  border: Border.all(
+                      color: isDark
+                          ? AppTheme.darkBorder
+                          : Colors.grey.shade200),
                 ),
                 child: TextField(
                   controller: _searchCtrl,
-                  style: TextStyle(color: Colors.grey.shade900, fontSize: 14),
+                  style: TextStyle(color: cs.onSurface, fontSize: 14),
                   decoration: InputDecoration(
                     hintText: l10n.searchStationsHint,
-                    hintStyle:
-                        TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                    hintStyle: TextStyle(
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade400,
+                        fontSize: 14),
                     prefixIcon: Icon(Icons.search_rounded,
                         color: AppTheme.primaryNile, size: 20),
                     suffixIcon: _searchCtrl.text.isNotEmpty
                         ? IconButton(
                             icon: Icon(Icons.close_rounded,
-                                color: Colors.grey.shade400, size: 18),
+                                color: isDark
+                                    ? AppTheme.darkTextTertiary
+                                    : Colors.grey.shade400,
+                                size: 18),
                             onPressed: () {
                               _searchCtrl.clear();
                               FocusScope.of(context).unfocus();
@@ -353,7 +369,9 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                             : 'Data is approximate and may vary. Please verify officially before visiting.',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.grey.shade700,
+                          color: isDark
+                              ? AppTheme.darkTextSub
+                              : Colors.grey.shade700,
                           height: 1.3,
                         ),
                       ),
@@ -376,11 +394,17 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.search_off_rounded,
-                        size: 48, color: Colors.grey.shade300),
+                        size: 48,
+                        color: isDark
+                            ? AppTheme.darkBorder
+                            : Colors.grey.shade300),
                     const SizedBox(height: 12),
                     Text(l10n.noStationsFound,
                         style: TextStyle(
-                            color: Colors.grey.shade400, fontSize: 14)),
+                            color: isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade400,
+                            fontSize: 14)),
                   ],
                 ),
               ),
@@ -388,7 +412,7 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
           else
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (_, i) => _stationCard(_filtered[i], isAr),
+                (ctx, i) => _stationCard(_filtered[i], isAr, ctx),
                 childCount: _filtered.length,
               ),
             ),
@@ -401,13 +425,15 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
 
   // ── Station card ───────────────────────────────────────────────────────────
 
-  Widget _stationCard(_StationEntry station, bool isAr) {
+  Widget _stationCard(_StationEntry station, bool isAr, BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final imagePath = 'assets/stations/line3/${station.jsonName}.jpg';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Material(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(16),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
@@ -499,7 +525,7 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Colors.grey.shade800,
+                            color: cs.onSurface,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -511,7 +537,9 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                               : '${station.facilityCount} nearby places',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey.shade500,
+                            color: isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade500,
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -564,7 +592,10 @@ class _StationExplorerPageState extends State<StationExplorerPage> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
                   child: Icon(Icons.chevron_right_rounded,
-                      size: 20, color: Colors.grey.shade300),
+                      size: 20,
+                      color: isDark
+                          ? AppTheme.darkBorder
+                          : Colors.grey.shade300),
                 ),
               ],
             ),

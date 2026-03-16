@@ -1,7 +1,6 @@
 import 'dart:ui' show lerpDouble;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:metroappflutter/Controllers/homepagecontroller.dart';
@@ -9,6 +8,17 @@ import 'package:metroappflutter/Pages/routepage.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/data/tourist_places_data.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
+
+String _categoryLabel(PlaceCategory c, AppLocalizations l10n) => switch (c) {
+      PlaceCategory.historical => l10n.categoryHistorical,
+      PlaceCategory.museum => l10n.categoryMuseum,
+      PlaceCategory.religious => l10n.categoryReligious,
+      PlaceCategory.park => l10n.categoryPark,
+      PlaceCategory.shopping => l10n.categoryShopping,
+      PlaceCategory.culture => l10n.categoryCulture,
+      PlaceCategory.nile => l10n.categoryNile,
+      PlaceCategory.hiddenGem => l10n.categoryHiddenGem,
+    };
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Tourist Guide Page
@@ -33,8 +43,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
     if (_searchQuery.isNotEmpty) {
       final q = _searchQuery.toLowerCase();
       list = list.where((p) {
-        return p.nameEn.toLowerCase().contains(q) ||
-            p.nameAr.contains(q) ||
+        return p.names.values.any((n) => n.toLowerCase().contains(q)) ||
             p.stationEn.toLowerCase().contains(q) ||
             p.stationAr.contains(q);
       }).toList();
@@ -58,7 +67,6 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
     final places = _filteredPlaces;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       body: CustomScrollView(
         controller: _scrollCtrl,
         physics: const BouncingScrollPhysics(),
@@ -76,8 +84,8 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                 delegate: SliverChildBuilderDelegate(
                   (_, i) => _PlaceCard(
                     place: places[i],
-                    isAr: isAr,
-                    onRoute: () => _onRoute(places[i], isAr),
+                    locale: l10n.locale,
+                    onRoute: () => _onRoute(places[i], l10n.locale),
                     onMap: () => _onMap(places[i], isAr),
                   ),
                   childCount: places.length,
@@ -124,16 +132,22 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
             fit: StackFit.expand,
             children: [
               // Gradient background
-              const DecoratedBox(
+              DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF0D3B52),
-                      AppTheme.primaryNile,
-                      Color(0xFF1E7A8A),
-                    ],
+                    colors: Theme.of(context).brightness == Brightness.dark
+                        ? const [
+                            Color(0xFF060D1A),
+                            Color(0xFF0D1F2F),
+                            Color(0xFF0A2030),
+                          ]
+                        : const [
+                            Color(0xFF0D3B52),
+                            AppTheme.primaryNile,
+                            Color(0xFF1E7A8A),
+                          ],
                   ),
                 ),
               ),
@@ -188,7 +202,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      isAr ? 'دليل السياحة' : 'Tourist Guide',
+                      AppLocalizations.of(context)!.touristGuideTitle,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: titleSize,
@@ -200,9 +214,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                       Opacity(
                         opacity: subtitleOpacity,
                         child: Text(
-                          isAr
-                              ? '${touristPlaces.length} مكان للاستكشاف'
-                              : '${touristPlaces.length} places to explore',
+                          '${touristPlaces.length} ${AppLocalizations.of(context)!.touristGuidePlacesCount}',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.65),
                             fontSize: 11,
@@ -237,12 +249,12 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              isAr
-                  ? 'المعلومات والأوقات والمسافات تقريبية وقد تختلف. يُرجى التحقق رسمياً قبل الزيارة.'
-                  : 'Times, distances, and details are approximate and may vary. Please verify officially before visiting.',
+              AppLocalizations.of(context)!.touristGuideDisclaimer,
               style: TextStyle(
                 fontSize: 11.5,
-                color: Colors.brown.shade700,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? const Color(0xFFD4956A)
+                    : Colors.brown.shade700,
                 fontWeight: FontWeight.w500,
                 height: 1.4,
               ),
@@ -262,8 +274,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
         controller: _searchCtrl,
         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         decoration: InputDecoration(
-          hintText:
-              isAr ? 'ابحث عن مكان أو محطة...' : 'Search places or stations...',
+          hintText: AppLocalizations.of(context)!.touristGuideSearchHint,
           hintStyle: TextStyle(
             fontSize: 13,
             color: Colors.grey.shade400,
@@ -282,14 +293,24 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                 )
               : null,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).brightness == Brightness.dark
+              ? AppTheme.darkCard
+              : AppTheme.lightCard,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Color(0xFFDDE6E8)),
+            borderSide: BorderSide(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkBorder
+                  : AppTheme.lightBorder,
+            ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
-            borderSide: const BorderSide(color: Color(0xFFDDE6E8)),
+            borderSide: BorderSide(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkBorder
+                  : AppTheme.lightBorder,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -314,13 +335,13 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
         children: [
           _chip(
-            label: isAr ? 'الكل' : 'All',
+            label: AppLocalizations.of(context)!.touristGuideCategoryAll,
             icon: Icons.apps_rounded,
             isActive: _activeCategory == null,
             onTap: () => setState(() => _activeCategory = null),
           ),
           ...PlaceCategory.values.map((c) => _chip(
-                label: c.label(isAr),
+                label: _categoryLabel(c, AppLocalizations.of(context)!),
                 icon: _categoryIcon(c),
                 isActive: _activeCategory == c,
                 onTap: () => setState(
@@ -348,10 +369,18 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: isActive ? AppTheme.primaryNile : Colors.white,
+            color: isActive
+                ? AppTheme.primaryNile
+                : (Theme.of(context).brightness == Brightness.dark
+                    ? AppTheme.darkElevated
+                    : AppTheme.lightCard),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: isActive ? AppTheme.primaryNile : Colors.grey.shade300,
+              color: isActive
+                  ? AppTheme.primaryNile
+                  : (Theme.of(context).brightness == Brightness.dark
+                      ? AppTheme.darkBorder
+                      : Colors.grey.shade300),
             ),
             boxShadow: isActive
                 ? [
@@ -368,14 +397,22 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
             children: [
               Icon(icon,
                   size: 14,
-                  color: isActive ? Colors.white : Colors.grey.shade600),
+                  color: isActive
+                      ? Colors.white
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade600)),
               const SizedBox(width: 6),
               Text(
                 label,
                 style: TextStyle(
                   fontSize: 12.5,
                   fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-                  color: isActive ? Colors.white : Colors.grey.shade700,
+                  color: isActive
+                      ? Colors.white
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade700),
                 ),
               ),
             ],
@@ -396,6 +433,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
         PlaceCategory.hiddenGem => Icons.diamond_rounded,
       };
 
+
   // ── Empty state ───────────────────────────────────────────────────────────
 
   Widget _buildEmptyState(bool isAr) {
@@ -403,21 +441,29 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
       padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 32),
       child: Column(
         children: [
-          Icon(Icons.search_off_rounded, size: 48, color: Colors.grey.shade300),
+          Icon(Icons.search_off_rounded,
+              size: 48,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppTheme.darkBorder
+                  : Colors.grey.shade300),
           const SizedBox(height: 12),
           Text(
-            isAr ? 'لا توجد نتائج' : 'No places found',
+            AppLocalizations.of(context)!.touristGuideNoPlaces,
             style: TextStyle(
                 fontSize: 15,
-                color: Colors.grey.shade500,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppTheme.darkTextSub
+                    : Colors.grey.shade500,
                 fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 4),
           Text(
-            isAr
-                ? 'جرب بحثاً مختلفاً أو فئة أخرى'
-                : 'Try a different search or category',
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
+            AppLocalizations.of(context)!.touristGuideNoPlacesSub,
+            style: TextStyle(
+                fontSize: 13,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppTheme.darkTextTertiary
+                    : Colors.grey.shade400),
           ),
         ],
       ),
@@ -426,7 +472,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
 
   // ── Route planner ──────────────────────────────────────────────────────────
 
-  Future<void> _onRoute(TouristPlace place, bool isAr) async {
+  Future<void> _onRoute(TouristPlace place, String locale) async {
     // Show loading
     showDialog(
       context: context,
@@ -440,7 +486,9 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
               width: 220,
               padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 24),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? AppTheme.darkCard
+                    : AppTheme.lightCard,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -463,12 +511,14 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                   ),
                   const SizedBox(height: 18),
                   Text(
-                    isAr ? 'جاري تحديد موقعك...' : 'Detecting your location...',
+                    AppLocalizations.of(context)!.detectingLocation,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF1A535C),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkPrimary
+                          : AppTheme.primaryNile,
                       decoration: TextDecoration.none,
                     ),
                   ),
@@ -490,13 +540,11 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
       Navigator.pop(context); // dismiss loading
 
       if (depStation.isEmpty) {
-        _showError(isAr
-            ? 'لم نتمكن من تحديد أقرب محطة'
-            : 'Could not find nearest station');
+        _showError(AppLocalizations.of(context)!.couldNotFindNearestStation);
         return;
       }
 
-      final arrStation = place.station(isAr);
+      final arrStation = place.station(locale);
 
       Get.to(
         () => Routepage(),
@@ -508,9 +556,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
       );
     } catch (e) {
       if (mounted) Navigator.pop(context); // dismiss loading
-      _showError(isAr
-          ? 'لم نتمكن من تحديد موقعك. تحقق من إذن الموقع.'
-          : 'Could not get your location. Check location permission.');
+      _showError(AppLocalizations.of(context)!.couldNotGetLocation);
     }
   }
 
@@ -519,7 +565,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
   Future<void> _onMap(TouristPlace place, bool isAr) async {
     final stationQuery =
         Uri.encodeComponent('${place.stationEn} metro station, Cairo, Egypt');
-    final placeQuery = Uri.encodeComponent('${place.nameEn}, Cairo, Egypt');
+    final placeQuery = Uri.encodeComponent('${place.name('en')}, Cairo, Egypt');
     final url = Uri.parse(
       'https://www.google.com/maps/dir/?api=1'
       '&origin=$stationQuery'
@@ -530,8 +576,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
     try {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } catch (_) {
-      _showError(
-          isAr ? 'لم نتمكن من فتح خرائط جوجل' : 'Could not open Google Maps');
+      _showError(AppLocalizations.of(context)!.couldNotOpenMaps);
     }
   }
 
@@ -553,63 +598,26 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
   // ── Travel Tips ───────────────────────────────────────────────────────────
 
   Widget _buildTipsSection(bool isAr) {
+    final l10n = AppLocalizations.of(context)!;
     final tips = [
-      _TipData(
-        icon: Icons.access_time_rounded,
-        titleEn: 'Peak Hours',
-        titleAr: 'ساعات الذروة',
-        descEn:
-            'Avoid 7–9 AM and 3–6 PM for less crowded trains. Weekends are generally quieter.',
-        descAr:
-            'تجنب 7–9 صباحاً و3–6 مساءً لقطارات أقل ازدحاماً. عطلات نهاية الأسبوع أهدأ عموماً.',
-      ),
-      _TipData(
-        icon: Icons.shield_rounded,
-        titleEn: 'Safety',
-        titleAr: 'السلامة',
-        descEn:
-            'Keep valuables secure. Use the women-only car (first car) if applicable. Be aware of your surroundings.',
-        descAr:
-            'حافظ على الأشياء الثمينة. استخدم عربة السيدات (العربة الأولى) إن أمكن. كن واعياً لما حولك.',
-      ),
-      _TipData(
-        icon: Icons.confirmation_num_rounded,
-        titleEn: 'Tickets',
-        titleAr: 'التذاكر',
-        descEn:
-            'Always keep your ticket until you exit. Consider a wallet card for frequent travel — saves time and money.',
-        descAr:
-            'احتفظ بتذكرتك حتى الخروج. فكر في بطاقة المحفظة للتنقل المتكرر — توفر الوقت والمال.',
-      ),
-      _TipData(
-        icon: Icons.photo_camera_rounded,
-        titleEn: 'Photography',
-        titleAr: 'التصوير',
-        descEn:
-            'Photography is not allowed inside metro stations. Some attractions may charge a camera fee.',
-        descAr:
-            'التصوير غير مسموح داخل محطات المترو. بعض المعالم قد تفرض رسوم كاميرا.',
-      ),
-      _TipData(
-        icon: Icons.wb_sunny_rounded,
-        titleEn: 'Best Time to Visit',
-        titleAr: 'أفضل وقت للزيارة',
-        descEn:
-            'October to April offers the best weather. Visit outdoor sites early morning or late afternoon.',
-        descAr:
-            'أكتوبر إلى أبريل يوفر أفضل طقس. زُر المواقع المفتوحة صباحاً باكراً أو عصراً.',
-      ),
+      (Icons.access_time_rounded, l10n.peakHoursTitle, l10n.peakHoursDescription),
+      (Icons.shield_rounded, l10n.safetyTitle, l10n.safetyDescription),
+      (Icons.confirmation_num_rounded, l10n.ticketsTitle, l10n.ticketsDescription),
+      (Icons.photo_camera_rounded, l10n.photographyTitle, l10n.photographyDescription),
+      (Icons.wb_sunny_rounded, l10n.bestTimeTitle, l10n.bestTimeDescription),
     ];
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -631,23 +639,23 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
               ),
               const SizedBox(width: 10),
               Text(
-                isAr ? 'نصائح السفر' : 'Travel Tips',
-                style: const TextStyle(
+                l10n.tipsTitle,
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A535C),
+                  color: isDark ? AppTheme.darkPrimary : AppTheme.primaryNile,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          ...tips.map((t) => _buildTipRow(t, isAr)),
+          ...tips.map((t) => _buildTipRow(t.$1, t.$2, t.$3)),
         ],
       ),
     );
   }
 
-  Widget _buildTipRow(_TipData tip, bool isAr) {
+  Widget _buildTipRow(IconData icon, String title, String desc) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Row(
@@ -659,7 +667,7 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
               color: AppTheme.primaryNile.withOpacity(0.07),
               shape: BoxShape.circle,
             ),
-            child: Icon(tip.icon, size: 16, color: AppTheme.primaryNile),
+            child: Icon(icon, size: 16, color: AppTheme.primaryNile),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -667,19 +675,23 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isAr ? tip.titleAr : tip.titleEn,
-                  style: const TextStyle(
+                  title,
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF1A535C),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.darkPrimary
+                        : AppTheme.primaryNile,
                   ),
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  isAr ? tip.descAr : tip.descEn,
+                  desc,
                   style: TextStyle(
                     fontSize: 12.5,
-                    color: Colors.grey.shade600,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.darkTextSub
+                        : Colors.grey.shade600,
                     height: 1.4,
                   ),
                 ),
@@ -694,29 +706,29 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
   // ── Essential Phrases ─────────────────────────────────────────────────────
 
   Widget _buildPhrasesSection(bool isAr) {
+    final l10n = AppLocalizations.of(context)!;
     final phrases = [
-      _PhraseData(
-          'How much is the ticket?', 'بكام التذكرة؟', 'Bikam el-tazkara?'),
-      _PhraseData('Where is the metro station?', 'فين محطة المترو؟',
-          'Fein mahattat el-metro?'),
-      _PhraseData('Does this go to...?', 'ده بيروح...؟', 'Da biyroh...?'),
-      _PhraseData('Thank you', 'شكراً', 'Shukran'),
-      _PhraseData('How much?', 'بكام؟', 'Bikam?'),
-      _PhraseData('Where is...?', 'فين...؟', 'Fein...?'),
-      _PhraseData(
-          'I want to go to...', 'أنا عايز أروح...', 'Ana aayez aroh...'),
-      _PhraseData('Is it far?', 'هو بعيد؟', 'Howwa baeed?'),
+      (l10n.phrase1, l10n.phrase1Translation),
+      (l10n.phrase2, l10n.phrase2Translation),
+      (l10n.phrase3, l10n.phrase3Translation),
+      (l10n.phrase4, l10n.phrase4Translation),
+      (l10n.phrase5, l10n.phrase5Translation),
+      (l10n.phrase6, l10n.phrase6Translation),
+      (l10n.phrase7, l10n.phrase7Translation),
+      (l10n.phrase8, l10n.phrase8Translation),
     ];
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.04),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -738,29 +750,31 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
               ),
               const SizedBox(width: 10),
               Text(
-                isAr ? 'عبارات مفيدة' : 'Essential Arabic Phrases',
-                style: const TextStyle(
+                l10n.essentialPhrases,
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A535C),
+                  color: isDark ? AppTheme.darkPrimary : AppTheme.primaryNile,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          ...phrases.map((p) => _buildPhraseRow(p, isAr)),
+          ...phrases.map((p) => _buildPhraseRow(p.$1, p.$2)),
         ],
       ),
     );
   }
 
-  Widget _buildPhraseRow(_PhraseData p, bool isAr) {
+  Widget _buildPhraseRow(String question, String translation) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color: const Color(0xFFF9F7F4),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppTheme.darkElevated
+              : AppTheme.lightPhraseRow,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -770,19 +784,23 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    p.english,
-                    style: const TextStyle(
+                    question,
+                    style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: Color(0xFF1A535C),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkPrimary
+                          : AppTheme.primaryNile,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${p.arabic}  (${p.pronunciation})',
+                    translation,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey.shade600,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade600,
                     ),
                   ),
                 ],
@@ -801,27 +819,29 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
 
 class _PlaceCard extends StatelessWidget {
   final TouristPlace place;
-  final bool isAr;
+  final String locale;
   final VoidCallback onRoute;
   final VoidCallback onMap;
 
   const _PlaceCard({
     required this.place,
-    required this.isAr,
+    required this.locale,
     required this.onRoute,
     required this.onMap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
             blurRadius: 14,
             offset: const Offset(0, 4),
           ),
@@ -885,7 +905,7 @@ class _PlaceCard extends StatelessWidget {
                           size: 12, color: Colors.white),
                       const SizedBox(width: 5),
                       Text(
-                        place.category.label(isAr),
+                        _categoryLabel(place.category, AppLocalizations.of(context)!),
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 11,
@@ -919,7 +939,7 @@ class _PlaceCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '~${place.walkMinutes} ${isAr ? "د" : "min"}',
+                        '~${place.walkMinutes} ${AppLocalizations.of(context)!.minuteShort}',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
@@ -936,7 +956,7 @@ class _PlaceCard extends StatelessWidget {
                 left: 14,
                 right: 14,
                 child: Text(
-                  place.name(isAr),
+                  place.name(locale),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -963,10 +983,10 @@ class _PlaceCard extends StatelessWidget {
               children: [
                 // Description
                 Text(
-                  place.desc(isAr),
+                  place.desc(locale),
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.grey.shade700,
+                    color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
                     height: 1.45,
                   ),
                   maxLines: 3,
@@ -979,7 +999,9 @@ class _PlaceCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryNile.withOpacity(0.06),
+                    color: isDark
+                        ? AppTheme.darkElevated
+                        : AppTheme.primaryNile.withOpacity(0.06),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -991,19 +1013,23 @@ class _PlaceCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              place.station(isAr),
-                              style: const TextStyle(
+                              place.station(locale),
+                              style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF1A535C),
+                                color: isDark
+                                    ? AppTheme.darkPrimary
+                                    : AppTheme.primaryNile,
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              isAr ? 'خط ${place.line}' : 'Line ${place.line}',
+                              '${AppLocalizations.of(context)!.lineLabel} ${place.line}',
                               style: TextStyle(
                                 fontSize: 10.5,
-                                color: Colors.grey.shade500,
+                                color: isDark
+                                    ? AppTheme.darkTextTertiary
+                                    : Colors.grey.shade500,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -1038,7 +1064,7 @@ class _PlaceCard extends StatelessWidget {
                                   size: 16, color: Colors.white),
                               const SizedBox(width: 6),
                               Text(
-                                isAr ? 'خطط الرحلة' : 'Plan Route',
+                                AppLocalizations.of(context)!.planRoute,
                                 style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
@@ -1061,7 +1087,9 @@ class _PlaceCard extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 11),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: isDark
+                                ? AppTheme.darkElevated
+                                : AppTheme.lightCard,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                                 color: AppTheme.primaryNile, width: 1.5),
@@ -1073,7 +1101,7 @@ class _PlaceCard extends StatelessWidget {
                                   size: 16, color: AppTheme.primaryNile),
                               const SizedBox(width: 6),
                               Text(
-                                isAr ? 'خرائط جوجل' : 'Google Maps',
+                                AppLocalizations.of(context)!.googleMapsLabel,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
@@ -1148,21 +1176,3 @@ class _PlaceCard extends StatelessWidget {
   }
 }
 
-// ── Helper data classes ─────────────────────────────────────────────────────
-
-class _TipData {
-  final IconData icon;
-  final String titleEn, titleAr, descEn, descAr;
-  const _TipData({
-    required this.icon,
-    required this.titleEn,
-    required this.titleAr,
-    required this.descEn,
-    required this.descAr,
-  });
-}
-
-class _PhraseData {
-  final String english, arabic, pronunciation;
-  const _PhraseData(this.english, this.arabic, this.pronunciation);
-}

@@ -52,6 +52,8 @@ class _RouteTimelineState extends State<RouteTimeline> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final routeType =
         int.tryParse(widget.routeData['Route type']?.toString() ?? '1') ?? 1;
     final l10n = AppLocalizations.of(context)!;
@@ -60,13 +62,13 @@ class _RouteTimelineState extends State<RouteTimeline> {
       margin: const EdgeInsets.only(bottom: 16),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: widget.isFirst
                 ? AppTheme.accentGold.withOpacity(0.18)
-                : Colors.black.withOpacity(0.04),
+                : Colors.black.withOpacity(isDark ? 0.3 : 0.06),
             blurRadius: widget.isFirst ? 24 : 12,
             offset: const Offset(0, 4),
           ),
@@ -116,6 +118,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
   // ── Header ─────────────────────────────────────────────────────────────────
 
   Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final isAr = l10n.locale == 'ar';
     final stops = widget.routeData['No. of stations']?.toString() ?? '-';
     final time = widget.routeData['Estimated travel time']?.toString() ?? '-';
@@ -140,7 +143,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
                 const Icon(Icons.star_rounded, size: 11, color: Colors.white),
                 const SizedBox(width: 4),
                 Text(
-                  isAr ? 'الأفضل' : 'Best',
+                  AppLocalizations.of(context)!.bestRoute,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 11,
@@ -156,31 +159,34 @@ class _RouteTimelineState extends State<RouteTimeline> {
           runSpacing: 5,
           alignment: WrapAlignment.end,
           children: [
-            _chip(Icons.train_rounded, '${isAr ? 'محطات' : 'Stops'} $stops'),
-            _chip(Icons.access_time_rounded, '${isAr ? 'وقت' : 'Time'} $time'),
-            _chip(Icons.payments_rounded, '${isAr ? 'سعر' : 'Fare'} $fare'),
+            _chip(context, Icons.train_rounded, '${AppLocalizations.of(context)!.sortStops} $stops'),
+            _chip(context, Icons.access_time_rounded, '${AppLocalizations.of(context)!.sortTime} $time'),
+            _chip(context, Icons.payments_rounded, '${AppLocalizations.of(context)!.sortFare} $fare'),
           ],
         ),
       ],
     );
   }
 
-  Widget _chip(IconData icon, String label) {
+  Widget _chip(BuildContext context, IconData icon, String label) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: isDark ? AppTheme.darkElevated : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 12, color: Colors.grey.shade600),
+          Icon(icon,
+              size: 12,
+              color: isDark ? AppTheme.darkTextSub : Colors.grey.shade600),
           const SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
-              color: Colors.grey.shade700,
+              color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
               fontSize: 11,
               fontWeight: FontWeight.w600,
             ),
@@ -240,8 +246,8 @@ class _RouteTimelineState extends State<RouteTimeline> {
             ),
             label: Text(
               _showAllStops
-                  ? (isAr ? 'إخفاء المحطات' : 'Hide stops')
-                  : '${isAr ? 'عرض' : 'Show'} ${hiddenStops.length} ${isAr ? 'محطات' : 'stops'}',
+                  ? AppLocalizations.of(context)!.hideStops
+                  : '${AppLocalizations.of(context)!.showLabel} ${hiddenStops.length} ${AppLocalizations.of(context)!.stopsWord}',
               style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             ),
           ),
@@ -341,6 +347,8 @@ class _RouteTimelineState extends State<RouteTimeline> {
   }
 
   Widget _point(String station, bool major, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
@@ -349,7 +357,9 @@ class _RouteTimelineState extends State<RouteTimeline> {
             width: major ? 11 : 7,
             height: major ? 11 : 7,
             decoration: BoxDecoration(
-              color: major ? color : Colors.white,
+              color: major
+                  ? color
+                  : (isDark ? AppTheme.darkCard : AppTheme.lightCard),
               shape: BoxShape.circle,
               border: Border.all(color: color, width: major ? 0 : 1.5),
               boxShadow: major
@@ -364,7 +374,9 @@ class _RouteTimelineState extends State<RouteTimeline> {
               style: TextStyle(
                 fontSize: major ? 14 : 13,
                 fontWeight: major ? FontWeight.w600 : FontWeight.w400,
-                color: major ? Colors.grey.shade900 : Colors.grey.shade700,
+                color: major
+                    ? cs.onSurface
+                    : (isDark ? AppTheme.darkTextSub : Colors.grey.shade700),
               ),
             ),
           ),
@@ -374,6 +386,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
   }
 
   Widget _collapsedPreview(int count, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -393,9 +406,9 @@ class _RouteTimelineState extends State<RouteTimeline> {
           ),
           const SizedBox(width: 10),
           Text(
-            '$count stops',
+            '$count ${AppLocalizations.of(context)!.stopsWord}',
             style: TextStyle(
-              color: Colors.grey.shade500,
+              color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
               fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
@@ -412,11 +425,12 @@ class _RouteTimelineState extends State<RouteTimeline> {
       );
 
   Widget _transfer(String at, String from, String to) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: AppTheme.accentGold.withOpacity(0.08),
+        color: AppTheme.accentGold.withOpacity(isDark ? 0.15 : 0.08),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -426,11 +440,11 @@ class _RouteTimelineState extends State<RouteTimeline> {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Transfer at $at',
+              '${AppLocalizations.of(context)!.transferStations} $at',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Colors.grey.shade700,
+                color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
               ),
             ),
           ),

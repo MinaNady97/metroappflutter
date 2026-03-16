@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:metroappflutter/core/theme/app_theme.dart';
 
 class QuickActionCard extends StatefulWidget {
   final IconData icon;
@@ -57,6 +58,8 @@ class _QuickActionCardState extends State<QuickActionCard>
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTapDown: (_) => _ctrl.forward(),
       onTapUp: (_) {
@@ -71,11 +74,11 @@ class _QuickActionCardState extends State<QuickActionCard>
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: cs.surface,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: widget.color.withOpacity(0.10),
+                color: widget.color.withOpacity(isDark ? 0.35 : 0.10),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -109,7 +112,7 @@ class _QuickActionCardState extends State<QuickActionCard>
                       child: Container(
                         padding: const EdgeInsets.all(4),
                         decoration: const BoxDecoration(
-                          color: Color(0xFFE6503F),
+                          color: AppTheme.error,
                           shape: BoxShape.circle,
                         ),
                         constraints: const BoxConstraints(
@@ -135,7 +138,7 @@ class _QuickActionCardState extends State<QuickActionCard>
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: Colors.grey.shade800,
+                  color: cs.onSurface,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,

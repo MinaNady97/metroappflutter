@@ -84,10 +84,11 @@ class _StationspageState extends State<Stationspage> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppTheme.backgroundSand,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppTheme.primaryNile,
@@ -123,31 +124,35 @@ class _StationspageState extends State<Stationspage> {
         children: [
           // ── Search bar ─────────────────────────────────────────────────────
           Container(
-            color: Colors.white,
+            color: cs.surface,
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Row(
               children: [
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppTheme.backgroundSand,
+                      color: isDark ? AppTheme.darkCard : Colors.grey.shade50,
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: Colors.grey.shade200, width: 1),
+                      border: Border.all(
+                        color: isDark ? AppTheme.darkBorder : Colors.grey.shade200,
+                        width: 1,
+                      ),
                     ),
                     child: TextField(
                       controller: _searchCtrl,
-                      style:
-                          TextStyle(color: Colors.grey.shade900, fontSize: 14),
+                      style: TextStyle(color: cs.onSurface, fontSize: 14),
                       decoration: InputDecoration(
                         hintText: l10n.searchStationsHint,
                         hintStyle: TextStyle(
-                            color: Colors.grey.shade400, fontSize: 14),
+                            color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
+                            fontSize: 14),
                         prefixIcon: Icon(Icons.search_rounded,
                             color: AppTheme.primaryNile, size: 20),
                         suffixIcon: _searchCtrl.text.isNotEmpty
                             ? IconButton(
                                 icon: Icon(Icons.close_rounded,
-                                    color: Colors.grey.shade400, size: 18),
+                                    color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
+                                    size: 18),
                                 onPressed: () {
                                   _searchCtrl.clear();
                                   FocusScope.of(context).unfocus();
@@ -167,7 +172,7 @@ class _StationspageState extends State<Stationspage> {
           ),
 
           // Thin divider between search and list
-          Divider(height: 1, color: Colors.grey.shade100),
+          Divider(height: 1, color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
 
           // Station list
           Expanded(
@@ -175,14 +180,16 @@ class _StationspageState extends State<Stationspage> {
                 ? Center(
                     child: Text(
                       l10n.noStationsFound,
-                      style:
-                          TextStyle(color: Colors.grey.shade500, fontSize: 14),
+                      style: TextStyle(
+                        color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+                        fontSize: 14,
+                      ),
                     ),
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
                     itemCount: _filtered.length,
-                    itemBuilder: (_, idx) => _buildSegmentCard(_filtered[idx]),
+                    itemBuilder: (ctx, idx) => _buildSegmentCard(ctx, _filtered[idx]),
                   ),
           ),
         ],
@@ -190,7 +197,9 @@ class _StationspageState extends State<Stationspage> {
     );
   }
 
-  Widget _buildSegmentCard(Map<String, dynamic> seg) {
+  Widget _buildSegmentCard(BuildContext context, Map<String, dynamic> seg) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = seg['color'] as Color;
     final stations = seg['stations'] as List;
     final segIdx = seg['segmentIndex'] as int;
@@ -199,11 +208,14 @@ class _StationspageState extends State<Stationspage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(20),
+        border: isDark
+            ? Border.all(color: AppTheme.darkBorder, width: 1)
+            : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withOpacity(isDark ? 0.25 : 0.04),
             blurRadius: 14,
             offset: const Offset(0, 4),
           ),
@@ -299,7 +311,9 @@ class _StationspageState extends State<Stationspage> {
                               width: isMajor ? 12 : 8,
                               height: isMajor ? 12 : 8,
                               decoration: BoxDecoration(
-                                color: isMajor ? color : Colors.white,
+                                color: isMajor
+                                    ? color
+                                    : (isDark ? AppTheme.darkCard : AppTheme.lightCard),
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: color, width: isMajor ? 0 : 1.5),
@@ -342,8 +356,8 @@ class _StationspageState extends State<Stationspage> {
                                         ? FontWeight.w700
                                         : FontWeight.w400,
                                     color: isMajor
-                                        ? Colors.grey.shade900
-                                        : Colors.grey.shade700,
+                                        ? cs.onSurface
+                                        : (isDark ? AppTheme.darkTextSub : Colors.grey.shade700),
                                   ),
                                 ),
                               ),

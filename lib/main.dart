@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:metroappflutter/Pages/homepage.dart';
+import 'package:metroappflutter/Pages/onboarding_page.dart';
 import 'package:metroappflutter/Controllers/homepagecontroller.dart';
 import 'package:metroappflutter/Controllers/languagecontroller.dart';
 import 'package:metroappflutter/data/datasources/metro_local_datasource.dart';
@@ -16,9 +17,10 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load saved language preference
+  // Load saved language preference and onboarding state
   final prefs = await SharedPreferences.getInstance();
   final savedLangCode = prefs.getString('language_code') ?? 'en';
+  final onboardingDone = await isOnboardingDone();
 
   // ── Register global singletons before the widget tree is built ──
 
@@ -36,12 +38,13 @@ void main() async {
   Get.put(LanguageController(), permanent: true);
   Get.put(ThemeController(), permanent: true);
 
-  runApp(MyApp(savedLangCode: savedLangCode));
+  runApp(MyApp(savedLangCode: savedLangCode, onboardingDone: onboardingDone));
 }
 
 class MyApp extends StatelessWidget {
   final String savedLangCode;
-  MyApp({required this.savedLangCode});
+  final bool onboardingDone;
+  MyApp({required this.savedLangCode, required this.onboardingDone});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +74,7 @@ class MyApp extends StatelessWidget {
         Locale('tr', ''),
         Locale('ja', ''),
       ],
-      home: Homepage(),
+      home: onboardingDone ? Homepage() : const OnboardingPage(),
     );
   }
 }

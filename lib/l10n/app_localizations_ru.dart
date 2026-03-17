@@ -1492,4 +1492,20 @@ class AppLocalizationsRu extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'Пересадка на $station';
   }
+
+  @override String get onboardingSkip => 'Пропустить';
+  @override String get onboardingNext => 'Далее';
+  @override String get onboardingGetStarted => 'Начать';
+  @override String get onboardingTitle1 => 'Планируйте маршрут';
+  @override String get onboardingSubtitle1 => 'Выберите станцию отправления и прибытия — мы найдём быстрейший путь с пересадками, временем и стоимостью за секунды.';
+  @override String get onboardingTitle2 => 'Изучите линии';
+  @override String get onboardingSubtitle2 => '3 цветные линии охватывают весь Каир. Круглые значки обозначают станции пересадки.';
+  @override String get onboardingTitle3 => 'Всё в одном месте';
+  @override String get onboardingSubtitle3 => 'Найдите ближайшую станцию, просматривайте живую карту и открывайте места рядом с каждой остановкой.';
+  @override String get onboardingLanguagePrompt => 'Выберите язык';
+  @override String get onboardingReplay => 'Повторить тур';
+  @override String get onboardingLine1 => 'Линия 1 · Хелван → Нью-Эль-Мардж';
+  @override String get onboardingLine2 => 'Линия 2 · Эль-Муниб → Шубра';
+  @override String get onboardingLine3 => 'Линия 3 · Адли Мансур → ветки';
+  @override String get onboardingTransfer => 'Пересадочная станция';
 }

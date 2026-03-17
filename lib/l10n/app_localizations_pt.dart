@@ -1492,4 +1492,20 @@ class AppLocalizationsPt extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'Transferência em $station';
   }
+
+  @override String get onboardingSkip => 'Pular';
+  @override String get onboardingNext => 'Próximo';
+  @override String get onboardingGetStarted => 'Começar';
+  @override String get onboardingTitle1 => 'Planeje sua rota';
+  @override String get onboardingSubtitle1 => 'Escolha estação de partida e chegada — encontramos o caminho mais rápido com conexões, tempo e tarifa em segundos.';
+  @override String get onboardingTitle2 => 'Conheça as linhas';
+  @override String get onboardingSubtitle2 => '3 linhas coloridas cobrem todo o Cairo. Ícones circulares indicam estações de conexão.';
+  @override String get onboardingTitle3 => 'Tudo em um lugar';
+  @override String get onboardingSubtitle3 => 'Encontre a estação mais próxima, explore o mapa ao vivo e descubra lugares perto de cada parada.';
+  @override String get onboardingLanguagePrompt => 'Escolher idioma';
+  @override String get onboardingReplay => 'Repetir tour';
+  @override String get onboardingLine1 => 'Linha 1 · Helwan → New El-Marg';
+  @override String get onboardingLine2 => 'Linha 2 · El-Mounib → Shubra';
+  @override String get onboardingLine3 => 'Linha 3 · Adly Mansour → ramais';
+  @override String get onboardingTransfer => 'Estação de conexão';
 }

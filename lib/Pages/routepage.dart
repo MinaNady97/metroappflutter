@@ -61,8 +61,8 @@ class _RoutepageState extends State<Routepage> {
             .compareTo(_parseDouble(rb['Estimated travel time'])),
         _SortBy.fare => _parseDouble(ra['Ticket Price'])
             .compareTo(_parseDouble(rb['Ticket Price'])),
-        _SortBy.lines => _parseInt(ra['Route type'])
-            .compareTo(_parseInt(rb['Route type'])),
+        _SortBy.lines =>
+          _parseInt(ra['Route type']).compareTo(_parseInt(rb['Route type'])),
       };
     });
     return indices;
@@ -98,10 +98,24 @@ class _RoutepageState extends State<Routepage> {
                   return _errorState(l10n, snapshot.error);
                 }
 
-                final routeDetails = snapshot.data?['allRoutesDetails']
-                    as List<Map<String, dynamic>>?;
-                final serializedData = snapshot.data?['serializedData']
-                    as List<List<List<List<int>>>>?;
+                final rawRoutes = snapshot.data?['allRoutesDetails'];
+                final routeDetails = rawRoutes == null
+                    ? null
+                    : (rawRoutes as List)
+                        .map((e) => Map<String, dynamic>.from(e as Map))
+                        .toList();
+                final rawSerial = snapshot.data?['serializedData'];
+                final serializedData = rawSerial == null
+                    ? null
+                    : (rawSerial as List)
+                        .map((route) => (route as List)
+                            .map((seg) => (seg as List)
+                                .map((coord) => (coord as List)
+                                    .map((v) => v as int)
+                                    .toList())
+                                .toList())
+                            .toList())
+                        .toList();
 
                 if (routeDetails == null ||
                     serializedData == null ||
@@ -133,8 +147,8 @@ class _RoutepageState extends State<Routepage> {
 
   // ── Header (replaces AppBar) ───────────────────────────────────────────────
 
-  Widget _buildHeader(BuildContext context, AppLocalizations l10n,
-      String dep, String arr) {
+  Widget _buildHeader(
+      BuildContext context, AppLocalizations l10n, String dep, String arr) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
@@ -295,7 +309,9 @@ class _RoutepageState extends State<Routepage> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+                      color: isDark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade500,
                     ),
                   ),
                 ),
@@ -315,7 +331,9 @@ class _RoutepageState extends State<Routepage> {
             ),
           ),
           const SizedBox(height: 10),
-          Divider(height: 1, color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
+          Divider(
+              height: 1,
+              color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
         ],
       ),
     );
@@ -370,7 +388,9 @@ class _RoutepageState extends State<Routepage> {
                     size: 15,
                     color: isActive
                         ? Colors.white
-                        : (isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500),
+                        : (isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade500),
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -378,11 +398,12 @@ class _RoutepageState extends State<Routepage> {
                   duration: const Duration(milliseconds: 200),
                   style: TextStyle(
                     fontSize: 13,
-                    fontWeight:
-                        isActive ? FontWeight.w700 : FontWeight.w500,
+                    fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
                     color: isActive
                         ? Colors.white
-                        : (isDark ? AppTheme.darkTextSub : Colors.grey.shade600),
+                        : (isDark
+                            ? AppTheme.darkTextSub
+                            : Colors.grey.shade600),
                     fontFamily: 'Tajawal',
                   ),
                   child: Text(sort.label(AppLocalizations.of(context)!)),
@@ -448,7 +469,8 @@ class _RoutepageState extends State<Routepage> {
             Text(
               l10n.noRoutesFound,
               style: TextStyle(
-                color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+                color:
+                    isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
                 fontSize: 14,
               ),
             ),

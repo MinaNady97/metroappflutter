@@ -1492,4 +1492,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'تحويل في $station';
   }
+
+  @override String get onboardingSkip => 'تخطي';
+  @override String get onboardingNext => 'التالي';
+  @override String get onboardingGetStarted => 'ابدأ الآن';
+  @override String get onboardingTitle1 => 'خطط رحلتك';
+  @override String get onboardingSubtitle1 => 'اختر محطة المغادرة والوصول — سنجد أسرع مسار مع التحويلات والوقت والأجرة في ثوانٍ.';
+  @override String get onboardingTitle2 => 'تعرف على الخطوط';
+  @override String get onboardingSubtitle2 => 'ثلاثة خطوط ملونة تغطي القاهرة كاملاً. الأيقونات الدائرية تُشير إلى محطات التحويل بين الخطوط.';
+  @override String get onboardingTitle3 => 'كل شيء في مكان واحد';
+  @override String get onboardingSubtitle3 => 'ابحث عن أقرب محطة، تصفح الخريطة التفاعلية، واكتشف الأماكن القريبة من كل محطة.';
+  @override String get onboardingLanguagePrompt => 'اختر اللغة';
+  @override String get onboardingReplay => 'إعادة الجولة';
+  @override String get onboardingLine1 => 'الخط ١ · حلوان ← المرج الجديدة';
+  @override String get onboardingLine2 => 'الخط ٢ · المنيب ← شبرا الخيمة';
+  @override String get onboardingLine3 => 'الخط ٣ · عدلي منصور ← الفروع';
+  @override String get onboardingTransfer => 'محطة تحويل';
 }

@@ -21,6 +21,9 @@ class HomepageController extends GetxController {
   RxString arrStation = "".obs;
   RxString depStationSelection = "".obs;
   RxString arrStationSelection = "".obs;
+  // Station indices in allMetroStations — locale-independent identity
+  int depStationIndex = -1;
+  int arrStationIndex = -1;
   RxBool destinationButtonFlag = false.obs;
   RxBool nearestRouteButtonFlag = false.obs;
   final RxString userDestination = "".obs;
@@ -156,6 +159,7 @@ class HomepageController extends GetxController {
       arrivalLocation = nearestStationlist["DepartureLocation"];
       arrStationSelection.value = nearestStation;
       arrStation.value = nearestStation;
+      arrStationIndex = allMetroStations.indexOf(nearestStation);
       destinationButtonFlag.value = true;
       print('$_searchLogTag success -> arrStation="$nearestStation"');
       return true;
@@ -279,6 +283,7 @@ class HomepageController extends GetxController {
     depStationSelection.value = nearestStation;
     nearestRouteButtonFlag.value = nearestStation.isNotEmpty;
     depStation.value = depStationSelection.value;
+    depStationIndex = allMetroStations.indexOf(nearestStation);
   }
 
   Future<void> launchUrl_(Position start, Position dest) async {

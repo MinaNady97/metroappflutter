@@ -124,47 +124,49 @@ class _RouteTimelineState extends State<RouteTimeline> {
     final time = widget.routeData['Estimated travel time']?.toString() ?? '-';
     final fare = widget.routeData['Ticket Price']?.toString() ?? '-';
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.isFirst)
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
-            margin: const EdgeInsets.only(right: 2),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppTheme.accentGold, Color(0xFFF5C842)],
-              ),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.star_rounded, size: 11, color: Colors.white),
-                const SizedBox(width: 4),
-                Text(
-                  AppLocalizations.of(context)!.bestRoute,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                  ),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (widget.isFirst) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [AppTheme.accentGold, Color(0xFFF5C842)],
                 ),
-              ],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.star_rounded, size: 11, color: Colors.white),
+                  const SizedBox(width: 2),
+                  Text(
+                    AppLocalizations.of(context)!.bestRoute,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        const Spacer(),
-        Wrap(
-          spacing: 5,
-          runSpacing: 5,
-          alignment: WrapAlignment.end,
-          children: [
-            _chip(context, Icons.train_rounded, '${AppLocalizations.of(context)!.sortStops} $stops'),
-            _chip(context, Icons.access_time_rounded, '${AppLocalizations.of(context)!.sortTime} $time'),
-            _chip(context, Icons.payments_rounded, '${AppLocalizations.of(context)!.sortFare} $fare'),
+            const SizedBox(width: 6),
           ],
-        ),
-      ],
+          _chip(context, Icons.train_rounded,
+              '${AppLocalizations.of(context)!.sortStops} $stops'),
+          const SizedBox(width: 5),
+          _chip(context, Icons.access_time_rounded,
+              '${AppLocalizations.of(context)!.sortTime} $time'),
+          const SizedBox(width: 5),
+          _chip(context, Icons.payments_rounded,
+              '${AppLocalizations.of(context)!.sortFare} $fare'),
+        ],
+      ),
     );
   }
 

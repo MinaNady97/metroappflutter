@@ -1492,4 +1492,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String transferAtStation(Object station) {
     return '$stationで乗り換え';
   }
+
+  @override String get onboardingSkip => 'スキップ';
+  @override String get onboardingNext => '次へ';
+  @override String get onboardingGetStarted => 'はじめる';
+  @override String get onboardingTitle1 => 'ルートを計画する';
+  @override String get onboardingSubtitle1 => '出発駅と到着駅を選ぶだけ — 乗り換え・所要時間・運賃を含む最速ルートを即座に表示します。';
+  @override String get onboardingTitle2 => '路線を理解する';
+  @override String get onboardingSubtitle2 => '3つの色分けされた路線がカイロ全域をカバー。円形アイコンが乗り換え駅を示します。';
+  @override String get onboardingTitle3 => 'すべてが1か所に';
+  @override String get onboardingSubtitle3 => '最寄り駅を検索し、ライブマップを閲覧して、各駅周辺のスポットを発見しましょう。';
+  @override String get onboardingLanguagePrompt => '言語を選択';
+  @override String get onboardingReplay => 'ツアーを再生';
+  @override String get onboardingLine1 => '1号線・ヘルワン → ニュー・エル・マルグ';
+  @override String get onboardingLine2 => '2号線・エル・モウニブ → シュブラ';
+  @override String get onboardingLine3 => '3号線・アドリー・マンスール → 分岐';
+  @override String get onboardingTransfer => '乗換駅';
 }

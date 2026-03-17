@@ -1492,4 +1492,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String transferAtStation(Object station) {
     return '$station istasyonunda aktarma';
   }
+
+  @override String get onboardingSkip => 'Geç';
+  @override String get onboardingNext => 'İleri';
+  @override String get onboardingGetStarted => 'Başla';
+  @override String get onboardingTitle1 => 'Rotanı Planla';
+  @override String get onboardingSubtitle1 => 'Kalkış ve varış istasyonunu seç — saniyeler içinde aktarma, süre ve ücretle en hızlı yolu buluruz.';
+  @override String get onboardingTitle2 => 'Hatları Tanı';
+  @override String get onboardingSubtitle2 => 'Kahire\'nin tamamını kaplayan 3 renkli hat. Daire simgeler aktarma istasyonlarını gösterir.';
+  @override String get onboardingTitle3 => 'Her Şey Bir Arada';
+  @override String get onboardingSubtitle3 => 'En yakın istasyonu bul, canlı haritayı keşfet ve her durağın çevresindeki yerleri keşfet.';
+  @override String get onboardingLanguagePrompt => 'Dil seçin';
+  @override String get onboardingReplay => 'Turu tekrarla';
+  @override String get onboardingLine1 => 'Hat 1 · Helvan → Yeni El-Merc';
+  @override String get onboardingLine2 => 'Hat 2 · El-Munib → Şubra';
+  @override String get onboardingLine3 => 'Hat 3 · Adli Mansur → kollar';
+  @override String get onboardingTransfer => 'Aktarma istasyonu';
 }

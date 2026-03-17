@@ -229,6 +229,23 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     _ctrl.getMetroStationsLists(context);
     final stationLineMap = getStationLineMap(context);
 
+    // Resync selected station names whenever the locale changes.
+    // We store the index into allMetroStations as the locale-independent key,
+    // then translate it back to the current-locale name after every rebuild.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final stations = _ctrl.allMetroStations;
+      if (_ctrl.depStationIndex >= 0 &&
+          _ctrl.depStationIndex < stations.length &&
+          _ctrl.depStation.value != stations[_ctrl.depStationIndex]) {
+        _ctrl.depStation.value = stations[_ctrl.depStationIndex];
+      }
+      if (_ctrl.arrStationIndex >= 0 &&
+          _ctrl.arrStationIndex < stations.length &&
+          _ctrl.arrStation.value != stations[_ctrl.arrStationIndex]) {
+        _ctrl.arrStation.value = stations[_ctrl.arrStationIndex];
+      }
+    });
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -1003,7 +1020,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           icon: Icons.trip_origin,
                           suggestions: _ctrl.allMetroStations,
                           selectedText: _ctrl.depStation.value,
-                          onSelected: (v) => _ctrl.depStation.value = v,
+                          onSelected: (v) {
+                            _ctrl.depStation.value = v;
+                            _ctrl.depStationIndex =
+                                _ctrl.allMetroStations.indexOf(v);
+                          },
                           stationLines: getStationLineMap(context),
                         )),
                     const SizedBox(height: 8),
@@ -1013,7 +1034,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           icon: Icons.location_on,
                           suggestions: _ctrl.allMetroStations,
                           selectedText: _ctrl.arrStation.value,
-                          onSelected: (v) => _ctrl.arrStation.value = v,
+                          onSelected: (v) {
+                            _ctrl.arrStation.value = v;
+                            _ctrl.arrStationIndex =
+                                _ctrl.allMetroStations.indexOf(v);
+                          },
                           stationLines: getStationLineMap(context),
                         )),
                   ],
@@ -1033,6 +1058,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             final tmp = _ctrl.depStation.value;
                             _ctrl.depStation.value = _ctrl.arrStation.value;
                             _ctrl.arrStation.value = tmp;
+                            final tmpIdx = _ctrl.depStationIndex;
+                            _ctrl.depStationIndex = _ctrl.arrStationIndex;
+                            _ctrl.arrStationIndex = tmpIdx;
                           }
                         : null,
                     child: Container(

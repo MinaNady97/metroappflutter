@@ -7,7 +7,24 @@
       "Bash(cd \"C:\\\\Users\\\\menan\\\\Downloads\\\\OutWork\\\\metroappflutter\" && flutter gen-l10n 2>&1)",
       "Bash(cd \"C:\\\\Users\\\\menan\\\\Downloads\\\\OutWork\\\\metroappflutter\" && flutter build apk --debug 2>&1 | tail -20)",
       "Bash(wc:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(cd:*)",
+      "Bash(where python3:*)",
+      "Bash(C:\\\\Python311\\\\python.exe -c \"import json; data = json.load\\(open\\('C:/Users/menan/Downloads/OutWork/metroappflutter/assets/data/full_cairo_metro_template2.json', encoding='utf-8'\\)\\); print\\('Keys count:', len\\(data.keys\\(\\)\\)\\); keys = list\\(data.keys\\(\\)\\); print\\('First 5:', keys[:5]\\); print\\('Last 5:', keys[-5:]\\)\")",
+      "Bash(\"/c/Python311/python.exe\" --version)",
+      "Bash(\"/c/Python311/python.exe\" -c \"\nimport json\nwith open\\('/c/Users/menan/Downloads/OutWork/metroappflutter/assets/data/full_cairo_metro_template2.json', encoding='utf-8'\\) as f:\n    data = json.load\\(f\\)\nkeys = list\\(data.keys\\(\\)\\)\nprint\\('Keys count:', len\\(keys\\)\\)\nprint\\('First 5:', keys[:5]\\)\nprint\\('Last 5:', keys[-5:]\\)\n\")",
+      "Bash(\"/c/Python311/python.exe\" -c \"\nimport json\nwith open\\('C:/Users/menan/Downloads/OutWork/metroappflutter/assets/data/full_cairo_metro_template2.json', encoding='utf-8'\\) as f:\n    data = json.load\\(f\\)\nkeys = list\\(data.keys\\(\\)\\)\nprint\\('Keys count:', len\\(keys\\)\\)\nprint\\('All en_ keys:', [k for k in keys if k.startswith\\('en_'\\)]\\)\n\")",
+      "Bash(python:*)",
+      "Bash(pip show:*)",
+      "Bash(pip install:*)",
+      "Bash(pip list:*)",
+      "Bash(tasklist)",
+      "Bash(taskkill /PID 29524 /F)",
+      "Bash(taskkill /PID 14792 /F)",
+      "Bash(cmd /c \"taskkill /PID 14792 /F\")",
+      "Bash(cmd /c \"taskkill /PID 29524 /F\")",
+      "Bash(python3 -c \"from PIL import Image; print\\(''Pillow OK''\\)\")"
     ]
   }
 }

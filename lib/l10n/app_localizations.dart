@@ -3034,6 +3034,23 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Transfer at {station}'**
   String transferAtStation(Object station);
+
+  // ── Onboarding ─────────────────────────────────────────────────────────────
+  String get onboardingSkip;
+  String get onboardingNext;
+  String get onboardingGetStarted;
+  String get onboardingTitle1;
+  String get onboardingSubtitle1;
+  String get onboardingTitle2;
+  String get onboardingSubtitle2;
+  String get onboardingTitle3;
+  String get onboardingSubtitle3;
+  String get onboardingLanguagePrompt;
+  String get onboardingReplay;
+  String get onboardingLine1;
+  String get onboardingLine2;
+  String get onboardingLine3;
+  String get onboardingTransfer;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

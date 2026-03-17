@@ -1492,4 +1492,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'Transfer at $station';
   }
+
+  @override String get onboardingSkip => 'Skip';
+  @override String get onboardingNext => 'Next';
+  @override String get onboardingGetStarted => 'Get Started';
+  @override String get onboardingTitle1 => 'Plan Any Route';
+  @override String get onboardingSubtitle1 => 'Pick a departure and arrival station — we find the fastest path, transfers, travel time, and fare in seconds.';
+  @override String get onboardingTitle2 => 'Know the Lines';
+  @override String get onboardingSubtitle2 => '3 color-coded lines cover all of Cairo. Circle icons mark stations where you switch lines.';
+  @override String get onboardingTitle3 => 'Everything in One Place';
+  @override String get onboardingSubtitle3 => 'Find your nearest station, browse the live map, and discover places around every stop.';
+  @override String get onboardingLanguagePrompt => 'Choose language';
+  @override String get onboardingReplay => 'Replay tour';
+  @override String get onboardingLine1 => 'Line 1 · Helwan → New El-Marg';
+  @override String get onboardingLine2 => 'Line 2 · El-Mounib → Shubra';
+  @override String get onboardingLine3 => 'Line 3 · Adly Mansour → branches';
+  @override String get onboardingTransfer => 'Transfer station';
 }

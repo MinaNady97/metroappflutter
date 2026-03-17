@@ -1492,4 +1492,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String transferAtStation(Object station) {
     return '在$station换乘';
   }
+
+  @override String get onboardingSkip => '跳过';
+  @override String get onboardingNext => '下一步';
+  @override String get onboardingGetStarted => '开始使用';
+  @override String get onboardingTitle1 => '规划您的路线';
+  @override String get onboardingSubtitle1 => '选择出发站和到达站 — 我们将在几秒内找到包含换乘、时间和票价的最快路线。';
+  @override String get onboardingTitle2 => '了解线路';
+  @override String get onboardingSubtitle2 => '3条彩色线路覆盖开罗全城。圆形图标标记换乘站。';
+  @override String get onboardingTitle3 => '一站式服务';
+  @override String get onboardingSubtitle3 => '查找最近的车站，浏览实时地图，探索每个站点附近的地方。';
+  @override String get onboardingLanguagePrompt => '选择语言';
+  @override String get onboardingReplay => '重播教程';
+  @override String get onboardingLine1 => '1号线 · 赫尔万 → 新马尔格';
+  @override String get onboardingLine2 => '2号线 · 蒙尼卜 → 舒布拉';
+  @override String get onboardingLine3 => '3号线 · 阿德利·曼苏尔 → 支线';
+  @override String get onboardingTransfer => '换乘站';
 }

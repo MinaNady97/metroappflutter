@@ -1492,4 +1492,20 @@ class AppLocalizationsDe extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'Umsteigen bei $station';
   }
+
+  @override String get onboardingSkip => 'Überspringen';
+  @override String get onboardingNext => 'Weiter';
+  @override String get onboardingGetStarted => 'Los geht\'s';
+  @override String get onboardingTitle1 => 'Route planen';
+  @override String get onboardingSubtitle1 => 'Wähle Start- und Zielstation – wir finden den schnellsten Weg mit Umsteigehinweisen, Fahrzeit und Preis.';
+  @override String get onboardingTitle2 => 'Linien kennen';
+  @override String get onboardingSubtitle2 => '3 farbige Linien decken ganz Kairo ab. Kreis-Symbole zeigen Umsteigebahnhöfe an.';
+  @override String get onboardingTitle3 => 'Alles an einem Ort';
+  @override String get onboardingSubtitle3 => 'Nächste Station finden, Karte erkunden und Orte in der Nähe jeder Haltestelle entdecken.';
+  @override String get onboardingLanguagePrompt => 'Sprache wählen';
+  @override String get onboardingReplay => 'Tour wiederholen';
+  @override String get onboardingLine1 => 'Linie 1 · Helwan → New El-Marg';
+  @override String get onboardingLine2 => 'Linie 2 · El-Mounib → Shubra';
+  @override String get onboardingLine3 => 'Linie 3 · Adly Mansour → Äste';
+  @override String get onboardingTransfer => 'Umsteigebahnhof';
 }

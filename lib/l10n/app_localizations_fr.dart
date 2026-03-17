@@ -1492,4 +1492,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String transferAtStation(Object station) {
     return 'Correspondance à $station';
   }
+
+  @override String get onboardingSkip => 'Passer';
+  @override String get onboardingNext => 'Suivant';
+  @override String get onboardingGetStarted => 'Commencer';
+  @override String get onboardingTitle1 => 'Planifiez votre trajet';
+  @override String get onboardingSubtitle1 => 'Choisissez une station de départ et d\'arrivée — nous trouvons le chemin le plus rapide avec correspondances, durée et tarif.';
+  @override String get onboardingTitle2 => 'Connaître les lignes';
+  @override String get onboardingSubtitle2 => '3 lignes colorées couvrent tout Le Caire. Les icônes rondes indiquent les stations de correspondance.';
+  @override String get onboardingTitle3 => 'Tout en un seul endroit';
+  @override String get onboardingSubtitle3 => 'Trouvez la station la plus proche, explorez la carte en direct et découvrez les lieux autour de chaque arrêt.';
+  @override String get onboardingLanguagePrompt => 'Choisir la langue';
+  @override String get onboardingReplay => 'Rejouer le tour';
+  @override String get onboardingLine1 => 'Ligne 1 · Helwan → New El-Marg';
+  @override String get onboardingLine2 => 'Ligne 2 · El-Mounib → Shubra';
+  @override String get onboardingLine3 => 'Ligne 3 · Adly Mansour → branches';
+  @override String get onboardingTransfer => 'Station de correspondance';
 }

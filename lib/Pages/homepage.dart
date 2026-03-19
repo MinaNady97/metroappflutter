@@ -27,6 +27,7 @@ import 'package:metroappflutter/widgets/quick_action_card.dart';
 import 'package:metroappflutter/widgets/location_permission_dialog.dart';
 
 import '../Constants/metro_stations.dart';
+import '../services/local_search_service.dart';
 
 // ── Promo price data (not translatable — currency amounts) ───────────────────
 
@@ -1271,6 +1272,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         ),
                         onPressed: () {
                           _destCtrl.clear();
+                          _ctrl.onDestinationTextChanged('');
                           setState(() {});
                         },
                       )
@@ -1285,10 +1287,23 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
-              onChanged: (_) => setState(() {}),
+              onChanged: (v) {
+                _ctrl.onDestinationTextChanged(v);
+                setState(() {});
+              },
               onSubmitted: (_) => _findByAddress(context, l10n),
             ),
           ),
+
+          // ── Autocomplete suggestions (local + online merged) ──────────────
+          Obx(() {
+            final suggestions = _ctrl.autocompleteSuggestions;
+            final loading = _ctrl.isFetchingOnlineSuggestions.value;
+            final isArabic = _ctrl.isInputArabic.value;
+            if (suggestions.isEmpty && !loading) return const SizedBox.shrink();
+            return _buildAutocompleteList(
+                context, suggestions.toList(), loading, isArabic, l10n);
+          }),
 
           const SizedBox(height: 8),
 
@@ -1313,6 +1328,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 ],
               ),
             ),
+
+          // ── "Did You Mean?" section ───────────────────────────────────────
+          Obx(() {
+            final dym = _ctrl.didYouMeanSuggestions;
+            if (dym.isEmpty) return const SizedBox.shrink();
+            return _buildDidYouMean(context, dym.toList(), l10n);
+          }),
 
           const SizedBox(height: 12),
 
@@ -1359,6 +1381,287 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  // ── Autocomplete suggestions list (local + online) ────────────────────────
+
+  Widget _buildAutocompleteList(
+    BuildContext context,
+    List<LandmarkResult> suggestions,
+    bool loading,
+    bool isArabic,
+    AppLocalizations l10n,
+  ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      margin: const EdgeInsets.only(top: 6),
+      decoration: BoxDecoration(
+        color: isDark ? AppTheme.darkElevated : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isDark ? AppTheme.darkBorder : Colors.grey.shade200,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.18 : 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // ── Result rows ─────────────────────────────────────────────────
+          ...suggestions.asMap().entries.map((entry) {
+            final i = entry.key;
+            final s = entry.value;
+            final isOnline = s.source == 'online';
+            final isLast = i == suggestions.length - 1 && !loading;
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  borderRadius: BorderRadius.only(
+                    topLeft: i == 0
+                        ? const Radius.circular(14)
+                        : Radius.zero,
+                    topRight: i == 0
+                        ? const Radius.circular(14)
+                        : Radius.zero,
+                    bottomLeft: isLast
+                        ? const Radius.circular(14)
+                        : Radius.zero,
+                    bottomRight: isLast
+                        ? const Radius.circular(14)
+                        : Radius.zero,
+                  ),
+                  onTap: () {
+                    // Fill the text field in the user's own language
+                    final fillText = (isArabic && s.nameAr.isNotEmpty)
+                        ? s.nameAr
+                        : s.name;
+                    _destCtrl.text = fillText;
+                    _ctrl.onDestinationTextChanged('');
+                    setState(() {});
+                    _selectLandmark(context, s, l10n);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 10),
+                    child: Row(
+                      children: [
+                        // Emoji type icon
+                        Text(
+                          LocalSearchService.typeEmoji(s.type),
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                        const SizedBox(width: 10),
+                        // Primary in the user's language, secondary in the other
+                        Expanded(
+                          child: Builder(builder: (_) {
+                            // Online results: Nominatim already returned the
+                            // right language in `name`, so show it as-is.
+                            // Local results: swap primary/secondary by script.
+                            final String primary;
+                            final String secondary;
+                            if (s.source == 'online') {
+                              primary = s.name;
+                              secondary = '';
+                            } else if (isArabic && s.nameAr.isNotEmpty) {
+                              primary = s.nameAr;
+                              secondary = s.name;
+                            } else {
+                              primary = s.name;
+                              secondary = s.nameAr;
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  primary,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: isDark
+                                        ? AppTheme.darkPrimary
+                                        : AppTheme.primaryNile,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  textDirection: isArabic
+                                      ? TextDirection.rtl
+                                      : TextDirection.ltr,
+                                ),
+                                if (secondary.isNotEmpty)
+                                  Text(
+                                    secondary,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: isDark
+                                          ? AppTheme.darkTextTertiary
+                                          : Colors.grey.shade500,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                              ],
+                            );
+                          }),
+                        ),
+                        // Online badge or fill arrow
+                        if (isOnline)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryNile.withOpacity(0.10),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              'web',
+                              style: TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.primaryNile,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.north_west_rounded,
+                            size: 13,
+                            color: isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade400,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (!isLast)
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: isDark
+                        ? AppTheme.darkBorder.withOpacity(0.5)
+                        : Colors.grey.shade100,
+                    indent: 14,
+                    endIndent: 14,
+                  ),
+              ],
+            );
+          }),
+
+          // ── Loading footer (while fetching Nominatim) ────────────────────
+          if (loading)
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                  14, suggestions.isEmpty ? 12 : 8, 14, 12),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 12,
+                    height: 12,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                      color: AppTheme.primaryNile.withOpacity(0.5),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Searching online…',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: isDark
+                          ? AppTheme.darkTextTertiary
+                          : Colors.grey.shade400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // ── "Did You Mean?" section ────────────────────────────────────────────────
+
+  Widget _buildDidYouMean(BuildContext context, List<LandmarkResult> suggestions,
+      AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 6),
+            child: Text(
+              'Did you mean?',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+              ),
+            ),
+          ),
+          Obx(() {
+            final arabic = _ctrl.isInputArabic.value;
+            return Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: suggestions.map((s) {
+                final chipLabel =
+                    arabic && s.nameAr.isNotEmpty ? s.nameAr : s.name;
+                return ActionChip(
+                  avatar: Text(
+                    LocalSearchService.typeEmoji(s.type),
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                  label: Text(
+                    chipLabel,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color:
+                          isDark ? AppTheme.darkPrimary : AppTheme.primaryNile,
+                    ),
+                    textDirection: arabic
+                        ? TextDirection.rtl
+                        : TextDirection.ltr,
+                  ),
+                  backgroundColor:
+                      isDark ? AppTheme.darkElevated : AppTheme.lightSubtle,
+                  side: BorderSide(
+                    color: AppTheme.primaryNile.withOpacity(0.25),
+                  ),
+                  onPressed: () {
+                    _destCtrl.text = chipLabel;
+                    _ctrl.didYouMeanSuggestions.clear();
+                    setState(() {});
+                    _selectLandmark(context, s, l10n);
+                  },
+                );
+              }).toList(),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _selectLandmark(
+      BuildContext context, LandmarkResult landmark, AppLocalizations l10n) async {
+    final ok =
+        await _ctrl.updateArrivalFromLandmark(context, landmark);
+    if (!context.mounted) return;
+    if (!ok) {
+      _snack(context, l10n.addressNotFound, error: true);
+      return;
+    }
+    _snack(context, '${l10n.stationFound}: ${_ctrl.arrStation.value}');
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

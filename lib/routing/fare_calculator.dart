@@ -1,11 +1,13 @@
 /// Cairo Metro fare calculation (2024 rates).
 /// Single source of truth — replaces the duplicate logic in routecontroller.dart.
 abstract final class FareCalculator {
-  // Fare brackets: max stations (inclusive) → EGP price
+  // Fare brackets: max hops (inclusive) → EGP price.
+  // Stations visited = hops + 1; brackets: 1–9 stations (≤8 hops) → 8 EGP,
+  // 10–16 stations (≤15 hops) → 10 EGP, 17–23 stations (≤22 hops) → 15 EGP, 24+ → 20 EGP.
   static const List<(int, int)> _brackets = [
-    (9, 8),
-    (16, 10),
-    (23, 15),
+    (8, 8),
+    (15, 10),
+    (22, 15),
   ];
   static const int _maxFare = 20;
 

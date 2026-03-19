@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
@@ -7,6 +9,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 
 import '../Constants/metro_stations.dart';
+import '../services/local_search_service.dart';
+import '../services/geocoding_cache_service.dart';
 
 List<String> metroLine1Stations = [];
 List<String> metroLine2Stations = [];
@@ -61,11 +65,165 @@ class HomepageController extends GetxController {
     await updateArrivalFromInput(context, destinationController.text);
   }
 
+  /// Suggestions shown in the "Did You Mean?" UI when all geocoding fails.
+  final RxList<LandmarkResult> didYouMeanSuggestions = <LandmarkResult>[].obs;
+
+  /// Live autocomplete suggestions (local + online merged as user types).
+  final RxList<LandmarkResult> autocompleteSuggestions =
+      <LandmarkResult>[].obs;
+
+  /// True while a Nominatim autocomplete fetch is in-flight.
+  final RxBool isFetchingOnlineSuggestions = false.obs;
+
+  /// True when the user is typing in Arabic script.
+  final RxBool isInputArabic = false.obs;
+
+  Timer? _autocompleteDebounce;
+
+  @override
+  void onClose() {
+    _autocompleteDebounce?.cancel();
+    super.onClose();
+  }
+
+  /// Call on every keystroke in the destination field.
+  /// Shows local results instantly, then merges online results after a short
+  /// debounce so the list improves the longer the user types.
+  void onDestinationTextChanged(String value) {
+    final q = value.trim();
+    _autocompleteDebounce?.cancel();
+
+    if (q.length < 2) {
+      autocompleteSuggestions.clear();
+      isFetchingOnlineSuggestions.value = false;
+      isInputArabic.value = false;
+      return;
+    }
+
+    // Detect script once per change
+    final arabic = LocalSearchService.isArabic(q);
+    isInputArabic.value = arabic;
+
+    // ── 1. Instant local results (scored for the right language) ──────────
+    autocompleteSuggestions.value = LocalSearchService.instance
+        .search(q, maxResults: 5, preferArabic: arabic);
+
+    // ── 2. Debounced online results (500 ms after last keystroke) ─────────
+    isFetchingOnlineSuggestions.value = true;
+    _autocompleteDebounce =
+        Timer(const Duration(milliseconds: 500), () async {
+      await _fetchAndMergeOnlineSuggestions(q, arabic: arabic);
+    });
+  }
+
+  Future<void> _fetchAndMergeOnlineSuggestions(String query,
+      {bool arabic = false}) async {
+    try {
+      final uri = Uri.https('nominatim.openstreetmap.org', '/search', {
+        'q': query,
+        'format': 'json',
+        'limit': '6',
+        'countrycodes': 'eg',
+        'accept-language': arabic ? 'ar' : 'en',
+        // soft preference for Cairo area
+        'viewbox': '30.6,30.4,32.2,29.7',
+      });
+
+      final response = await http.get(uri, headers: {
+        'User-Agent': 'metroappflutter/1.0 (Cairo Metro Guide)',
+        'Accept': 'application/json',
+      }).timeout(const Duration(seconds: 5));
+
+      if (response.statusCode != 200) return;
+
+      final data = jsonDecode(response.body) as List<dynamic>;
+      final online = <LandmarkResult>[];
+
+      for (final item in data) {
+        final lat = double.tryParse(item['lat']?.toString() ?? '');
+        final lng = double.tryParse(item['lon']?.toString() ?? '');
+        final displayName = (item['display_name'] as String?) ?? '';
+        if (lat == null || lng == null || displayName.isEmpty) continue;
+        // Keep only Egypt-area results
+        if (lat < 22 || lat > 32 || lng < 24 || lng > 37) continue;
+
+        final shortName = displayName.split(',').first.trim();
+        if (shortName.isEmpty) continue;
+
+        online.add(LandmarkResult(
+          name: shortName,
+          nameAr: '',
+          lat: lat,
+          lng: lng,
+          type: _nominatimType(
+            item['class'] as String? ?? '',
+            item['type'] as String? ?? '',
+          ),
+          score: 0.5,
+          source: 'online',
+        ));
+      }
+
+      // Merge: keep existing local results, append online that aren't dupes
+      final merged = List<LandmarkResult>.from(autocompleteSuggestions);
+      for (final o in online) {
+        final isDupe = merged.any((e) =>
+            e.name.toLowerCase() == o.name.toLowerCase() ||
+            _kmBetween(e.lat, e.lng, o.lat, o.lng) < 0.15);
+        if (!isDupe) merged.add(o);
+      }
+
+      // Sort: local high-score first, then online
+      merged.sort((a, b) {
+        if (a.source == b.source) return b.score.compareTo(a.score);
+        return a.source == 'local' ? -1 : 1;
+      });
+
+      autocompleteSuggestions.value = merged.take(8).toList();
+    } catch (_) {
+      // Network failure is non-fatal — local results stay visible
+    } finally {
+      isFetchingOnlineSuggestions.value = false;
+    }
+  }
+
+  /// Rough km distance — good enough for dedup (no need for haversine).
+  double _kmBetween(double lat1, double lng1, double lat2, double lng2) {
+    final dlat = (lat2 - lat1) * 111.0;
+    final dlng = (lng2 - lng1) * 111.0 * cos(lat1 * pi / 180);
+    return sqrt(dlat * dlat + dlng * dlng);
+  }
+
+  String _nominatimType(String cls, String type) => switch (cls) {
+        'amenity' => switch (type) {
+            'hospital' || 'clinic' => 'hospital',
+            'university' || 'college' || 'school' => 'university',
+            'place_of_worship' => 'mosque',
+            'marketplace' || 'market' => 'market',
+            'museum' => 'museum',
+            _ => 'place',
+          },
+        'tourism' => switch (type) {
+            'hotel' || 'motel' || 'hostel' => 'hotel',
+            'museum' => 'museum',
+            'attraction' || 'viewpoint' => 'landmark',
+            _ => 'landmark',
+          },
+        'leisure' => 'park',
+        'shop' => 'market',
+        'aeroway' => 'airport',
+        'railway' || 'public_transport' => 'transport',
+        _ => 'place',
+      };
+
   Future<bool> updateArrivalFromInput(
       BuildContext context, String rawInput) async {
     final input = rawInput.trim();
     print('$_searchLogTag raw input="$rawInput"');
     print('$_searchLogTag normalized input="$input"');
+    didYouMeanSuggestions.clear();
+    autocompleteSuggestions.clear();
+
     if (input.isEmpty) {
       print('$_searchLogTag input is empty -> abort');
       destinationButtonFlag.value = false;
@@ -75,42 +233,63 @@ class HomepageController extends GetxController {
     try {
       destinationController.text = input;
       Position? resolvedPosition;
-      final coords = _extractLatLng(input);
-      print('$_searchLogTag parsed direct coords=${coords ?? "none"}');
 
-      if (coords != null) {
-        resolvedPosition = Position(
-          latitude: coords[0],
-          longitude: coords[1],
-          timestamp: DateTime.now(),
-          altitude: 0.0,
-          accuracy: 0.0,
-          heading: 0.0,
-          speed: 0.0,
-          speedAccuracy: 0.0,
-          altitudeAccuracy: 0.0,
-          headingAccuracy: 0.0,
-        );
+      // ── Tier 0: Local offline landmark database ─────────────────────────
+      final localMatches =
+          LocalSearchService.instance.search(input, maxResults: 1);
+      if (localMatches.isNotEmpty && localMatches.first.score >= 0.65) {
+        final hit = localMatches.first;
         print(
-            '$_searchLogTag using parsed coords lat=${resolvedPosition.latitude}, lng=${resolvedPosition.longitude}');
+            '$_searchLogTag local DB hit: "${hit.name}" score=${hit.score} lat=${hit.lat}, lng=${hit.lng}');
+        resolvedPosition = _makePosition(hit.lat, hit.lng);
       }
 
+      // ── Tier 1: Direct lat/lng in input ────────────────────────────────
+      if (resolvedPosition == null) {
+        final coords = _extractLatLng(input);
+        print('$_searchLogTag parsed direct coords=${coords ?? "none"}');
+        if (coords != null) {
+          resolvedPosition = _makePosition(coords[0], coords[1]);
+          print(
+              '$_searchLogTag using parsed coords lat=${resolvedPosition.latitude}, lng=${resolvedPosition.longitude}');
+        }
+      }
+
+      // ── Tier 2: Geocoding cache ─────────────────────────────────────────
+      if (resolvedPosition == null) {
+        final cached = await GeocodingCacheService.get(input);
+        if (cached != null) {
+          print('$_searchLogTag cache hit lat=${cached[0]}, lng=${cached[1]}');
+          resolvedPosition = _makePosition(cached[0], cached[1]);
+        }
+      }
+
+      // ── Tier 3: Device geocoder ─────────────────────────────────────────
       if (resolvedPosition == null) {
         print('$_searchLogTag trying device geocoder...');
         resolvedPosition = await _geocodeWithDevice(input);
+        if (resolvedPosition != null) {
+          GeocodingCacheService.put(
+              input, resolvedPosition.latitude, resolvedPosition.longitude);
+        }
         print(
             '$_searchLogTag device geocoder result=${resolvedPosition == null ? "null" : "${resolvedPosition.latitude},${resolvedPosition.longitude}"}');
       }
 
+      // ── Tier 4: Nominatim ───────────────────────────────────────────────
       if (resolvedPosition == null) {
         print('$_searchLogTag trying nominatim geocoder...');
         resolvedPosition = await _geocodeWithNominatim(input);
+        if (resolvedPosition != null) {
+          GeocodingCacheService.put(
+              input, resolvedPosition.latitude, resolvedPosition.longitude);
+        }
         print(
             '$_searchLogTag nominatim result=${resolvedPosition == null ? "null" : "${resolvedPosition.latitude},${resolvedPosition.longitude}"}');
       }
 
+      // ── Tier 5: Maps URL query string extraction ────────────────────────
       if (resolvedPosition == null) {
-        // Try extracting human-readable "q=" text from maps URL, then geocode it.
         final uri = _tryParseUriLenient(input);
         final queryText =
             uri?.queryParameters['q'] ?? uri?.queryParameters['query'];
@@ -119,13 +298,26 @@ class HomepageController extends GetxController {
           print('$_searchLogTag retry geocoding with queryText="$queryText"');
           resolvedPosition = await _geocodeWithDevice(queryText.trim());
           resolvedPosition ??= await _geocodeWithNominatim(queryText.trim());
+          if (resolvedPosition != null) {
+            GeocodingCacheService.put(queryText.trim(),
+                resolvedPosition.latitude, resolvedPosition.longitude);
+          }
           print(
               '$_searchLogTag queryText result=${resolvedPosition == null ? "null" : "${resolvedPosition.latitude},${resolvedPosition.longitude}"}');
         }
       }
 
+      // ── All tiers failed → populate "Did You Mean?" ─────────────────────
       if (resolvedPosition == null) {
         print('$_searchLogTag all geocoding attempts failed');
+        final arabic = LocalSearchService.isArabic(input);
+        final suggestions =
+            LocalSearchService.instance.didYouMean(input, preferArabic: arabic);
+        if (suggestions.isNotEmpty) {
+          didYouMeanSuggestions.value = suggestions;
+          print(
+              '$_searchLogTag did-you-mean: ${suggestions.map((s) => s.name).join(", ")}');
+        }
         destinationButtonFlag.value = false;
         return false;
       }
@@ -140,6 +332,29 @@ class HomepageController extends GetxController {
       return false;
     }
   }
+
+  /// Resolve a landmark from the local DB directly (no geocoding needed).
+  Future<bool> updateArrivalFromLandmark(
+      BuildContext context, LandmarkResult landmark) async {
+    autocompleteSuggestions.clear();
+    didYouMeanSuggestions.clear();
+    destinationController.text = landmark.name;
+    return updateArrivalFromPosition(
+        context, _makePosition(landmark.lat, landmark.lng));
+  }
+
+  Position _makePosition(double lat, double lng) => Position(
+        latitude: lat,
+        longitude: lng,
+        timestamp: DateTime.now(),
+        altitude: 0.0,
+        accuracy: 0.0,
+        heading: 0.0,
+        speed: 0.0,
+        speedAccuracy: 0.0,
+        altitudeAccuracy: 0.0,
+        headingAccuracy: 0.0,
+      );
 
   Future<bool> updateArrivalFromPosition(
       BuildContext context, Position position) async {

@@ -13,6 +13,7 @@ import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/core/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
+import 'package:metroappflutter/services/local_search_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,9 @@ void main() async {
     MetroRepositoryImpl(datasource: datasource),
     permanent: true,
   );
+
+  // Preload local landmarks database (non-blocking, async)
+  LocalSearchService.instance.load();
 
   // Controllers
   Get.put(HomepageController(), permanent: true);
@@ -78,4 +82,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

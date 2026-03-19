@@ -24,7 +24,8 @@
       "Bash(taskkill /PID 14792 /F)",
       "Bash(cmd /c \"taskkill /PID 14792 /F\")",
       "Bash(cmd /c \"taskkill /PID 29524 /F\")",
-      "Bash(python3 -c \"from PIL import Image; print\\(''Pillow OK''\\)\")"
+      "Bash(python3 -c \"from PIL import Image; print\\(''Pillow OK''\\)\")",
+      "Bash(xargs grep:*)"
     ]
   }
 }

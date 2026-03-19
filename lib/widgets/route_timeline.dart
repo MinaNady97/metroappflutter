@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:metroappflutter/Controllers/routecontroller.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:metroappflutter/Pages/stationspage.dart';
@@ -204,6 +205,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
     final dep = widget.routeData['Departure']?.toString() ?? '';
     final arr = widget.routeData['Arrival']?.toString() ?? '';
     final line = widget.routeData['Take']?.toString() ?? '';
+    final dir = _resolveDirection(context, line, dep, arr);
     final stations =
         (widget.routeData['Intermediate Stations'] as List<dynamic>? ?? [])
             .map((e) => e.toString())
@@ -218,6 +220,7 @@ class _RouteTimelineState extends State<RouteTimeline> {
 
     return [
       _lineLabel(line, color),
+      _directionTag(dir, color),
       const SizedBox(height: 8),
       _point(dep, true, color),
       if (hiddenStops.isNotEmpty)
@@ -261,6 +264,12 @@ class _RouteTimelineState extends State<RouteTimeline> {
   List<Widget> _twoLine(BuildContext context) {
     final first = widget.routeData['First take']?.toString() ?? '';
     final second = widget.routeData['Second take']?.toString() ?? '';
+    final firstDep = widget.routeData['First Departure']?.toString() ?? '';
+    final firstArr = widget.routeData['First Arrival']?.toString() ?? '';
+    final secondDep = widget.routeData['Second Departure']?.toString() ?? '';
+    final secondArr = widget.routeData['Second Arrival']?.toString() ?? '';
+    final firstDir = _resolveDirection(context, first, firstDep, firstArr);
+    final secondDir = _resolveDirection(context, second, secondDep, secondArr);
     final firstStations =
         (widget.routeData['First Intermediate Stations'] as List<dynamic>? ??
                 [])
@@ -274,11 +283,13 @@ class _RouteTimelineState extends State<RouteTimeline> {
     final changeAt = widget.routeData['You will change at']?.toString() ?? '';
     return [
       _lineLabel(first, _lineColor(first)),
+      _directionTag(firstDir, _lineColor(first)),
       const SizedBox(height: 8),
       if (firstStations.isNotEmpty)
         _point(firstStations.first, true, _lineColor(first)),
       if (changeAt.isNotEmpty) _transfer(changeAt, first, second),
       _lineLabel(second, _lineColor(second)),
+      _directionTag(secondDir, _lineColor(second)),
       const SizedBox(height: 8),
       if (secondStations.isNotEmpty)
         _point(secondStations.last, true, _lineColor(second)),
@@ -289,6 +300,15 @@ class _RouteTimelineState extends State<RouteTimeline> {
     final first = widget.routeData['First take']?.toString() ?? '';
     final second = widget.routeData['Second take']?.toString() ?? '';
     final third = widget.routeData['Third take']?.toString() ?? '';
+    final firstDep = widget.routeData['First Departure']?.toString() ?? '';
+    final firstArr = widget.routeData['First Arrival']?.toString() ?? '';
+    final secondDep = widget.routeData['Second Departure']?.toString() ?? '';
+    final secondArr = widget.routeData['Second Arrival']?.toString() ?? '';
+    final thirdDep = widget.routeData['Third Departure']?.toString() ?? '';
+    final thirdArr = widget.routeData['Third Arrival']?.toString() ?? '';
+    final firstDir = _resolveDirection(context, first, firstDep, firstArr);
+    final secondDir = _resolveDirection(context, second, secondDep, secondArr);
+    final thirdDir = _resolveDirection(context, third, thirdDep, thirdArr);
     final firstStations =
         (widget.routeData['First Intermediate Stations'] as List<dynamic>? ??
                 [])
@@ -306,23 +326,74 @@ class _RouteTimelineState extends State<RouteTimeline> {
             .toList();
     return [
       _lineLabel(first, _lineColor(first)),
+      _directionTag(firstDir, _lineColor(first)),
       const SizedBox(height: 8),
       if (firstStations.isNotEmpty)
         _point(firstStations.first, true, _lineColor(first)),
       if (secondStations.isNotEmpty)
         _transfer(secondStations.first, first, second),
       _lineLabel(second, _lineColor(second)),
+      _directionTag(secondDir, _lineColor(second)),
       const SizedBox(height: 8),
       if (thirdStations.isNotEmpty)
         _transfer(thirdStations.first, second, third),
       _lineLabel(third, _lineColor(third)),
+      _directionTag(thirdDir, _lineColor(third)),
       const SizedBox(height: 8),
       if (thirdStations.isNotEmpty)
         _point(thirdStations.last, true, _lineColor(third)),
     ];
   }
 
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  /// Calls getLineStartDirection / getLineEndDirection based on which way
+  /// the train is travelling (determined by dep/arr indices in the line).
+  String _resolveDirection(BuildContext context, String lineName, String dep, String arr) {
+    final lineNum = getLineNumber(context, lineName);
+    if (lineNum == 0) return '';
+    final stations = getLineStations(lineNum);
+    final depIdx = stations.indexOf(dep);
+    final arrIdx = stations.indexOf(arr);
+    if (depIdx == -1 || arrIdx == -1) return '';
+    return arrIdx > depIdx
+        ? getLineEndDirection(context, lineNum)
+        : getLineStartDirection(context, lineNum);
+  }
+
   // ── Sub-widgets ────────────────────────────────────────────────────────────
+
+  Widget _directionTag(String direction, Color color) {
+    if (direction.isEmpty) return const SizedBox.shrink();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.only(top: 4, bottom: 6, left: 22),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: color.withOpacity(isDark ? 0.18 : 0.10),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.withOpacity(0.40), width: 1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.navigation_rounded, size: 13, color: color),
+            const SizedBox(width: 5),
+            Text(
+              '${l10n.direction}$direction',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _lineLabel(String name, Color color) {
     return Row(

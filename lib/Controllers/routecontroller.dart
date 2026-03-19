@@ -119,6 +119,32 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
     }
   }
 
+  // Remove empty placeholder routes (added by findRoute2/findRoute3 when no
+  // valid path exists). Without this, routeDetails.length > serializedData.length,
+  // causing a RangeError when the UI accesses serializedData[idx].
+  possibleRouteData.removeWhere((route) => route.isEmpty);
+
+  // Unified fare: Cairo Metro charges the same price for any route between
+  // two stations — calculated from the shortest route (fewest hops).
+  if (possibleRouteData.isNotEmpty) {
+    final minHops = possibleRouteData
+        .map((r) => extractNumberOfStations(r))
+        .where((n) => n > 0 && n < 2147483647)
+        .fold(2147483647, (a, b) => a < b ? a : b);
+    if (minHops < 2147483647) {
+      final unifiedFare = ticketPrice(minHops);
+      for (final route in possibleRouteData) {
+        for (final segment in route) {
+          for (int i = 0; i < segment.length; i++) {
+            if (segment[i].startsWith('Ticket Price: ')) {
+              segment[i] = 'Ticket Price: $unifiedFare';
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Sort the routes based on sortValue
   if (sortValue_ == 0) {
     possibleRouteData.sort((a, b) =>
@@ -135,7 +161,7 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
   // Prepare route details for display
   final List<String> allRoutesDetails = [];
   int routeNo = 1;
-  String ticketPrice = '';
+  String savedTicketPrice = '';
   bool ticketPriceFound = false;
   String lineName = '';
 
@@ -152,10 +178,10 @@ Future<Map<String, dynamic>> getRoutes(BuildContext context,
         }
         if (!ticketPriceFound && detail.startsWith('Ticket')) {
           routeDetails.writeln(detail);
-          ticketPrice = detail;
+          savedTicketPrice = detail;
           ticketPriceFound = true;
         } else if (detail.startsWith('Ticket')) {
-          routeDetails.writeln(ticketPrice);
+          routeDetails.writeln(savedTicketPrice);
         } else {
           routeDetails.writeln(detail);
         }
@@ -757,14 +783,16 @@ String convertMinutesToHoursAndMinutes(int minutes) {
   return '${hours}h ${remainingMinutes}m';
 }
 
+// numStations = hops between stations (stations visited = hops + 1).
+// Brackets: 1–9 visited → 8 EGP, 10–16 → 10 EGP, 17–23 → 15 EGP, 24+ → 20 EGP.
 int ticketPrice(int numStations) {
-  return numStations < 10
+  return numStations < 9
       ? 8
-      : numStations < 17
+      : numStations < 16
           ? 10
-          : numStations < 24
+          : numStations < 23
               ? 15
-              : 20; // Adjust pricing logic as needed
+              : 20;
 }
 
 String getLineName(BuildContext context, int line) {
@@ -851,7 +879,7 @@ void printRoutes(List<List<List<String>>> routes) {
   final List<List<List<int>>> routesCoordinates = [];
   final List<String> allRoutesDetails = [];
   int routeNo = 1;
-  String ticketPrice = '';
+  String savedTicketPrice = '';
   bool ticketPriceFound = false;
   String lineName = '';
 
@@ -867,10 +895,10 @@ void printRoutes(List<List<List<String>>> routes) {
         }
         if (!ticketPriceFound && detail.startsWith('Ticket')) {
           routeDetails.writeln(detail);
-          ticketPrice = detail;
+          savedTicketPrice = detail;
           ticketPriceFound = true;
         } else if (detail.startsWith('Ticket')) {
-          routeDetails.writeln(ticketPrice);
+          routeDetails.writeln(savedTicketPrice);
         } else {
           routeDetails.writeln(detail);
         }
@@ -950,7 +978,7 @@ void extractStationsPixels(
   // Extract coordinates for each station
   for (var station in stationList) {
     final index = metroStations.indexOf(station);
-    if (index != -1) {
+    if (index != -1 && index < metroCoordinates.length) {
       final coordinateCopy = List<int>.from(metroCoordinates[index]);
       lineCoordinates.add(coordinateCopy);
     }

@@ -130,9 +130,17 @@ class _HomepageState extends State<Homepage> {
   Future<void> _startTourAfterDialogs() async {
     if (!mounted || _tourTriggered) return;
 
+    // Grace period: isLocatingNearest becomes false synchronously inside
+    // HomepageController, but NearestStationCard's catch block (which calls
+    // showLocationDialog) runs one microtask later.  Without this delay the
+    // first poll fires before the dialog is pushed onto the route stack,
+    // sees isCurrent == true, and lets the tour start while the dialog is
+    // still appearing.  700 ms is safely longer than any dialog push.
+    await Future.delayed(const Duration(milliseconds: 700));
+    if (!mounted || _tourTriggered) return;
+
     // Poll every 200 ms, up to 8 seconds, until Homepage is the top route.
-    // This handles any custom Flutter dialogs (location disabled, etc.) that
-    // appear after the GPS call resolves.
+    // This handles permission-denied dialogs that are still open.
     for (int i = 0; i < 40; i++) {
       if (!mounted) return;
       if (ModalRoute.of(context)?.isCurrent ?? false) break;
@@ -804,19 +812,180 @@ class _HomepageState extends State<Homepage> {
   }
 
   void _showInfo(BuildContext context, AppLocalizations l10n) {
-    showDialog<void>(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    showModalBottomSheet<void>(
       context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(l10n.appInfoTitle),
-        content: Text(l10n.appInfoDescription),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.close),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return SafeArea(
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E1E2E) : Colors.white,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.12),
+                  blurRadius: 24,
+                  offset: const Offset(0, -4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Drag handle
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 14, bottom: 8),
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? Colors.grey.shade700
+                          : Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+
+                // ── App info section ──────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryNile.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: const Icon(
+                          Icons.directions_subway_rounded,
+                          color: AppTheme.primaryNile,
+                          size: 26,
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.appInfoTitle,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: isDark
+                                    ? Colors.white
+                                    : Colors.black87,
+                                fontFamily: 'Tajawal',
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              l10n.appInfoDescription,
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.5,
+                                color: isDark
+                                    ? Colors.white60
+                                    : Colors.black54,
+                                fontFamily: 'Tajawal',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Divider(
+                  height: 1,
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : Colors.grey.shade200,
+                ),
+
+                // ── Replay tour row ───────────────────────────────────────
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                    // Small delay so the sheet fully closes before the
+                    // overlay re-inserts itself on top of the homepage.
+                    Future.delayed(const Duration(milliseconds: 350), () {
+                      Get.find<TourController>().restartTour();
+                    });
+                  },
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(28),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: AppTheme.accentGold.withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Icon(
+                            Icons.tour_rounded,
+                            color: AppTheme.accentGold,
+                            size: 24,
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.onboardingReplay,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDark
+                                      ? Colors.white
+                                      : Colors.black87,
+                                  fontFamily: 'Tajawal',
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                l10n.onboardingSubtitle1,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: isDark
+                                      ? Colors.white38
+                                      : Colors.black38,
+                                  fontFamily: 'Tajawal',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          color: isDark ? Colors.white30 : Colors.black26,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

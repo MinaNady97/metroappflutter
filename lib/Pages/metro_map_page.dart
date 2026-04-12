@@ -541,7 +541,6 @@ class _MetroMapPageState extends State<MetroMapPage>
               context,
               type: LocationDialogType.permissionDenied,
               noThanksLabel: l10n.locationDialogNoThanks,
-              turnOnLabel: l10n.locationDialogTurnOn,
               openSettingsLabel: l10n.locationDialogOpenSettings,
             );
           }
@@ -557,7 +556,6 @@ class _MetroMapPageState extends State<MetroMapPage>
             context,
             type: LocationDialogType.permissionPermanentlyDenied,
             noThanksLabel: l10n.locationDialogNoThanks,
-            turnOnLabel: l10n.locationDialogTurnOn,
             openSettingsLabel: l10n.locationDialogOpenSettings,
           );
         }

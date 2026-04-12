@@ -32,7 +32,8 @@
       "Bash(grep -rn \"nearestStationFound\\\\|get stationFound\" /c/Users/menan/Downloads/OutWork/metroappflutter/lib/l10n/app_localizations_*.dart)",
       "Bash(flutter test:*)",
       "Bash(sed -i 's/\\\\.withOpacity\\(\\\\\\(overlayOpacity\\\\\\)\\)/.withValues\\(alpha: \\\\1\\)/g; s/\\\\.withOpacity\\(0\\\\.20\\)/.withValues\\(alpha: 0.20\\)/g; s/\\\\.withOpacity\\(0\\\\.45\\)/.withValues\\(alpha: 0.45\\)/g; s/\\\\.withOpacity\\(opacity\\)/.withValues\\(alpha: opacity\\)/g' lib/tour/spotlight_painter.dart)",
-      "Bash(sed -i 's/\\\\.withOpacity\\(0\\\\.78 \\\\* _spotCurve\\\\.value\\)/.withValues\\(alpha: 0.78 * _spotCurve.value\\)/g; s/\\\\.withOpacity\\(0\\\\.74\\)/.withValues\\(alpha: 0.74\\)/g' lib/tour/tour_overlay.dart)"
+      "Bash(sed -i 's/\\\\.withOpacity\\(0\\\\.78 \\\\* _spotCurve\\\\.value\\)/.withValues\\(alpha: 0.78 * _spotCurve.value\\)/g; s/\\\\.withOpacity\\(0\\\\.74\\)/.withValues\\(alpha: 0.74\\)/g' lib/tour/tour_overlay.dart)",
+      "Bash(dart analyze:*)"
     ]
   }
 }

@@ -87,7 +87,7 @@ class _OnboardingPageState extends State<OnboardingPage>
     _enterCtrl = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
-    )..forward();
+    );
 
     _floatCtrl = AnimationController(
       vsync: this,
@@ -103,6 +103,12 @@ class _OnboardingPageState extends State<OnboardingPage>
       if (_pageCtrl.hasClients) {
         setState(() => _pageOffset = _pageCtrl.page ?? 0.0);
       }
+    });
+
+    // Fire the entrance animation after the first frame so the page
+    // is laid out before any stagger animations play.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _enterCtrl.forward();
     });
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -123,12 +129,11 @@ class _OnboardingPageState extends State<OnboardingPage>
   void _next() {
     HapticFeedback.selectionClick();
     if (_page < 2) {
-      _enterCtrl.reset();
       _pageCtrl.nextPage(
-        duration: const Duration(milliseconds: 420),
-        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 480),
+        curve: Curves.easeOutQuint,
       );
-      _enterCtrl.forward();
+      // enterCtrl is handled in onPageChanged after the transition settles.
     } else {
       _finish();
     }
@@ -164,6 +169,34 @@ class _OnboardingPageState extends State<OnboardingPage>
     );
   }
 
+  // ── Helpers ───────────────────────────────��──────────────────────���────────
+
+  /// Smoothly interpolates the accent color between pages as the user swipes.
+  Color _morphedAccent() {
+    final base = _pageOffset.floor().clamp(0, 1);
+    final next = (base + 1).clamp(0, 2);
+    final t = (_pageOffset - base).clamp(0.0, 1.0);
+    return Color.lerp(_pageAccents[base], _pageAccents[next], t)!;
+  }
+
+  /// Wraps [child] with a scale + opacity + vertical-drift transform so that
+  /// pages animate with a "depth" feel as the user swipes: the departing page
+  /// shrinks/fades into the background while the arriving page grows forward.
+  Widget _depthWrap(int pageIdx, Widget child) {
+    final delta = (_pageOffset - pageIdx).clamp(-1.0, 1.0);
+    final t = delta.abs();
+    final s = 1.0 - 0.07 * t;
+    return Opacity(
+      opacity: (1.0 - 0.68 * t).clamp(0.0, 1.0),
+      child: Transform(
+        alignment: Alignment.center,
+        transform: Matrix4.diagonal3Values(s, s, 1.0)
+          ..setTranslationRaw(0.0, 30.0 * t, 0.0),
+        child: child,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -178,16 +211,38 @@ class _OnboardingPageState extends State<OnboardingPage>
       _pulseCtrl.reset();
     }
 
+    final accent = _morphedAccent();
+
     return Scaffold(
       backgroundColor:
           isDark ? AppTheme.darkBackground : AppTheme.backgroundSand,
       body: Stack(
         children: [
+          // ── Morphing background tint ─────────────────────────────────
+          // A full-screen top-to-bottom gradient that shifts between page
+          // accent colours as the user swipes, giving each page its own feel.
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    accent.withValues(alpha: isDark ? 0.07 : 0.10),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.6],
+                ),
+              ),
+            ),
+          ),
+
           // ── Animated background orbs ─────────────────────────────────
           _BackgroundOrbs(
             pageOffset: _pageOffset,
             floatAnim: _floatCtrl,
             isDark: isDark,
+            morphedAccent: accent,
           ),
 
           // ── Content ──────────────────────────────────────────────────
@@ -223,36 +278,56 @@ class _OnboardingPageState extends State<OnboardingPage>
                   child: PageView(
                     controller: _pageCtrl,
                     onPageChanged: (p) {
-                      _enterCtrl.reset();
-                      _enterCtrl.forward();
                       setState(() => _page = p);
+                      // Reset immediately so new-page content starts invisible
+                      // while the slide transition is still finishing.
+                      // onPageChanged fires at ~midpoint (240 ms); we then
+                      // wait ~260 ms for the 480 ms slide to fully settle
+                      // before playing the entrance once.
+                      _enterCtrl.reset();
+                      Future.delayed(const Duration(milliseconds: 260), () {
+                        if (!mounted) return;
+                        _enterCtrl.duration =
+                            const Duration(milliseconds: 520);
+                        _enterCtrl.forward();
+                      });
                     },
                     children: [
-                      _OnboardingStep(
-                        enterCtrl: _enterCtrl,
-                        illustration: _IllustrationRoute(enterCtrl: _enterCtrl),
-                        title: l10n.onboardingTitle1,
-                        subtitle: l10n.onboardingSubtitle1,
-                        isAr: isAr,
-                        isDark: isDark,
+                      _depthWrap(
+                        0,
+                        _OnboardingStep(
+                          enterCtrl: _enterCtrl,
+                          illustration:
+                              _IllustrationRoute(enterCtrl: _enterCtrl),
+                          title: l10n.onboardingTitle1,
+                          subtitle: l10n.onboardingSubtitle1,
+                          isAr: isAr,
+                          isDark: isDark,
+                        ),
                       ),
-                      _OnboardingStep(
-                        enterCtrl: _enterCtrl,
-                        illustration: _IllustrationLines(
-                            l10n: l10n, enterCtrl: _enterCtrl),
-                        title: l10n.onboardingTitle2,
-                        subtitle: l10n.onboardingSubtitle2,
-                        isAr: isAr,
-                        isDark: isDark,
+                      _depthWrap(
+                        1,
+                        _OnboardingStep(
+                          enterCtrl: _enterCtrl,
+                          illustration: _IllustrationLines(
+                              l10n: l10n, enterCtrl: _enterCtrl),
+                          title: l10n.onboardingTitle2,
+                          subtitle: l10n.onboardingSubtitle2,
+                          isAr: isAr,
+                          isDark: isDark,
+                        ),
                       ),
-                      _OnboardingStep(
-                        enterCtrl: _enterCtrl,
-                        illustration: _IllustrationFeatures(
-                            l10n: l10n, enterCtrl: _enterCtrl),
-                        title: l10n.onboardingTitle3,
-                        subtitle: l10n.onboardingSubtitle3,
-                        isAr: isAr,
-                        isDark: isDark,
+                      _depthWrap(
+                        2,
+                        _OnboardingStep(
+                          enterCtrl: _enterCtrl,
+                          illustration: _IllustrationFeatures(
+                              l10n: l10n, enterCtrl: _enterCtrl),
+                          title: l10n.onboardingTitle3,
+                          subtitle: l10n.onboardingSubtitle3,
+                          isAr: isAr,
+                          isDark: isDark,
+                        ),
                       ),
                     ],
                   ),
@@ -265,25 +340,31 @@ class _OnboardingPageState extends State<OnboardingPage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(3, (i) {
                       final isActive = _page == i;
+                      // Use continuous interpolated colour for the active dot.
+                      final dotColor = isActive
+                          ? accent
+                          : (isDark
+                              ? AppTheme.darkBorder
+                              : Colors.grey.shade300);
+                      // Width animates based on how close this dot is to the
+                      // current page offset (continuous, not just integer step).
+                      final proximity =
+                          (1.0 - (_pageOffset - i).abs()).clamp(0.0, 1.0);
+                      final dotWidth = 8.0 + 22.0 * proximity;
                       return AnimatedContainer(
-                        duration: const Duration(milliseconds: 320),
+                        duration: const Duration(milliseconds: 120),
                         curve: Curves.easeOutCubic,
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 28 : 8,
+                        width: dotWidth,
                         height: 8,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: isActive
-                              ? _pageAccents[i]
-                              : (isDark
-                                  ? AppTheme.darkBorder
-                                  : Colors.grey.shade300),
+                          color: dotColor,
                           boxShadow: isActive
                               ? [
                                   BoxShadow(
-                                    color:
-                                        _pageAccents[i].withValues(alpha: 0.4),
-                                    blurRadius: 8,
+                                    color: accent.withValues(alpha: 0.45),
+                                    blurRadius: 10,
                                     offset: const Offset(0, 2),
                                   ),
                                 ]
@@ -321,11 +402,13 @@ class _BackgroundOrbs extends StatelessWidget {
   final double pageOffset;
   final AnimationController floatAnim;
   final bool isDark;
+  final Color morphedAccent;
 
   const _BackgroundOrbs({
     required this.pageOffset,
     required this.floatAnim,
     required this.isDark,
+    required this.morphedAccent,
   });
 
   @override
@@ -337,14 +420,14 @@ class _BackgroundOrbs extends StatelessWidget {
         final float = math.sin(floatAnim.value * math.pi) * 12;
         return Stack(
           children: [
-            // Top-right orb
+            // Top-right orb — uses the continuously morphed accent colour
             Positioned(
               top: -60 + float,
               right: -40 - pageOffset * 60,
               child: _Orb(
-                size: 260,
-                color: _pageAccents[(pageOffset.round()).clamp(0, 2)]
-                    .withValues(alpha: isDark ? 0.06 : 0.08),
+                size: 300,
+                color: morphedAccent
+                    .withValues(alpha: isDark ? 0.09 : 0.13),
               ),
             ),
             // Bottom-left orb
@@ -674,8 +757,7 @@ class _CTAButton extends StatelessWidget {
                       ],
                       if (isLast) ...[
                         const SizedBox(width: 8),
-                        const Icon(Icons.rocket_launch_rounded,
-                            size: 18, color: Colors.black87),
+                        _AnimatedMetroIcon(pulseCtrl: pulseCtrl),
                       ],
                     ],
                   ),
@@ -1421,6 +1503,64 @@ class _FeatureCard extends StatelessWidget {
   }
 }
 
+// ── Animated metro icon (CTA button last page) ───────────────────────────────
+
+class _AnimatedMetroIcon extends StatelessWidget {
+  final AnimationController pulseCtrl;
+  const _AnimatedMetroIcon({required this.pulseCtrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: pulseCtrl,
+      builder: (_, __) {
+        final t = pulseCtrl.value; // 0 → 1 → 0 (reverse repeat)
+        // Train oscillates slightly forward (right) on the beat
+        final dx = t * 2.5;
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Speed streak lines — grow and fade in sync with the pulse
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: 8.0 + t * 5.0,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.black87.withValues(alpha: 0.35 + t * 0.3),
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Container(
+                  width: 5.0 + t * 3.5,
+                  height: 2,
+                  decoration: BoxDecoration(
+                    color: Colors.black87.withValues(alpha: 0.25 + t * 0.2),
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 4),
+            // Metro/subway icon that glides forward on the beat
+            Transform.translate(
+              offset: Offset(dx, 0),
+              child: const Icon(
+                Icons.directions_subway_rounded,
+                size: 18,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 // ── Language picker sheet ────────────────────────────────────────────────────
 
 class _LanguagePicker extends StatelessWidget {
@@ -1493,12 +1633,19 @@ class _LanguagePicker extends StatelessWidget {
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.5,
             ),
-            child: GridView.builder(
+            child: Builder(builder: (ctx) {
+              // Compute aspect ratio so cells are always at least 60 dp tall,
+              // regardless of screen width. Accounts for sheet margins (24 dp),
+              // grid padding (32 dp) and column gap (10 dp).
+              final screenW = MediaQuery.sizeOf(ctx).width;
+              final cellW = (screenW - 24 - 32 - 10) / 2;
+              final ratio = (cellW / 62).clamp(1.8, 3.8);
+              return GridView.builder(
               shrinkWrap: true,
               padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 3.0,
+                childAspectRatio: ratio,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
@@ -1514,7 +1661,7 @@ class _LanguagePicker extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: isActive
                           ? AppTheme.primaryNile.withValues(alpha: 0.10)
@@ -1572,8 +1719,9 @@ class _LanguagePicker extends StatelessWidget {
                   ),
                 );
               },
-            ),
-          ),
+            );   // end GridView.builder (Builder return)
+            }),  // end Builder
+          ),     // end ConstrainedBox child
           const SizedBox(height: 8),
         ],
       ),

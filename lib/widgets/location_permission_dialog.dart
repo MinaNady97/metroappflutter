@@ -27,9 +27,6 @@ Future<bool> requestLocationServiceNative() async {
 // ─────────────────────────────────────────────────────────────────────────────
 
 enum LocationDialogType {
-  /// Device location toggle is off.
-  serviceDisabled,
-
   /// App permission was denied (can ask again).
   permissionDenied,
 
@@ -41,7 +38,6 @@ Future<void> showLocationDialog(
   BuildContext context, {
   required LocationDialogType type,
   required String noThanksLabel,
-  required String turnOnLabel,
   required String openSettingsLabel,
 }) {
   return showDialog<void>(
@@ -50,7 +46,6 @@ Future<void> showLocationDialog(
     builder: (_) => _LocationDialog(
       type: type,
       noThanksLabel: noThanksLabel,
-      turnOnLabel: turnOnLabel,
       openSettingsLabel: openSettingsLabel,
     ),
   );
@@ -61,13 +56,11 @@ Future<void> showLocationDialog(
 class _LocationDialog extends StatelessWidget {
   final LocationDialogType type;
   final String noThanksLabel;
-  final String turnOnLabel;
   final String openSettingsLabel;
 
   const _LocationDialog({
     required this.type,
     required this.noThanksLabel,
-    required this.turnOnLabel,
     required this.openSettingsLabel,
   });
 
@@ -247,9 +240,7 @@ class _LocationDialog extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        type == LocationDialogType.serviceDisabled
-                            ? turnOnLabel
-                            : openSettingsLabel,
+                        openSettingsLabel,
                         style: const TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
@@ -266,18 +257,6 @@ class _LocationDialog extends StatelessWidget {
 
   _Content _content(LocationDialogType type, BuildContext context) {
     switch (type) {
-      case LocationDialogType.serviceDisabled:
-        return _Content(
-          title: 'Location Services are Off',
-          subtitle:
-              'For the best experience, your device will need location services turned on:',
-          bullets: [
-            _Bullet(Icons.location_on_rounded, 'Device location'),
-            _Bullet(Icons.my_location_rounded,
-                'Accurate GPS to find your nearest metro station and plan routes'),
-          ],
-          action: requestLocationServiceNative,
-        );
       case LocationDialogType.permissionDenied:
         return _Content(
           title: 'Location Access Required',

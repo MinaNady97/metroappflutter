@@ -15,6 +15,87 @@ abstract class TourL10n {
       _d[stepId]?['desc']?['en'] ??
       '';
 
+  /// Translates a UI label key (skip, next, start, done, step_of).
+  static String ui(String key, String locale) =>
+      _ui[key]?[locale] ?? _ui[key]?['en'] ?? key;
+
+  /// Returns a formatted "Step X of Y" label in the given locale.
+  static String stepLabel(int step, int total, String locale) {
+    return ui('step_of', locale)
+        .replaceAll('{0}', step.toString())
+        .replaceAll('{1}', total.toString());
+  }
+
+  // ── UI string table ───────────────────────────────────────────────────────
+
+  static const _ui = <String, Map<String, String>>{
+    'skip': {
+      'en': 'Skip tour',
+      'ar': 'تخطى الجولة',
+      'fr': 'Passer',
+      'de': 'Überspringen',
+      'es': 'Saltar',
+      'it': 'Salta',
+      'pt': 'Pular',
+      'ru': 'Пропустить',
+      'zh': '跳过',
+      'tr': 'Geç',
+      'ja': 'スキップ',
+    },
+    'next': {
+      'en': 'Next',
+      'ar': 'التالي',
+      'fr': 'Suivant',
+      'de': 'Weiter',
+      'es': 'Siguiente',
+      'it': 'Avanti',
+      'pt': 'Próximo',
+      'ru': 'Далее',
+      'zh': '下一步',
+      'tr': 'İleri',
+      'ja': '次へ',
+    },
+    'start': {
+      'en': 'Start',
+      'ar': 'ابدأ',
+      'fr': 'Commencer',
+      'de': 'Starten',
+      'es': 'Comenzar',
+      'it': 'Inizia',
+      'pt': 'Começar',
+      'ru': 'Начать',
+      'zh': '开始',
+      'tr': 'Başla',
+      'ja': '開始',
+    },
+    'done': {
+      'en': 'Done',
+      'ar': 'تم',
+      'fr': 'Terminé',
+      'de': 'Fertig',
+      'es': 'Listo',
+      'it': 'Fatto',
+      'pt': 'Concluído',
+      'ru': 'Готово',
+      'zh': '完成',
+      'tr': 'Bitti',
+      'ja': '完了',
+    },
+    'step_of': {
+      'en': 'Step {0} of {1}',
+      'ar': 'خطوة {0} من {1}',
+      'fr': 'Étape {0} sur {1}',
+      'de': 'Schritt {0} von {1}',
+      'es': 'Paso {0} de {1}',
+      'it': 'Passo {0} di {1}',
+      'pt': 'Passo {0} de {1}',
+      'ru': 'Шаг {0} из {1}',
+      'zh': '第{0}步，共{1}步',
+      'tr': '{1} adımdan {0}. adım',
+      'ja': '{1}ステップ中{0}',
+    },
+  };
+
   // ── Translation table ─────────────────────────────────────────────────────
 
   static const _d = <String, Map<String, Map<String, String>>>{

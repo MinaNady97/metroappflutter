@@ -66,19 +66,14 @@ class _NearestStationCardState extends State<NearestStationCard> {
       final msg = e.toString();
       final l10n = AppLocalizations.of(context)!;
       if (msg.contains('disabled')) {
-        await showLocationDialog(
-          context,
-          type: LocationDialogType.serviceDisabled,
-          noThanksLabel: l10n.locationDialogNoThanks,
-          turnOnLabel: l10n.locationDialogTurnOn,
-          openSettingsLabel: l10n.locationDialogOpenSettings,
-        );
+        // Skip the intermediate app dialog and go straight to the native
+        // system "Turn on location?" prompt so the user only sees one dialog.
+        await requestLocationServiceNative();
       } else if (msg.contains('permanently')) {
         await showLocationDialog(
           context,
           type: LocationDialogType.permissionPermanentlyDenied,
           noThanksLabel: l10n.locationDialogNoThanks,
-          turnOnLabel: l10n.locationDialogTurnOn,
           openSettingsLabel: l10n.locationDialogOpenSettings,
         );
       } else if (msg.contains('denied')) {
@@ -86,7 +81,6 @@ class _NearestStationCardState extends State<NearestStationCard> {
           context,
           type: LocationDialogType.permissionDenied,
           noThanksLabel: l10n.locationDialogNoThanks,
-          turnOnLabel: l10n.locationDialogTurnOn,
           openSettingsLabel: l10n.locationDialogOpenSettings,
         );
       }

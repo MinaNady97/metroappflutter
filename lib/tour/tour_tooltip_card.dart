@@ -140,10 +140,11 @@ class _CardBody extends StatelessWidget {
     final isLast = stepIndex == totalSteps - 1;
 
     // Resolve localised strings from TourL10n.
-    final locale =
-        Get.find<LanguageController>().selectedLanguage.value;
+    final locale = Get.find<LanguageController>().selectedLanguage.value;
     final titleText = TourL10n.title(step.stepId, locale);
     final descText = TourL10n.description(step.stepId, locale);
+    final isRtl = locale == 'ar';
+    final arrow = isRtl ? ' ←' : '  →';
 
     return Container(
       decoration: BoxDecoration(
@@ -196,11 +197,12 @@ class _CardBody extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 9, vertical: 3),
                           decoration: BoxDecoration(
-                            color: AppTheme.primaryNile.withValues(alpha:0.09),
+                            color: AppTheme.primaryNile.withValues(alpha: 0.09),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            'Step $stepIndex of ${totalSteps - 1}',
+                            TourL10n.stepLabel(
+                                stepIndex, totalSteps - 1, locale),
                             style: const TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
@@ -217,11 +219,11 @@ class _CardBody extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 4, vertical: 4),
                           child: Text(
-                            'Skip tour',
+                            TourL10n.ui('skip', locale),
                             style: TextStyle(
                               fontSize: 11.5,
                               fontWeight: FontWeight.w500,
-                              color: subColor.withValues(alpha:0.8),
+                              color: subColor.withValues(alpha: 0.8),
                             ),
                           ),
                         ),
@@ -303,7 +305,7 @@ class _CardBody extends StatelessWidget {
                           'Cairo Metro Navigator',
                           style: TextStyle(
                             fontSize: 10.5,
-                            color: AppTheme.primaryNile.withValues(alpha:0.5),
+                            color: AppTheme.primaryNile.withValues(alpha: 0.5),
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.2,
                           ),
@@ -311,10 +313,10 @@ class _CardBody extends StatelessWidget {
                       const Spacer(),
                       _ActionButton(
                         label: isWelcome
-                            ? 'Start  →'
+                            ? '${TourL10n.ui('start', locale)}$arrow'
                             : isLast
-                                ? 'Done  ✓'
-                                : 'Next  →',
+                                ? '${TourL10n.ui('done', locale)}  ✓'
+                                : '${TourL10n.ui('next', locale)}$arrow',
                         onTap: onNext,
                       ),
                     ],

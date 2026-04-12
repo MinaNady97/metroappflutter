@@ -1733,11 +1733,92 @@ abstract class AppLocalizations {
   /// **'View Full Map'**
   String get viewFullMap;
 
+  /// No description provided for @routeAllStops.
+  ///
+  /// In en, this message translates to:
+  /// **'All Route Stops'**
+  String get routeAllStops;
+
   /// No description provided for @nearestStationFound.
   ///
   /// In en, this message translates to:
   /// **'Nearest Station Found'**
   String get nearestStationFound;
+
+  /// Next train in {min} minutes.
+  String nextTrainIn(int min);
+
+  /// No description provided for @outsideServiceHours.
+  String get outsideServiceHours;
+
+  /// No description provided for @saveRouteLabel.
+  String get saveRouteLabel;
+
+  /// No description provided for @routeSaved.
+  String get routeSaved;
+
+  /// No description provided for @routeUnsaved.
+  String get routeUnsaved;
+
+  /// No description provided for @nearestStationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest Metro Station'**
+  String get nearestStationTitle;
+
+  /// No description provided for @nearestStationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to find the closest station to you'**
+  String get nearestStationSubtitle;
+
+  /// No description provided for @nearestStationLocating.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your nearest station…'**
+  String get nearestStationLocating;
+
+  /// No description provided for @nearestStationCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest metro station to your location'**
+  String get nearestStationCaption;
+
+  /// No description provided for @getDirections.
+  String get getDirections;
+
+  /// No description provided for @walkingDirections.
+  String get walkingDirections;
+
+  /// No description provided for @drivingDirections.
+  String get drivingDirections;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My Location'**
+  String get currentLocation;
+
+  /// No description provided for @useAsDeparture.
+  String get useAsDeparture;
+
+  // ── Transfer guidance ──────────────────────────────────────────────────────
+
+  String get transferExitCarriage;
+  String get transferFollowSigns;
+  String get transferWalkCorridor;
+  String get transferCheckDirection;
+  String get transferBoardTrain;
+  String get transferNoRevalidate;
+  String get transferCheckBranch;
+  String get transferExitSurface;
+
+  String get transferNoteSadat;
+  String get transferNoteElShohadaa;
+  String get transferNoteGamalNasser;
+  String get transferNoteAtaba;
+  String get transferNoteKitKat;
+  String get transferNoteCairoUniversity;
 
   /// No description provided for @stationFound.
   ///
@@ -2513,6 +2594,18 @@ abstract class AppLocalizations {
   /// **'Reset View'**
   String get resetViewLabel;
 
+  /// No description provided for @mapViewSchematic.
+  ///
+  /// In en, this message translates to:
+  /// **'Schematic'**
+  String get mapViewSchematic;
+
+  /// No description provided for @mapViewGeographic.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get mapViewGeographic;
+
   /// No description provided for @mapLegendLabel.
   ///
   /// In en, this message translates to:
@@ -2963,6 +3056,36 @@ abstract class AppLocalizations {
   /// **'Best'**
   String get bestRoute;
 
+  /// No description provided for @accessibleRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessible Route'**
+  String get accessibleRoute;
+
+  /// No description provided for @routeTypeFastest.
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest'**
+  String get routeTypeFastest;
+
+  /// No description provided for @routeTypeAccessible.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessible'**
+  String get routeTypeAccessible;
+
+  /// No description provided for @routeTypeFewestTransfers.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewest Transfers'**
+  String get routeTypeFewestTransfers;
+
+  /// No description provided for @routeTypeAlternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative Route'**
+  String get routeTypeAlternative;
+
   /// No description provided for @hideStops.
   ///
   /// In en, this message translates to:
@@ -3051,6 +3174,24 @@ abstract class AppLocalizations {
   String get onboardingLine2;
   String get onboardingLine3;
   String get onboardingTransfer;
+
+  /// No description provided for @searchingOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching online…'**
+  String get searchingOnline;
+
+  /// No description provided for @didYouMean.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you mean?'**
+  String get didYouMean;
+
+  /// No description provided for @tapForTransferDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap for transfer details'**
+  String get tapForTransferDetails;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

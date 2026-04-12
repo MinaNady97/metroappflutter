@@ -584,7 +584,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get planYourRoute => 'ルートを計画';
 
   @override
-  String get findNearestStation => '最寄り駅を探す';
+  String get findNearestStation => '住所で駅を検索';
 
   @override
   String get scheduleLabel => '地下鉄時刻表';
@@ -841,7 +841,24 @@ class AppLocalizationsJa extends AppLocalizations {
   String get viewFullMap => '全路線図を表示';
 
   @override
+  String get routeAllStops => '全停車駅';
+
+  @override
   String get nearestStationFound => '最寄り駅が見つかりました';
+  String nextTrainIn(int min) => '次の電車まで絈4{min}分'.replaceAll('{min}', '$min');
+  String get outsideServiceHours => '運行時間外';
+  String get saveRouteLabel => 'ルートを保存';
+  String get routeSaved => 'お気に入りに保存しました';
+  String get routeUnsaved => 'お気に入りから削除しました';
+  String get nearestStationTitle => '最寄り駅（GPS）';
+  String get nearestStationSubtitle => 'GPS で自動検出';
+  String get nearestStationLocating => '最寄り駅を検索中…';
+  String get nearestStationCaption => 'あなたの場所に最も近い地下鉄駅';
+  String get getDirections => '経路を取得';
+  String get walkingDirections => '徒歩';
+  String get drivingDirections => '車';
+  String get currentLocation => '現在地';
+  String get useAsDeparture => '出発地として設定';
 
   @override
   String get stationFound => '駅が見つかりました';
@@ -1231,6 +1248,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetViewLabel => '表示をリセット';
 
   @override
+  String get mapViewSchematic => '路線図';
+
+  @override
+  String get mapViewGeographic => '地図';
+
+  @override
   String get mapLegendLabel => '地図の凡例';
 
   @override
@@ -1456,6 +1479,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bestRoute => '最良';
 
   @override
+  String get accessibleRoute => 'バリアフリールート';
+
+  @override
+  String get routeTypeFastest => '最速';
+
+  @override
+  String get routeTypeAccessible => 'バリアフリー';
+
+  @override
+  String get routeTypeFewestTransfers => '乗換最少';
+
+  @override
+  String get routeTypeAlternative => '代替ルート';
+
+  @override
   String get hideStops => '駅を非表示';
 
   @override
@@ -1508,4 +1546,23 @@ class AppLocalizationsJa extends AppLocalizations {
   @override String get onboardingLine2 => '2号線・エル・モウニブ → シュブラ';
   @override String get onboardingLine3 => '3号線・アドリー・マンスール → 分岐';
   @override String get onboardingTransfer => '乗換駅';
+
+  @override String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
+  @override String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
+  @override String get transferWalkCorridor => 'Walk through the underground transfer corridor';
+  @override String get transferCheckDirection => 'Check the direction board before boarding';
+  @override String get transferBoardTrain => 'Board the next train in your direction';
+  @override String get transferNoRevalidate => 'No re-validation needed — same paid zone';
+  @override String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
+  @override String get transferExitSurface => 'Use the stairs or escalator to reach street level';
+  @override String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
+  @override String get transferNoteElShohadaa => "El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo's busiest interchange stations";
+  @override String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
+  @override String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
+  @override String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
+  @override String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
+
+  @override String get searchingOnline => 'オンラインで検索中…';
+  @override String get didYouMean => 'もしかして？';
+  @override String get tapForTransferDetails => '乗り換え詳細をタップ';
 }

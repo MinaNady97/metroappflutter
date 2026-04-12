@@ -584,7 +584,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get planYourRoute => 'تخطيط الرحلة';
 
   @override
-  String get findNearestStation => 'البحث عن أقرب محطة';
+  String get findNearestStation => 'ابحث عن محطة بالعنوان';
 
   @override
   String get scheduleLabel => 'الجدول الزمني';
@@ -841,7 +841,39 @@ class AppLocalizationsAr extends AppLocalizations {
   String get viewFullMap => 'عرض الخريطة كاملة';
 
   @override
+  String get routeAllStops => 'جميع محطات المسار';
+
+  @override
   String get nearestStationFound => 'تم العثور على أقرب محطة';
+  String nextTrainIn(int min) => 'القطار التالي خلال ~{min} دقيقة'.replaceAll('{min}', '$min');
+  String get outsideServiceHours => 'خارج أوقات الخدمة';
+  String get saveRouteLabel => 'حفظ المسار';
+  String get routeSaved => 'تم الحفظ في المفضلة';
+  String get routeUnsaved => 'تمت الإزالة من المفضلة';
+  String get nearestStationTitle => 'أقرب محطة إليك';
+  String get nearestStationSubtitle => 'يتم تحديده تلقائياً عبر GPS';
+  String get nearestStationLocating => 'جارِ البحث عن أقرب محطة…';
+  String get nearestStationCaption => 'أقرب محطة مترو لموقعك';
+  String get getDirections => 'الحصول على الاتجاهات';
+  String get walkingDirections => 'مشياً';
+  String get drivingDirections => 'بالسيارة';
+  String get currentLocation => 'موقعي';
+  String get useAsDeparture => 'تعيين كمحطة انطلاق';
+
+  String get transferExitCarriage => 'اخرج من العربة واتجه نحو منتصف الرصيف';
+  String get transferFollowSigns => "اتبع لافتات 'التحويل' داخل المحطة";
+  String get transferWalkCorridor => 'سر عبر ممر التحويل تحت الأرض';
+  String get transferCheckDirection => 'تحقق من لوحة الاتجاه قبل الصعود';
+  String get transferBoardTrain => 'اركب القطار القادم في اتجاهك';
+  String get transferNoRevalidate => 'لا حاجة لإعادة التحقق — نفس المنطقة المدفوعة';
+  String get transferCheckBranch => 'تحقق من شاشة الفرع — القطارات تنقسم هنا نحو وجهات مختلفة';
+  String get transferExitSurface => 'استخدم السلالم أو السلم الكهربائي للوصول إلى مستوى الشارع';
+  String get transferNoteSadat => 'محطة السادات تربط خط 1 وخط 2 تحت ميدان التحرير — الأرصفة على مستويات متعامدة منفصلة';
+  String get transferNoteElShohadaa => 'محطة الشهداء (ميدان رمسيس) تربط خط 1 وخط 2 — من أكثر محطات التحويل ازدحاماً في القاهرة';
+  String get transferNoteGamalNasser => 'محطة جمال عبدالناصر تربط خط 1 وخط 3 عبر ممر تحت الأرض (~200 م)';
+  String get transferNoteAtaba => 'محطة العتبة تربط خط 2 وخط 3 — اتبع الممر الرابط بين الأرصفة';
+  String get transferNoteKitKat => 'كيت كات هي نقطة تفرع خط 3 — القطارات تنقسم هنا. تحقق من شاشة الفرع لاختيار محور رودة الفرج أو جامعة القاهرة';
+  String get transferNoteCairoUniversity => 'جامعة القاهرة تربط خط 2 وفرع L3B على مستوى الشارع — يلزم المشي القصير على السطح';
 
   @override
   String get stationFound => 'تم العثور على المحطة';
@@ -1231,6 +1263,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get resetViewLabel => 'إعادة ضبط العرض';
 
   @override
+  String get mapViewSchematic => 'تخطيطي';
+
+  @override
+  String get mapViewGeographic => 'خريطة';
+
+  @override
   String get mapLegendLabel => 'مفتاح الخريطة';
 
   @override
@@ -1456,6 +1494,21 @@ class AppLocalizationsAr extends AppLocalizations {
   String get bestRoute => 'الأفضل';
 
   @override
+  String get accessibleRoute => 'مسار متاح';
+
+  @override
+  String get routeTypeFastest => 'الأسرع';
+
+  @override
+  String get routeTypeAccessible => 'متاح';
+
+  @override
+  String get routeTypeFewestTransfers => 'أقل تحويلات';
+
+  @override
+  String get routeTypeAlternative => 'مسار بديل';
+
+  @override
   String get hideStops => 'إخفاء المحطات';
 
   @override
@@ -1508,4 +1561,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override String get onboardingLine2 => 'الخط ٢ · المنيب ← شبرا الخيمة';
   @override String get onboardingLine3 => 'الخط ٣ · عدلي منصور ← الفروع';
   @override String get onboardingTransfer => 'محطة تحويل';
+  @override String get searchingOnline => 'جاري البحث عبر الإنترنت…';
+  @override String get didYouMean => 'هل تقصد؟';
+  @override String get tapForTransferDetails => 'اضغط لتفاصيل التحويل';
 }

@@ -6,14 +6,25 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 class Stationspage extends StatefulWidget {
   final List<List<List<int>>> serializedData;
 
-  /// Real station names per segment — same structure as serializedData.
-  /// If provided, used instead of "Station N" placeholders.
+  /// Station names per segment — primary data when serializedData is empty.
   final List<List<String>>? stationNames;
+
+  /// Per-segment line colors derived from the actual route lines.
+  final List<Color>? segmentColors;
+
+  /// Per-segment labels (localized line names) shown as segment headers.
+  final List<String>? segmentLabels;
+
+  /// "DEPARTURE → ARRIVAL" title string shown in the app bar subtitle.
+  final String? routeTitle;
 
   const Stationspage({
     super.key,
     required this.serializedData,
     this.stationNames,
+    this.segmentColors,
+    this.segmentLabels,
+    this.routeTitle,
   });
 
   @override
@@ -33,22 +44,37 @@ class _StationspageState extends State<Stationspage> {
   }
 
   void _buildData() {
-    for (int i = 0; i < widget.serializedData.length; i++) {
-      final segment = widget.serializedData[i];
-      final names = widget.stationNames?[i];
-      final stations = List.generate(segment.length, (j) {
-        final name =
-            (names != null && j < names.length) ? names[j] : 'Station ${j + 1}';
+    // Prefer stationNames when serializedData is empty (new routing engine path).
+    final useNamesOnly =
+        widget.serializedData.isEmpty && widget.stationNames != null;
+    final segCount = useNamesOnly
+        ? widget.stationNames!.length
+        : widget.serializedData.length;
+
+    for (int i = 0; i < segCount; i++) {
+      final names = widget.stationNames?[i] ?? [];
+      final segLen =
+          useNamesOnly ? names.length : widget.serializedData[i].length;
+
+      final stations = List.generate(segLen, (j) {
+        final name = j < names.length ? names[j] : 'Station ${j + 1}';
         return {
           'name': name,
-          'coordinates': segment[j],
           'isFirst': j == 0,
-          'isLast': j == segment.length - 1,
+          'isLast': j == segLen - 1,
         };
       });
+
       _stationsByLine.add({
         'segmentIndex': i,
-        'color': _segmentColor(i),
+        'color':
+            widget.segmentColors != null && i < widget.segmentColors!.length
+                ? widget.segmentColors![i]
+                : _segmentColor(i),
+        'label':
+            widget.segmentLabels != null && i < widget.segmentLabels!.length
+                ? widget.segmentLabels![i]
+                : null,
         'stations': stations,
       });
     }
@@ -107,14 +133,33 @@ class _StationspageState extends State<Stationspage> {
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(
-                l10n.viewFullMap,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.2,
-                  color: Colors.white,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.routeAllStops,
+                    textScaler: TextScaler.noScaling,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.2,
+                      color: Colors.white,
+                    ),
+                  ),
+                  if (widget.routeTitle != null)
+                    Text(
+                      widget.routeTitle!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textScaler: TextScaler.noScaling,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white70,
+                      ),
+                    ),
+                ],
               ),
             ),
           ],
@@ -134,7 +179,8 @@ class _StationspageState extends State<Stationspage> {
                       color: isDark ? AppTheme.darkCard : Colors.grey.shade50,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isDark ? AppTheme.darkBorder : Colors.grey.shade200,
+                        color:
+                            isDark ? AppTheme.darkBorder : Colors.grey.shade200,
                         width: 1,
                       ),
                     ),
@@ -144,14 +190,18 @@ class _StationspageState extends State<Stationspage> {
                       decoration: InputDecoration(
                         hintText: l10n.searchStationsHint,
                         hintStyle: TextStyle(
-                            color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
+                            color: isDark
+                                ? AppTheme.darkTextTertiary
+                                : Colors.grey.shade400,
                             fontSize: 14),
                         prefixIcon: Icon(Icons.search_rounded,
                             color: AppTheme.primaryNile, size: 20),
                         suffixIcon: _searchCtrl.text.isNotEmpty
                             ? IconButton(
                                 icon: Icon(Icons.close_rounded,
-                                    color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade400,
+                                    color: isDark
+                                        ? AppTheme.darkTextTertiary
+                                        : Colors.grey.shade400,
                                     size: 18),
                                 onPressed: () {
                                   _searchCtrl.clear();
@@ -172,7 +222,9 @@ class _StationspageState extends State<Stationspage> {
           ),
 
           // Thin divider between search and list
-          Divider(height: 1, color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
+          Divider(
+              height: 1,
+              color: isDark ? AppTheme.darkDivider : Colors.grey.shade100),
 
           // Station list
           Expanded(
@@ -180,8 +232,11 @@ class _StationspageState extends State<Stationspage> {
                 ? Center(
                     child: Text(
                       l10n.noStationsFound,
+                      textScaler: TextScaler.noScaling,
                       style: TextStyle(
-                        color: isDark ? AppTheme.darkTextTertiary : Colors.grey.shade500,
+                        color: isDark
+                            ? AppTheme.darkTextTertiary
+                            : Colors.grey.shade500,
                         fontSize: 14,
                       ),
                     ),
@@ -189,7 +244,8 @@ class _StationspageState extends State<Stationspage> {
                 : ListView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
                     itemCount: _filtered.length,
-                    itemBuilder: (ctx, idx) => _buildSegmentCard(ctx, _filtered[idx]),
+                    itemBuilder: (ctx, idx) =>
+                        _buildSegmentCard(ctx, _filtered[idx]),
                   ),
           ),
         ],
@@ -203,16 +259,15 @@ class _StationspageState extends State<Stationspage> {
     final color = seg['color'] as Color;
     final stations = seg['stations'] as List;
     final segIdx = seg['segmentIndex'] as int;
-    final segLabel = _segmentLabel(segIdx);
+    final segLabel = (seg['label'] as String?) ?? _segmentLabel(segIdx);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: BorderRadius.circular(20),
-        border: isDark
-            ? Border.all(color: AppTheme.darkBorder, width: 1)
-            : null,
+        border:
+            isDark ? Border.all(color: AppTheme.darkBorder, width: 1) : null,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(isDark ? 0.25 : 0.04),
@@ -246,16 +301,21 @@ class _StationspageState extends State<Stationspage> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  segLabel,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.2,
+                Expanded(
+                  child: Text(
+                    segLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textScaler: TextScaler.noScaling,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -264,7 +324,8 @@ class _StationspageState extends State<Stationspage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    '${stations.length} stops',
+                    '${stations.length}',
+                    textScaler: TextScaler.noScaling,
                     style: TextStyle(
                       color: color,
                       fontSize: 11,
@@ -313,7 +374,9 @@ class _StationspageState extends State<Stationspage> {
                               decoration: BoxDecoration(
                                 color: isMajor
                                     ? color
-                                    : (isDark ? AppTheme.darkCard : AppTheme.lightCard),
+                                    : (isDark
+                                        ? AppTheme.darkCard
+                                        : AppTheme.lightCard),
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     color: color, width: isMajor ? 0 : 1.5),
@@ -350,6 +413,9 @@ class _StationspageState extends State<Stationspage> {
                               Expanded(
                                 child: Text(
                                   s['name'].toString(),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textScaler: TextScaler.noScaling,
                                   style: TextStyle(
                                     fontSize: isMajor ? 14 : 13,
                                     fontWeight: isMajor
@@ -357,11 +423,14 @@ class _StationspageState extends State<Stationspage> {
                                         : FontWeight.w400,
                                     color: isMajor
                                         ? cs.onSurface
-                                        : (isDark ? AppTheme.darkTextSub : Colors.grey.shade700),
+                                        : (isDark
+                                            ? AppTheme.darkTextSub
+                                            : Colors.grey.shade700),
                                   ),
                                 ),
                               ),
-                              if (isMajor)
+                              if (isMajor) ...[
+                                const SizedBox(width: 6),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 7, vertical: 2),
@@ -371,6 +440,7 @@ class _StationspageState extends State<Stationspage> {
                                   ),
                                   child: Text(
                                     isFirst ? 'DEP' : 'ARR',
+                                    textScaler: TextScaler.noScaling,
                                     style: TextStyle(
                                       color: color,
                                       fontSize: 9,
@@ -379,6 +449,7 @@ class _StationspageState extends State<Stationspage> {
                                     ),
                                   ),
                                 ),
+                              ],
                             ],
                           ),
                         ),
@@ -408,7 +479,8 @@ class _StationspageState extends State<Stationspage> {
   }
 
   String _segmentLabel(int i) {
-    if (widget.serializedData.length == 1) return 'Direct Route';
+    final total = _stationsByLine.length;
+    if (total == 1) return 'Direct Route';
     switch (i) {
       case 0:
         return 'Segment 1';

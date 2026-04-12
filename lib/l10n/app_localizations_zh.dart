@@ -584,7 +584,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get planYourRoute => '规划路线';
 
   @override
-  String get findNearestStation => '查找最近站点';
+  String get findNearestStation => '按地址查找站点';
 
   @override
   String get scheduleLabel => '地铁时刻表';
@@ -841,7 +841,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get viewFullMap => '查看完整地图';
 
   @override
+  String get routeAllStops => '所有站点';
+
+  @override
   String get nearestStationFound => '已找到最近站点';
+  String nextTrainIn(int min) => '下一班列车约{min}分钟'.replaceAll('{min}', '$min');
+  String get outsideServiceHours => '不在服务时间内';
+  String get saveRouteLabel => '保存路线';
+  String get routeSaved => '已保存到收藏夹';
+  String get routeUnsaved => '已从收藏夹中移除';
+  String get nearestStationTitle => '您附近的站点';
+  String get nearestStationSubtitle => 'GPS 自动定位';
+  String get nearestStationLocating => '正在查找最近的车站…';
+  String get nearestStationCaption => '距您位置最近的地铁站';
+  String get getDirections => '获取路线';
+  String get walkingDirections => '步行';
+  String get drivingDirections => '驾车';
+  String get currentLocation => '我的位置';
+  String get useAsDeparture => '设为出发地';
 
   @override
   String get stationFound => '已找到站点';
@@ -1231,6 +1248,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetViewLabel => '重置视图';
 
   @override
+  String get mapViewSchematic => '线路图';
+
+  @override
+  String get mapViewGeographic => '地图';
+
+  @override
   String get mapLegendLabel => '地图图例';
 
   @override
@@ -1456,6 +1479,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bestRoute => '最佳';
 
   @override
+  String get accessibleRoute => '无障碍路线';
+
+  @override
+  String get routeTypeFastest => '最快';
+
+  @override
+  String get routeTypeAccessible => '无障碍';
+
+  @override
+  String get routeTypeFewestTransfers => '最少换乘';
+
+  @override
+  String get routeTypeAlternative => '备选路线';
+
+  @override
   String get hideStops => '隐藏站点';
 
   @override
@@ -1508,4 +1546,23 @@ class AppLocalizationsZh extends AppLocalizations {
   @override String get onboardingLine2 => '2号线 · 蒙尼卜 → 舒布拉';
   @override String get onboardingLine3 => '3号线 · 阿德利·曼苏尔 → 支线';
   @override String get onboardingTransfer => '换乘站';
+
+  @override String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
+  @override String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
+  @override String get transferWalkCorridor => 'Walk through the underground transfer corridor';
+  @override String get transferCheckDirection => 'Check the direction board before boarding';
+  @override String get transferBoardTrain => 'Board the next train in your direction';
+  @override String get transferNoRevalidate => 'No re-validation needed — same paid zone';
+  @override String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
+  @override String get transferExitSurface => 'Use the stairs or escalator to reach street level';
+  @override String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
+  @override String get transferNoteElShohadaa => "El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo's busiest interchange stations";
+  @override String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
+  @override String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
+  @override String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
+  @override String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
+
+  @override String get searchingOnline => '正在在线搜索…';
+  @override String get didYouMean => '您是不是想说？';
+  @override String get tapForTransferDetails => '点击查看换乘详情';
 }

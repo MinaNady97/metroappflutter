@@ -14,12 +14,21 @@ class RoutingPreferences {
   /// Extra penalty (seconds) for non-accessible transfer stations.
   static const int _inaccessiblePenaltySecs = 1200; // 20 extra min
 
+  /// Extra penalty (seconds) applied when transferring at one of these stations.
+  /// Used to generate "miss-your-transfer" alternate routes.
+  static const int _avoidTransferPenaltySecs = 3600; // 60 min — effectively forces a detour
+
   final bool minimizeTransfers;
   final bool preferAccessible;
+
+  /// Station IDs at which transfer edges should receive a heavy penalty,
+  /// steering Dijkstra toward a path that avoids those transfer points.
+  final Set<String> avoidTransferStationIds;
 
   const RoutingPreferences({
     this.minimizeTransfers = false,
     this.preferAccessible = false,
+    this.avoidTransferStationIds = const {},
   });
 }
 
@@ -42,40 +51,102 @@ class DijkstraEngine {
   // ──────────────────────────────────────────────────────────
 
   /// Returns up to [maxResults] routes sorted by total travel time.
-  /// Internally runs Dijkstra three times with different preference weights.
+  ///
+  /// When [preferAccessible] is true, the primary (first) route avoids
+  /// non-accessible transfer stations.  When [minimizeTransfers] is true,
+  /// the primary route uses fewer transfers.
+  ///
+  /// The engine always generates diverse alternatives (fastest, fewest
+  /// transfers, accessible) so the user sees multiple options.
   List<RouteResult> findTopRoutes(
     String fromId,
     String toId, {
     int maxResults = 3,
+    bool preferAccessible = false,
+    bool minimizeTransfers = false,
   }) {
     if (fromId == toId) return [];
     if (!graph.contains(fromId) || !graph.contains(toId)) return [];
 
-    final results = <RouteResult>[];
-
-    // Route 1: Pure fastest (time-optimal)
-    final fastest = _dijkstra(fromId, toId, const RoutingPreferences());
-    if (fastest != null) results.add(fastest);
-
-    // Route 2: Fewest transfers (transfer-penalty boosted)
-    final fewest = _dijkstra(
-      fromId,
-      toId,
-      const RoutingPreferences(minimizeTransfers: true),
-    );
-    if (fewest != null && !_sameRoute(fewest, results)) {
-      results.add(fewest.copyWith(sortType: RouteSortType.fewestTransfers));
+    // Rule: if both stations are on the same line, only the direct route is
+    // meaningful — skip Dijkstra entirely and slice the line's station list.
+    // (Dijkstra cannot be used here because transfer edges are self-loops that
+    //  are never re-relaxed, so the transfer penalty never applies and Dijkstra
+    //  freely switches lines at shared stations, giving nonsensical shortcuts.)
+    final directRoute = _directRouteOnSharedLine(fromId, toId);
+    if (directRoute != null) {
+      return [directRoute.copyWith(sortType: RouteSortType.fastest)];
     }
 
-    // Route 3: Accessible preference
-    if (results.length < maxResults) {
+    final results = <RouteResult>[];
+
+    // Build the primary preferences from caller flags.
+    final primary = RoutingPreferences(
+      minimizeTransfers: minimizeTransfers,
+      preferAccessible: preferAccessible,
+    );
+
+    // Determine the sortType label for the primary route.
+    final RouteSortType primaryLabel;
+    if (preferAccessible) {
+      primaryLabel = RouteSortType.accessible;
+    } else if (minimizeTransfers) {
+      primaryLabel = RouteSortType.fewestTransfers;
+    } else {
+      primaryLabel = RouteSortType.fastest;
+    }
+
+    // Route 1: Caller-preferred (default: pure fastest)
+    final best = _dijkstra(fromId, toId, primary);
+    if (best != null) {
+      results.add(best.copyWith(sortType: primaryLabel));
+    }
+
+    // Route 2: Fewest transfers (skip if already the primary preference)
+    if (!minimizeTransfers && results.length < maxResults) {
+      final fewest = _dijkstra(
+        fromId, toId,
+        const RoutingPreferences(minimizeTransfers: true),
+      );
+      if (fewest != null && !_sameRoute(fewest, results)) {
+        results.add(fewest.copyWith(sortType: RouteSortType.fewestTransfers));
+      }
+    }
+
+    // Route 3: Accessible preference (skip if already the primary preference)
+    if (!preferAccessible && results.length < maxResults) {
       final accessible = _dijkstra(
-        fromId,
-        toId,
+        fromId, toId,
         const RoutingPreferences(preferAccessible: true),
       );
       if (accessible != null && !_sameRoute(accessible, results)) {
         results.add(accessible.copyWith(sortType: RouteSortType.accessible));
+      }
+    }
+
+    // Route 4: Pure fastest fallback (if we haven't hit maxResults yet
+    // and the primary wasn't already fastest)
+    if (primaryLabel != RouteSortType.fastest && results.length < maxResults) {
+      final fastest = _dijkstra(fromId, toId, const RoutingPreferences());
+      if (fastest != null && !_sameRoute(fastest, results)) {
+        results.add(fastest.copyWith(sortType: RouteSortType.fastest));
+      }
+    }
+
+    // Route 5: "Miss your transfer" alternative.
+    // Take the primary route's transfer stations and heavily penalise them so
+    // Dijkstra is forced to find a path through different transfer points.
+    if (results.length < maxResults && results.isNotEmpty) {
+      final primaryTransfers = results.first.transferStationIds.toSet();
+      if (primaryTransfers.isNotEmpty) {
+        final alt = _dijkstra(
+          fromId,
+          toId,
+          RoutingPreferences(avoidTransferStationIds: primaryTransfers),
+        );
+        if (alt != null && !_sameRoute(alt, results)) {
+          results.add(alt.copyWith(sortType: RouteSortType.alternativeRoute));
+        }
       }
     }
 
@@ -128,6 +199,15 @@ class DijkstraEngine {
               edgeCost += RoutingPreferences._inaccessiblePenaltySecs;
             }
           }
+        }
+        // NOTE: avoidTransferStationIds penalty is intentionally outside
+        // the isTransfer block. Transfer edges in this graph are self-loops
+        // (toStationId == fromStationId) which Dijkstra never re-relaxes,
+        // so they cannot carry effective penalties. Penalising ALL edges that
+        // enter the avoided station forces Dijkstra to route around it entirely.
+        if (prefs.avoidTransferStationIds.isNotEmpty &&
+            prefs.avoidTransferStationIds.contains(edge.toStationId)) {
+          edgeCost += RoutingPreferences._avoidTransferPenaltySecs;
         }
 
         final newCost = currentCost + edgeCost;
@@ -237,12 +317,72 @@ class DijkstraEngine {
     pq.putIfAbsent(cost, () => Queue<String>()).add(id);
   }
 
+  /// If [fromId] and [toId] are both on the same line, returns a [RouteResult]
+  /// built by slicing that line's station list — no Dijkstra involved.
+  /// Returns null when the two stations require at least one transfer.
+  RouteResult? _directRouteOnSharedLine(String fromId, String toId) {
+    for (final line in lines.values) {
+      final fromIdx = line.stationIds.indexOf(fromId);
+      final toIdx = line.stationIds.indexOf(toId);
+      if (fromIdx == -1 || toIdx == -1) continue;
+
+      // Ordered sublist: handle both directions of travel.
+      final List<String> path;
+      if (fromIdx <= toIdx) {
+        path = line.stationIds.sublist(fromIdx, toIdx + 1);
+      } else {
+        path = line.stationIds.sublist(toIdx, fromIdx + 1).reversed.toList();
+      }
+
+      // Sum actual edge weights from the graph.
+      int totalSeconds = 0;
+      for (int i = 0; i < path.length - 1; i++) {
+        final edge = graph.neighbors(path[i]).firstWhere(
+          (e) => e.toStationId == path[i + 1] && e.lineId == line.id,
+          orElse: () => MetroEdge(
+            toStationId: path[i + 1],
+            lineId: line.id,
+            weightSeconds: 120,
+          ),
+        );
+        totalSeconds += edge.weightSeconds;
+      }
+
+      final hops = path.length - 1;
+      final segment = RouteSegment(
+        lineId: line.id,
+        fromStationId: fromId,
+        toStationId: toId,
+        stationIds: path,
+      );
+
+      return RouteResult(
+        stationIds: path,
+        segments: [segment],
+        totalStations: hops,
+        transfers: 0,
+        estimatedTime: Duration(seconds: totalSeconds),
+        fareEGP: FareCalculator.calculate(hops),
+      );
+    }
+    return null; // no shared line — transfer required
+  }
+
   bool _sameRoute(RouteResult candidate, List<RouteResult> existing) {
-    return existing.any((r) =>
-        r.stationIds.length == candidate.stationIds.length &&
-        r.originStationId == candidate.originStationId &&
-        r.destinationStationId == candidate.destinationStationId &&
-        r.transfers == candidate.transfers);
+    return existing.any((r) {
+      if (r.originStationId != candidate.originStationId) return false;
+      if (r.destinationStationId != candidate.destinationStationId) return false;
+      // Two routes are the same only if they transfer at exactly the same stations.
+      // This allows routes like "transfer at Sadat" vs "transfer at El Shohadaa"
+      // to both appear even if the hop count is equal.
+      final rT = r.transferStationIds;
+      final cT = candidate.transferStationIds;
+      if (rT.length != cT.length) return false;
+      for (int i = 0; i < rT.length; i++) {
+        if (rT[i] != cT[i]) return false;
+      }
+      return true;
+    });
   }
 }
 

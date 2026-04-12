@@ -584,7 +584,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get planYourRoute => 'Plan Your Route';
 
   @override
-  String get findNearestStation => 'Find Nearest Station';
+  String get findNearestStation => 'Find Station by Address';
 
   @override
   String get scheduleLabel => 'Schedule';
@@ -841,7 +841,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewFullMap => 'View Full Map';
 
   @override
+  String get routeAllStops => 'All Route Stops';
+
+  @override
   String get nearestStationFound => 'Nearest Station Found';
+  String nextTrainIn(int min) => 'Next ~{min} min'.replaceAll('{min}', '$min');
+  String get outsideServiceHours => 'Outside service hours';
+  String get saveRouteLabel => 'Save route';
+  String get routeSaved => 'Saved to favorites';
+  String get routeUnsaved => 'Removed from favorites';
+  String get nearestStationTitle => 'Your Nearest Station';
+  String get nearestStationSubtitle => 'Auto-detected from your GPS location';
+  String get nearestStationLocating => 'Finding your nearest station…';
+  String get nearestStationCaption => 'Closest station to your GPS location';
+  String get getDirections => 'Get Directions';
+  String get walkingDirections => 'Walking';
+  String get drivingDirections => 'Driving';
+  String get currentLocation => 'My Location';
+  String get useAsDeparture => 'Set as Departure';
+
+  String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
+  String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
+  String get transferWalkCorridor => 'Walk through the underground transfer corridor';
+  String get transferCheckDirection => 'Check the direction board before boarding';
+  String get transferBoardTrain => 'Board the next train in your direction';
+  String get transferNoRevalidate => 'No re-validation needed — same paid zone';
+  String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
+  String get transferExitSurface => 'Use the stairs or escalator to reach street level';
+  String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
+  String get transferNoteElShohadaa => 'El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo\'s busiest interchange stations';
+  String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
+  String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
+  String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
+  String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
 
   @override
   String get stationFound => 'Station Found';
@@ -1231,6 +1263,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetViewLabel => 'Reset View';
 
   @override
+  String get mapViewSchematic => 'Schematic';
+
+  @override
+  String get mapViewGeographic => 'Map';
+
+  @override
   String get mapLegendLabel => 'Map Legend';
 
   @override
@@ -1456,6 +1494,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bestRoute => 'Best';
 
   @override
+  String get accessibleRoute => 'Accessible Route';
+
+  @override
+  String get routeTypeFastest => 'Fastest';
+
+  @override
+  String get routeTypeAccessible => 'Accessible';
+
+  @override
+  String get routeTypeFewestTransfers => 'Fewest Transfers';
+
+  @override
+  String get routeTypeAlternative => 'Alternative Route';
+
+  @override
   String get hideStops => 'Hide stops';
 
   @override
@@ -1508,4 +1561,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get onboardingLine2 => 'Line 2 · El-Mounib → Shubra';
   @override String get onboardingLine3 => 'Line 3 · Adly Mansour → branches';
   @override String get onboardingTransfer => 'Transfer station';
+  @override String get searchingOnline => 'Searching online…';
+  @override String get didYouMean => 'Did you mean?';
+  @override String get tapForTransferDetails => 'Tap for transfer details';
 }

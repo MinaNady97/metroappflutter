@@ -1395,7 +1395,7 @@ class _MetroMapPageState extends State<MetroMapPage>
               _iconBtn(
                 _mapMode ? Icons.map_outlined : Icons.map_rounded,
                 _toggleMapMode,
-                tooltip: _mapMode ? 'Schematic' : 'Map',
+                tooltip: _mapMode ? l10n.mapViewSchematic : l10n.mapViewGeographic,
               ),
               const SizedBox(width: 6),
               ScaleTransition(

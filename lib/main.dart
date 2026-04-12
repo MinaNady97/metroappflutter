@@ -11,6 +11,7 @@ import 'package:metroappflutter/data/repositories/metro_repository_impl.dart';
 import 'package:metroappflutter/domain/repositories/metro_repository.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/core/theme/theme_controller.dart';
+import 'package:metroappflutter/tour/tour_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:metroappflutter/services/local_search_service.dart';
@@ -41,6 +42,7 @@ void main() async {
   Get.put(HomepageController(), permanent: true);
   Get.put(LanguageController(), permanent: true);
   Get.put(ThemeController(), permanent: true);
+  Get.put(TourController(), permanent: true);
 
   runApp(MyApp(savedLangCode: savedLangCode, onboardingDone: onboardingDone));
 }

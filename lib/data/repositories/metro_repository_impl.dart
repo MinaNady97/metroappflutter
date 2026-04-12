@@ -110,6 +110,8 @@ class MetroRepositoryImpl implements MetroRepository {
       fromStationId,
       toStationId,
       maxResults: maxResults,
+      preferAccessible: preferAccessible,
+      minimizeTransfers: minimizeTransfers,
     );
   }
 

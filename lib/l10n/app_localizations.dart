@@ -1745,19 +1745,34 @@ abstract class AppLocalizations {
   /// **'Nearest Station Found'**
   String get nearestStationFound;
 
-  /// Next train in {min} minutes.
+  /// No description provided for @nextTrainIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next ~{min} min'**
   String nextTrainIn(int min);
 
   /// No description provided for @outsideServiceHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Outside service hours'**
   String get outsideServiceHours;
 
   /// No description provided for @saveRouteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Save route'**
   String get saveRouteLabel;
 
   /// No description provided for @routeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to favorites'**
   String get routeSaved;
 
   /// No description provided for @routeUnsaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from favorites'**
   String get routeUnsaved;
 
   /// No description provided for @nearestStationTitle.
@@ -1783,42 +1798,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nearest metro station to your location'**
   String get nearestStationCaption;
-
-  /// No description provided for @getDirections.
-  String get getDirections;
-
-  /// No description provided for @walkingDirections.
-  String get walkingDirections;
-
-  /// No description provided for @drivingDirections.
-  String get drivingDirections;
-
-  /// No description provided for @currentLocation.
-  ///
-  /// In en, this message translates to:
-  /// **'My Location'**
-  String get currentLocation;
-
-  /// No description provided for @useAsDeparture.
-  String get useAsDeparture;
-
-  // ── Transfer guidance ──────────────────────────────────────────────────────
-
-  String get transferExitCarriage;
-  String get transferFollowSigns;
-  String get transferWalkCorridor;
-  String get transferCheckDirection;
-  String get transferBoardTrain;
-  String get transferNoRevalidate;
-  String get transferCheckBranch;
-  String get transferExitSurface;
-
-  String get transferNoteSadat;
-  String get transferNoteElShohadaa;
-  String get transferNoteGamalNasser;
-  String get transferNoteAtaba;
-  String get transferNoteKitKat;
-  String get transferNoteCairoUniversity;
 
   /// No description provided for @stationFound.
   ///
@@ -2594,18 +2573,6 @@ abstract class AppLocalizations {
   /// **'Reset View'**
   String get resetViewLabel;
 
-  /// No description provided for @mapViewSchematic.
-  ///
-  /// In en, this message translates to:
-  /// **'Schematic'**
-  String get mapViewSchematic;
-
-  /// No description provided for @mapViewGeographic.
-  ///
-  /// In en, this message translates to:
-  /// **'Map'**
-  String get mapViewGeographic;
-
   /// No description provided for @mapLegendLabel.
   ///
   /// In en, this message translates to:
@@ -3056,36 +3023,6 @@ abstract class AppLocalizations {
   /// **'Best'**
   String get bestRoute;
 
-  /// No description provided for @accessibleRoute.
-  ///
-  /// In en, this message translates to:
-  /// **'Accessible Route'**
-  String get accessibleRoute;
-
-  /// No description provided for @routeTypeFastest.
-  ///
-  /// In en, this message translates to:
-  /// **'Fastest'**
-  String get routeTypeFastest;
-
-  /// No description provided for @routeTypeAccessible.
-  ///
-  /// In en, this message translates to:
-  /// **'Accessible'**
-  String get routeTypeAccessible;
-
-  /// No description provided for @routeTypeFewestTransfers.
-  ///
-  /// In en, this message translates to:
-  /// **'Fewest Transfers'**
-  String get routeTypeFewestTransfers;
-
-  /// No description provided for @routeTypeAlternative.
-  ///
-  /// In en, this message translates to:
-  /// **'Alternative Route'**
-  String get routeTypeAlternative;
-
   /// No description provided for @hideStops.
   ///
   /// In en, this message translates to:
@@ -3158,22 +3095,233 @@ abstract class AppLocalizations {
   /// **'Transfer at {station}'**
   String transferAtStation(Object station);
 
-  // ── Onboarding ─────────────────────────────────────────────────────────────
-  String get onboardingSkip;
-  String get onboardingNext;
-  String get onboardingGetStarted;
-  String get onboardingTitle1;
-  String get onboardingSubtitle1;
-  String get onboardingTitle2;
-  String get onboardingSubtitle2;
-  String get onboardingTitle3;
-  String get onboardingSubtitle3;
+  /// No description provided for @discoverEgyptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Egypt'**
+  String get discoverEgyptTitle;
+
+  /// No description provided for @discoverEgyptSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cities & destinations outside Cairo'**
+  String get discoverEgyptSubtitle;
+
+  /// No description provided for @gettingThereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting There from Cairo'**
+  String get gettingThereTitle;
+
+  /// No description provided for @transportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate travel times from Cairo'**
+  String get transportNote;
+
+  /// No description provided for @bookTicketsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Tickets'**
+  String get bookTicketsTitle;
+
+  /// No description provided for @thingsToDoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Places to Visit'**
+  String get thingsToDoTitle;
+
+  /// No description provided for @transportFlight.
+  ///
+  /// In en, this message translates to:
+  /// **'Flight'**
+  String get transportFlight;
+
+  /// No description provided for @transportSleeperTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleeper Train'**
+  String get transportSleeperTrain;
+
+  /// No description provided for @transportTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Train'**
+  String get transportTrain;
+
+  /// No description provided for @transportBus.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus'**
+  String get transportBus;
+
+  /// No description provided for @transportCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Car'**
+  String get transportCar;
+
+  /// No description provided for @transportNileCruise.
+  ///
+  /// In en, this message translates to:
+  /// **'Nile Cruise (from Luxor)'**
+  String get transportNileCruise;
+
+  /// No description provided for @transportBusFromSharm.
+  ///
+  /// In en, this message translates to:
+  /// **'Bus from Sharm El-Sheikh'**
+  String get transportBusFromSharm;
+
+  /// No description provided for @getOnPlayStore.
+  ///
+  /// In en, this message translates to:
+  /// **'Android'**
+  String get getOnPlayStore;
+
+  /// No description provided for @getOnAppStore.
+  ///
+  /// In en, this message translates to:
+  /// **'iOS'**
+  String get getOnAppStore;
+
+  /// No description provided for @onboardingLanguagePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Language'**
   String get onboardingLanguagePrompt;
-  String get onboardingReplay;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan Your Route'**
+  String get onboardingTitle1;
+
+  /// No description provided for @onboardingSubtitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Find the fastest metro route between any two stations across Cairo\'s network.'**
+  String get onboardingSubtitle1;
+
+  /// No description provided for @onboardingTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the Lines'**
+  String get onboardingTitle2;
+
+  /// No description provided for @onboardingSubtitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover all 3 metro lines and their convenient transfer stations.'**
+  String get onboardingSubtitle2;
+
+  /// No description provided for @onboardingTitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Features'**
+  String get onboardingTitle3;
+
+  /// No description provided for @onboardingSubtitle3.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your nearest station, explore tourist sights, and get accessible routes.'**
+  String get onboardingSubtitle3;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingLine1.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 1'**
   String get onboardingLine1;
+
+  /// No description provided for @onboardingLine2.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 2'**
   String get onboardingLine2;
+
+  /// No description provided for @onboardingLine3.
+  ///
+  /// In en, this message translates to:
+  /// **'Line 3'**
   String get onboardingLine3;
+
+  /// No description provided for @onboardingTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer'**
   String get onboardingTransfer;
+
+  /// No description provided for @accessibleRoute.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessible Route'**
+  String get accessibleRoute;
+
+  /// No description provided for @onboardingReplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay Tutorial'**
+  String get onboardingReplay;
+
+  /// No description provided for @mapViewSchematic.
+  ///
+  /// In en, this message translates to:
+  /// **'Schematic'**
+  String get mapViewSchematic;
+
+  /// No description provided for @mapViewGeographic.
+  ///
+  /// In en, this message translates to:
+  /// **'Geographic'**
+  String get mapViewGeographic;
+
+  /// No description provided for @walkingDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking'**
+  String get walkingDirections;
+
+  /// No description provided for @getDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get getDirections;
+
+  /// No description provided for @currentLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My Location'**
+  String get currentLocation;
+
+  /// No description provided for @drivingDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Driving'**
+  String get drivingDirections;
+
+  /// No description provided for @useAsDeparture.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as Departure'**
+  String get useAsDeparture;
 
   /// No description provided for @searchingOnline.
   ///
@@ -3187,11 +3335,113 @@ abstract class AppLocalizations {
   /// **'Did you mean?'**
   String get didYouMean;
 
-  /// No description provided for @tapForTransferDetails.
+  /// No description provided for @routeTypeFastest.
   ///
   /// In en, this message translates to:
-  /// **'Tap for transfer details'**
-  String get tapForTransferDetails;
+  /// **'Fastest'**
+  String get routeTypeFastest;
+
+  /// No description provided for @routeTypeAccessible.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessible'**
+  String get routeTypeAccessible;
+
+  /// No description provided for @routeTypeFewestTransfers.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewest Transfers'**
+  String get routeTypeFewestTransfers;
+
+  /// No description provided for @routeTypeAlternative.
+  ///
+  /// In en, this message translates to:
+  /// **'Alternative'**
+  String get routeTypeAlternative;
+
+  /// No description provided for @transferExitCarriage.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit the carriage'**
+  String get transferExitCarriage;
+
+  /// No description provided for @transferFollowSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the signs'**
+  String get transferFollowSigns;
+
+  /// No description provided for @transferCheckDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the platform direction'**
+  String get transferCheckDirection;
+
+  /// No description provided for @transferBoardTrain.
+  ///
+  /// In en, this message translates to:
+  /// **'Board the train'**
+  String get transferBoardTrain;
+
+  /// No description provided for @transferWalkCorridor.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk through the corridor'**
+  String get transferWalkCorridor;
+
+  /// No description provided for @transferNoRevalidate.
+  ///
+  /// In en, this message translates to:
+  /// **'No need to revalidate your ticket'**
+  String get transferNoRevalidate;
+
+  /// No description provided for @transferCheckBranch.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the branch direction'**
+  String get transferCheckBranch;
+
+  /// No description provided for @transferExitSurface.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit to surface level'**
+  String get transferExitSurface;
+
+  /// No description provided for @transferNoteSadat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sadat: L1 ↔ L2 — allow ~3 min walking between platforms.'**
+  String get transferNoteSadat;
+
+  /// No description provided for @transferNoteElShohadaa.
+  ///
+  /// In en, this message translates to:
+  /// **'El Shohadaa: L1 ↔ L2 — allow ~3 min walking.'**
+  String get transferNoteElShohadaa;
+
+  /// No description provided for @transferNoteGamalNasser.
+  ///
+  /// In en, this message translates to:
+  /// **'Gamal Abd El Nasser: L1 ↔ L3 — allow ~5 min walking.'**
+  String get transferNoteGamalNasser;
+
+  /// No description provided for @transferNoteAtaba.
+  ///
+  /// In en, this message translates to:
+  /// **'Ataba: L2 ↔ L3 — allow ~4 min walking.'**
+  String get transferNoteAtaba;
+
+  /// No description provided for @transferNoteKitKat.
+  ///
+  /// In en, this message translates to:
+  /// **'Kit Kat: L3 branch junction — allow ~2 min to check your platform.'**
+  String get transferNoteKitKat;
+
+  /// No description provided for @transferNoteCairoUniversity.
+  ///
+  /// In en, this message translates to:
+  /// **'Cairo University: L2 ↔ L3B — allow ~5 min walking.'**
+  String get transferNoteCairoUniversity;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

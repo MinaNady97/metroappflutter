@@ -584,7 +584,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get planYourRoute => 'Planifica tu ruta';
 
   @override
-  String get findNearestStation => 'Buscar estación por dirección';
+  String get findNearestStation => 'Encontrar estación más cercana';
 
   @override
   String get scheduleLabel => 'Horario del metro';
@@ -845,20 +845,35 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get nearestStationFound => 'Estación más cercana encontrada';
-  String nextTrainIn(int min) => 'Próx. tren en ~{min} min'.replaceAll('{min}', '$min');
+
+  @override
+  String nextTrainIn(int min) {
+    return 'Próx. tren en ~$min min';
+  }
+
+  @override
   String get outsideServiceHours => 'Fuera del horario de servicio';
+
+  @override
   String get saveRouteLabel => 'Guardar ruta';
+
+  @override
   String get routeSaved => 'Guardado en favoritos';
+
+  @override
   String get routeUnsaved => 'Eliminado de favoritos';
-  String get nearestStationTitle => 'Tu estación más cercana';
-  String get nearestStationSubtitle => 'Detectada automáticamente por GPS';
+
+  @override
+  String get nearestStationTitle => 'Estación de metro más cercana';
+
+  @override
+  String get nearestStationSubtitle => 'Toca para encontrar la estación más cercana';
+
+  @override
   String get nearestStationLocating => 'Buscando la estación más cercana…';
+
+  @override
   String get nearestStationCaption => 'Estación de metro más cercana a tu ubicación';
-  String get getDirections => 'Obtener instrucciones';
-  String get walkingDirections => 'Caminando';
-  String get drivingDirections => 'En coche';
-  String get currentLocation => 'Mi Ubicación';
-  String get useAsDeparture => 'Establecer como salida';
 
   @override
   String get stationFound => 'Estación encontrada';
@@ -1248,12 +1263,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get resetViewLabel => 'Restablecer vista';
 
   @override
-  String get mapViewSchematic => 'Esquemático';
-
-  @override
-  String get mapViewGeographic => 'Mapa';
-
-  @override
   String get mapLegendLabel => 'Leyenda del mapa';
 
   @override
@@ -1479,21 +1488,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bestRoute => 'Mejor';
 
   @override
-  String get accessibleRoute => 'Ruta Accesible';
-
-  @override
-  String get routeTypeFastest => 'Más Rápida';
-
-  @override
-  String get routeTypeAccessible => 'Accesible';
-
-  @override
-  String get routeTypeFewestTransfers => 'Menos Transbordos';
-
-  @override
-  String get routeTypeAlternative => 'Ruta Alternativa';
-
-  @override
   String get hideStops => 'Ocultar paradas';
 
   @override
@@ -1531,38 +1525,177 @@ class AppLocalizationsEs extends AppLocalizations {
     return 'Transferencia en $station';
   }
 
-  @override String get onboardingSkip => 'Omitir';
-  @override String get onboardingNext => 'Siguiente';
-  @override String get onboardingGetStarted => 'Empezar';
-  @override String get onboardingTitle1 => 'Planifica tu ruta';
-  @override String get onboardingSubtitle1 => 'Elige estación de salida y llegada — encontramos el camino más rápido con transbordos, tiempo y tarifa en segundos.';
-  @override String get onboardingTitle2 => 'Conoce las líneas';
-  @override String get onboardingSubtitle2 => '3 líneas con colores distintos cubren todo El Cairo. Los íconos circulares indican estaciones de transbordo.';
-  @override String get onboardingTitle3 => 'Todo en un lugar';
-  @override String get onboardingSubtitle3 => 'Encuentra la estación más cercana, explora el mapa en vivo y descubre lugares cerca de cada parada.';
-  @override String get onboardingLanguagePrompt => 'Elegir idioma';
-  @override String get onboardingReplay => 'Repetir tour';
-  @override String get onboardingLine1 => 'Línea 1 · Helwan → New El-Marg';
-  @override String get onboardingLine2 => 'Línea 2 · El-Mounib → Shubra';
-  @override String get onboardingLine3 => 'Línea 3 · Adly Mansour → ramales';
-  @override String get onboardingTransfer => 'Estación de transbordo';
+  @override
+  String get discoverEgyptTitle => 'Descubre Egipto';
 
-  @override String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
-  @override String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
-  @override String get transferWalkCorridor => 'Walk through the underground transfer corridor';
-  @override String get transferCheckDirection => 'Check the direction board before boarding';
-  @override String get transferBoardTrain => 'Board the next train in your direction';
-  @override String get transferNoRevalidate => 'No re-validation needed — same paid zone';
-  @override String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
-  @override String get transferExitSurface => 'Use the stairs or escalator to reach street level';
-  @override String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
-  @override String get transferNoteElShohadaa => "El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo's busiest interchange stations";
-  @override String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
-  @override String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
-  @override String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
-  @override String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
+  @override
+  String get discoverEgyptSubtitle => 'Ciudades y destinos fuera de El Cairo';
 
-  @override String get searchingOnline => 'Buscando en línea…';
-  @override String get didYouMean => '¿Quisiste decir?';
-  @override String get tapForTransferDetails => 'Toca para ver detalles del trasbordo';
+  @override
+  String get gettingThereTitle => 'Cómo llegar desde El Cairo';
+
+  @override
+  String get transportNote => 'Tiempos de viaje aproximados desde El Cairo';
+
+  @override
+  String get bookTicketsTitle => 'Reservar billetes';
+
+  @override
+  String get thingsToDoTitle => 'Los mejores lugares';
+
+  @override
+  String get transportFlight => 'Vuelo';
+
+  @override
+  String get transportSleeperTrain => 'Tren nocturno';
+
+  @override
+  String get transportTrain => 'Tren';
+
+  @override
+  String get transportBus => 'Autobús';
+
+  @override
+  String get transportCar => 'Coche privado';
+
+  @override
+  String get transportNileCruise => 'Crucero por el Nilo (desde Luxor)';
+
+  @override
+  String get transportBusFromSharm => 'Autobús desde Sharm el-Sheij';
+
+  @override
+  String get getOnPlayStore => 'Android';
+
+  @override
+  String get getOnAppStore => 'iOS';
+
+  @override
+  String get onboardingLanguagePrompt => 'Elegir idioma';
+
+  @override
+  String get onboardingSkip => 'Omitir';
+
+  @override
+  String get onboardingTitle1 => 'Planifica tu ruta';
+
+  @override
+  String get onboardingSubtitle1 => 'Encuentra la ruta de metro más rápida entre cualquier par de estaciones de El Cairo.';
+
+  @override
+  String get onboardingTitle2 => 'Explora las líneas';
+
+  @override
+  String get onboardingSubtitle2 => 'Descubre las 3 líneas de metro y sus cómodas estaciones de transbordo.';
+
+  @override
+  String get onboardingTitle3 => 'Funciones inteligentes';
+
+  @override
+  String get onboardingSubtitle3 => 'Encuentra tu estación más cercana, explora lugares turísticos y obtiene rutas accesibles.';
+
+  @override
+  String get onboardingGetStarted => 'Empezar';
+
+  @override
+  String get onboardingNext => 'Siguiente';
+
+  @override
+  String get onboardingLine1 => 'Línea 1';
+
+  @override
+  String get onboardingLine2 => 'Línea 2';
+
+  @override
+  String get onboardingLine3 => 'Línea 3';
+
+  @override
+  String get onboardingTransfer => 'Transbordo';
+
+  @override
+  String get accessibleRoute => 'Ruta accesible';
+
+  @override
+  String get onboardingReplay => 'Repetir tutorial';
+
+  @override
+  String get mapViewSchematic => 'Esquemático';
+
+  @override
+  String get mapViewGeographic => 'Geográfico';
+
+  @override
+  String get walkingDirections => 'A pie';
+
+  @override
+  String get getDirections => 'Indicaciones';
+
+  @override
+  String get currentLocation => 'Mi ubicación';
+
+  @override
+  String get drivingDirections => 'En coche';
+
+  @override
+  String get useAsDeparture => 'Usar como salida';
+
+  @override
+  String get searchingOnline => 'Buscando en línea…';
+
+  @override
+  String get didYouMean => '¿Quiso decir?';
+
+  @override
+  String get routeTypeFastest => 'Más rápida';
+
+  @override
+  String get routeTypeAccessible => 'Accesible';
+
+  @override
+  String get routeTypeFewestTransfers => 'Menos transbordos';
+
+  @override
+  String get routeTypeAlternative => 'Alternativa';
+
+  @override
+  String get transferExitCarriage => 'Salir del vagón';
+
+  @override
+  String get transferFollowSigns => 'Seguir las señales';
+
+  @override
+  String get transferCheckDirection => 'Comprobar la dirección del andén';
+
+  @override
+  String get transferBoardTrain => 'Subir al tren';
+
+  @override
+  String get transferWalkCorridor => 'Caminar por el pasillo';
+
+  @override
+  String get transferNoRevalidate => 'No es necesario revalidar el billete';
+
+  @override
+  String get transferCheckBranch => 'Comprobar la dirección del ramal';
+
+  @override
+  String get transferExitSurface => 'Salir al nivel de superficie';
+
+  @override
+  String get transferNoteSadat => 'Sadat: L1 ↔ L2 — prever ~3 min a pie.';
+
+  @override
+  String get transferNoteElShohadaa => 'El Shohadaa: L1 ↔ L2 — prever ~3 min.';
+
+  @override
+  String get transferNoteGamalNasser => 'Gamal Abd El Nasser: L1 ↔ L3 — prever ~5 min.';
+
+  @override
+  String get transferNoteAtaba => 'Ataba: L2 ↔ L3 — prever ~4 min.';
+
+  @override
+  String get transferNoteKitKat => 'Kit Kat: bifurcación L3 — prever ~2 min para verificar el andén.';
+
+  @override
+  String get transferNoteCairoUniversity => 'Cairo University: L2 ↔ L3B — prever ~5 min.';
 }

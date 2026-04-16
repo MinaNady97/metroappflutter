@@ -25,6 +25,9 @@ class RecentRoute {
 }
 
 class HomepageController extends GetxController {
+  // ── Scroll controller — shared with Homepage & TourController ────────────────
+  final ScrollController scrollController = ScrollController();
+
   // ── Station selection state ──────────────────────────────────────────────────
   RxString depStation = ''.obs;
   RxString arrStation = ''.obs;
@@ -151,6 +154,7 @@ class HomepageController extends GetxController {
   @override
   void onClose() {
     _autocompleteDebounce?.cancel();
+    scrollController.dispose();
     super.onClose();
   }
 

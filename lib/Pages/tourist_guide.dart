@@ -4,10 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:metroappflutter/Controllers/homepagecontroller.dart';
+import 'package:metroappflutter/Pages/egypt_city_detail_page.dart';
 import 'package:metroappflutter/Pages/routepage.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
+import 'package:metroappflutter/data/egypt_cities_data.dart';
 import 'package:metroappflutter/data/tourist_places_data.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
+import 'package:metroappflutter/widgets/tourist/tourist_guide_cairo_place_card.dart';
+import 'package:metroappflutter/widgets/tourist/tourist_guide_egypt_city_card.dart';
+import 'package:metroappflutter/widgets/tourist/tourist_guide_line_badges.dart';
 
 String _categoryLabel(PlaceCategory c, AppLocalizations l10n) => switch (c) {
       PlaceCategory.historical => l10n.categoryHistorical,
@@ -29,11 +34,16 @@ class TouristGuidePage extends StatefulWidget {
   State<TouristGuidePage> createState() => _TouristGuidePageState();
 }
 
-class _TouristGuidePageState extends State<TouristGuidePage> {
+class _TouristGuidePageState extends State<TouristGuidePage>
+    with TickerProviderStateMixin {
   PlaceCategory? _activeCategory;
   String _searchQuery = '';
   final _searchCtrl = TextEditingController();
-  final _scrollCtrl = ScrollController();
+  late final TabController _tabController =
+      TabController(length: 2, vsync: this);
+  late final PageController _egyptPageController =
+      PageController(viewportFraction: 0.88);
+  int _egyptPageIndex = 0;
 
   List<TouristPlace> get _filteredPlaces {
     var list = touristPlaces.toList();
@@ -54,8 +64,211 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
   @override
   void dispose() {
     _searchCtrl.dispose();
-    _scrollCtrl.dispose();
+    _tabController.dispose();
+    _egyptPageController.dispose();
     super.dispose();
+  }
+
+  String _exploreButtonLabel(AppLocalizations l10n) {
+    if (l10n.locale == 'ar') return 'استكشف';
+    return 'Explore';
+  }
+
+  void _openCityDetail(EgyptCity city) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (_) => EgyptCityDetailPage(city: city),
+      ),
+    );
+  }
+
+  void _showPlaceBottomSheet(
+    TouristPlace place,
+    AppLocalizations l10n,
+    bool isAr,
+  ) {
+    final locale = l10n.locale;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.72,
+          minChildSize: 0.45,
+          maxChildSize: 0.94,
+          expand: false,
+          builder: (_, scrollCtrl) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(ctx).colorScheme.surface,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(22)),
+              ),
+              child: ListView(
+                controller: scrollCtrl,
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade400,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 10,
+                      child: Image.asset(
+                        place.image,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: AppTheme.primaryNile.withOpacity(0.08),
+                          child: Icon(Icons.image_not_supported_outlined,
+                              size: 48, color: Colors.grey.shade300),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          place.name(locale),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            height: 1.2,
+                            color: isDark
+                                ? AppTheme.darkPrimary
+                                : AppTheme.primaryNile,
+                          ),
+                        ),
+                      ),
+                      touristGuideLineBadges(place.line),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    _categoryLabel(place.category, l10n),
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppTheme.primaryNile.withOpacity(0.85),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    place.desc(locale),
+                    style: TextStyle(
+                      fontSize: 14,
+                      height: 1.5,
+                      color: isDark
+                          ? AppTheme.darkTextSub
+                          : Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppTheme.darkElevated
+                          : AppTheme.primaryNile.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.subway_rounded,
+                            color: AppTheme.primaryNile, size: 22),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                place.station(locale),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark
+                                      ? AppTheme.darkPrimary
+                                      : AppTheme.primaryNile,
+                                ),
+                              ),
+                              Text(
+                                '${l10n.lineLabel} ${place.line} · ~${place.walkMinutes} ${l10n.minuteShort}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: isDark
+                                      ? AppTheme.darkTextTertiary
+                                      : Colors.grey.shade600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            _onRoute(place, locale);
+                          },
+                          icon: const Icon(Icons.directions_subway_rounded,
+                              size: 20),
+                          label: Text(l10n.planRoute),
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            _onMap(place, isAr);
+                          },
+                          icon: const Icon(Icons.map_rounded, size: 20),
+                          label: Text(l10n.googleMapsLabel),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppTheme.primaryNile,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            side: const BorderSide(
+                                color: AppTheme.primaryNile, width: 1.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   // ── Build ─────────────────────────────────────────────────────────────────
@@ -64,39 +277,186 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isAr = l10n.locale == 'ar';
-    final places = _filteredPlaces;
 
     return Scaffold(
-      body: CustomScrollView(
-        controller: _scrollCtrl,
+      body: NestedScrollView(
         physics: const BouncingScrollPhysics(),
-        slivers: [
-          _buildSliverAppBar(isAr),
-          SliverToBoxAdapter(child: _buildDisclaimer(isAr)),
-          SliverToBoxAdapter(child: _buildSearchBar(isAr)),
-          SliverToBoxAdapter(child: _buildCategoryChips(isAr)),
-          if (places.isEmpty)
-            SliverToBoxAdapter(child: _buildEmptyState(isAr))
-          else
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (_, i) => _PlaceCard(
-                    place: places[i],
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: _buildSliverAppBar(isAr),
+            ),
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          physics: const BouncingScrollPhysics(),
+          children: [
+            _buildCairoTabContent(l10n, isAr),
+            _buildEgyptTabContent(l10n, isAr),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCairoTabContent(AppLocalizations l10n, bool isAr) {
+    final places = _filteredPlaces;
+    const pad = 16.0;
+    const gap = 12.0;
+    const aspect = 0.74;
+
+    return Builder(
+      builder: (context) {
+        return CustomScrollView(
+          key: const PageStorageKey<String>('tourist_cairo_tab'),
+          primary: false,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverOverlapInjector(
+              handle:
+                  NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+        SliverToBoxAdapter(child: _buildDisclaimer(isAr)),
+        SliverToBoxAdapter(child: _buildSearchBar(isAr)),
+        SliverToBoxAdapter(child: _buildCategoryChips(isAr)),
+        if (places.isEmpty)
+          SliverToBoxAdapter(child: _buildEmptyState(isAr))
+        else
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(pad, 8, pad, 8),
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: gap,
+                crossAxisSpacing: gap,
+                childAspectRatio: aspect,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, i) {
+                  final p = places[i];
+                  return TouristGuideCairoPlaceCard(
+                    place: p,
                     locale: l10n.locale,
-                    onRoute: () => _onRoute(places[i], l10n.locale),
-                    onMap: () => _onMap(places[i], isAr),
-                  ),
-                  childCount: places.length,
+                    categoryLabel: _categoryLabel(p.category, l10n),
+                    onTap: () => _showPlaceBottomSheet(p, l10n, isAr),
+                  );
+                },
+                childCount: places.length,
+              ),
+            ),
+          ),
+        SliverToBoxAdapter(child: _buildTipsSection(isAr)),
+        SliverToBoxAdapter(child: _buildPhrasesSection(isAr)),
+            const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildEgyptTabContent(AppLocalizations l10n, bool isAr) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final explore = _exploreButtonLabel(l10n);
+    final h = (MediaQuery.sizeOf(context).height * 0.48).clamp(320.0, 440.0);
+
+    return Builder(
+      builder: (context) {
+        return CustomScrollView(
+          key: const PageStorageKey<String>('tourist_egypt_tab'),
+          primary: false,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverOverlapInjector(
+              handle:
+                  NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverToBoxAdapter(child: _buildDisclaimer(isAr)),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.discoverEgyptTitle,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.3,
+                        color: isDark
+                            ? AppTheme.darkPrimary
+                            : AppTheme.primaryNile,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      l10n.discoverEgyptSubtitle,
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        height: 1.35,
+                        color: isDark
+                            ? AppTheme.darkTextSub
+                            : Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          SliverToBoxAdapter(child: _buildTipsSection(isAr)),
-          SliverToBoxAdapter(child: _buildPhrasesSection(isAr)),
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
-        ],
-      ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: h,
+                child: PageView.builder(
+                  controller: _egyptPageController,
+                  itemCount: egyptCities.length,
+                  padEnds: true,
+                  onPageChanged: (i) => setState(() => _egyptPageIndex = i),
+                  itemBuilder: (_, i) {
+                    final city = egyptCities[i];
+                    return TouristGuideEgyptCityCard(
+                      city: city,
+                      locale: l10n.locale,
+                      isDark: isDark,
+                      exploreLabel: explore,
+                      onExplore: () => _openCityDetail(city),
+                    );
+                  },
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(
+                    egyptCities.length,
+                    (i) {
+                      final active = i == _egyptPageIndex;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        margin: const EdgeInsets.symmetric(horizontal: 3),
+                        width: active ? 18 : 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3),
+                          color: active
+                              ? AppTheme.primaryNile
+                              : (isDark
+                                  ? AppTheme.darkBorder
+                                  : Colors.grey.shade300),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -228,6 +588,33 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
             ],
           );
         },
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: ColoredBox(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF0A1520)
+              : const Color(0xFF0D3B52),
+          child: TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.white,
+            indicatorWeight: 2.5,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white.withOpacity(0.62),
+            labelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            tabs: [
+              Tab(text: isAr ? 'القاهرة' : 'Cairo'),
+              Tab(text: isAr ? 'مصر' : 'Egypt'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -812,367 +1199,3 @@ class _TouristGuidePageState extends State<TouristGuidePage> {
     );
   }
 }
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// Place Card Widget
-// ═══════════════════════════════════════════════════════════════════════════════
-
-class _PlaceCard extends StatelessWidget {
-  final TouristPlace place;
-  final String locale;
-  final VoidCallback onRoute;
-  final VoidCallback onMap;
-
-  const _PlaceCard({
-    required this.place,
-    required this.locale,
-    required this.onRoute,
-    required this.onMap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── Image with category badge ──
-          Stack(
-            children: [
-              // Image — BoxFit.cover handles any aspect ratio
-              SizedBox(
-                height: 180,
-                width: double.infinity,
-                child: Image.asset(
-                  place.image,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => Container(
-                    color: AppTheme.primaryNile.withOpacity(0.08),
-                    child: Icon(Icons.image_not_supported_outlined,
-                        size: 40, color: Colors.grey.shade300),
-                  ),
-                ),
-              ),
-              // Gradient overlay at bottom of image
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.45),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              // Category badge
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(_catIcon(place.category),
-                          size: 12, color: Colors.white),
-                      const SizedBox(width: 5),
-                      Text(
-                        _categoryLabel(place.category, AppLocalizations.of(context)!),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Walk time badge
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        place.needsTransport
-                            ? Icons.directions_bus_rounded
-                            : Icons.directions_walk_rounded,
-                        size: 12,
-                        color: AppTheme.primaryNile,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        '~${place.walkMinutes} ${AppLocalizations.of(context)!.minuteShort}',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          color: AppTheme.primaryNile,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Place name over image
-              Positioned(
-                bottom: 10,
-                left: 14,
-                right: 14,
-                child: Text(
-                  place.name(locale),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    shadows: [
-                      Shadow(
-                          blurRadius: 6,
-                          color: Colors.black54,
-                          offset: Offset(0, 1)),
-                    ],
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-
-          // ── Content ──
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Description
-                Text(
-                  place.desc(locale),
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: isDark ? AppTheme.darkTextSub : Colors.grey.shade700,
-                    height: 1.45,
-                  ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 14),
-
-                // Station chip
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? AppTheme.darkElevated
-                        : AppTheme.primaryNile.withOpacity(0.06),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      _lineBadge(place.line),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              place.station(locale),
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: isDark
-                                    ? AppTheme.darkPrimary
-                                    : AppTheme.primaryNile,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              '${AppLocalizations.of(context)!.lineLabel} ${place.line}',
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                color: isDark
-                                    ? AppTheme.darkTextTertiary
-                                    : Colors.grey.shade500,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Action buttons row
-                Row(
-                  children: [
-                    // Route planner button
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          onRoute();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 11),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryNile,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.directions_subway_rounded,
-                                  size: 16, color: Colors.white),
-                              const SizedBox(width: 6),
-                              Text(
-                                AppLocalizations.of(context)!.planRoute,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    // Google Maps button
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          onMap();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 11),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? AppTheme.darkElevated
-                                : AppTheme.lightCard,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                color: AppTheme.primaryNile, width: 1.5),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.map_rounded,
-                                  size: 16, color: AppTheme.primaryNile),
-                              const SizedBox(width: 6),
-                              Text(
-                                AppLocalizations.of(context)!.googleMapsLabel,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppTheme.primaryNile,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  IconData _catIcon(PlaceCategory c) => switch (c) {
-        PlaceCategory.historical => Icons.account_balance_rounded,
-        PlaceCategory.museum => Icons.museum_rounded,
-        PlaceCategory.religious => Icons.mosque_rounded,
-        PlaceCategory.park => Icons.park_rounded,
-        PlaceCategory.shopping => Icons.shopping_bag_rounded,
-        PlaceCategory.culture => Icons.theater_comedy_rounded,
-        PlaceCategory.nile => Icons.sailing_rounded,
-        PlaceCategory.hiddenGem => Icons.diamond_rounded,
-      };
-
-  Widget _lineBadge(String line) {
-    // Handle multi-line like "1/2", "2/3"
-    final parts = line.split('/');
-    if (parts.length == 1) {
-      return _singleLineBadge(parts[0]);
-    }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: parts
-          .map((p) => Padding(
-                padding: const EdgeInsets.only(right: 3),
-                child: _singleLineBadge(p),
-              ))
-          .toList(),
-    );
-  }
-
-  Widget _singleLineBadge(String l) {
-    final color = switch (l.trim()) {
-      '1' => AppTheme.line1,
-      '2' => AppTheme.line2,
-      '3' => AppTheme.line3,
-      _ => AppTheme.primaryNile,
-    };
-    return Container(
-      width: 22,
-      height: 22,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      child: Center(
-        child: Text(
-          l.trim(),
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 10,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-      ),
-    );
-  }
-}
-

@@ -584,7 +584,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get planYourRoute => 'ルートを計画';
 
   @override
-  String get findNearestStation => '住所で駅を検索';
+  String get findNearestStation => '最寄り駅を探す';
 
   @override
   String get scheduleLabel => '地下鉄時刻表';
@@ -845,20 +845,35 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get nearestStationFound => '最寄り駅が見つかりました';
-  String nextTrainIn(int min) => '次の電車まで絈4{min}分'.replaceAll('{min}', '$min');
+
+  @override
+  String nextTrainIn(int min) {
+    return '次の電車まで約$min分';
+  }
+
+  @override
   String get outsideServiceHours => '運行時間外';
+
+  @override
   String get saveRouteLabel => 'ルートを保存';
+
+  @override
   String get routeSaved => 'お気に入りに保存しました';
+
+  @override
   String get routeUnsaved => 'お気に入りから削除しました';
-  String get nearestStationTitle => '最寄り駅（GPS）';
-  String get nearestStationSubtitle => 'GPS で自動検出';
+
+  @override
+  String get nearestStationTitle => '最寄りの地下鉄駅';
+
+  @override
+  String get nearestStationSubtitle => 'タップして最寄り駅を検索';
+
+  @override
   String get nearestStationLocating => '最寄り駅を検索中…';
+
+  @override
   String get nearestStationCaption => 'あなたの場所に最も近い地下鉄駅';
-  String get getDirections => '経路を取得';
-  String get walkingDirections => '徒歩';
-  String get drivingDirections => '車';
-  String get currentLocation => '現在地';
-  String get useAsDeparture => '出発地として設定';
 
   @override
   String get stationFound => '駅が見つかりました';
@@ -1248,12 +1263,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetViewLabel => '表示をリセット';
 
   @override
-  String get mapViewSchematic => '路線図';
-
-  @override
-  String get mapViewGeographic => '地図';
-
-  @override
   String get mapLegendLabel => '地図の凡例';
 
   @override
@@ -1479,21 +1488,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bestRoute => '最良';
 
   @override
-  String get accessibleRoute => 'バリアフリールート';
-
-  @override
-  String get routeTypeFastest => '最速';
-
-  @override
-  String get routeTypeAccessible => 'バリアフリー';
-
-  @override
-  String get routeTypeFewestTransfers => '乗換最少';
-
-  @override
-  String get routeTypeAlternative => '代替ルート';
-
-  @override
   String get hideStops => '駅を非表示';
 
   @override
@@ -1531,38 +1525,177 @@ class AppLocalizationsJa extends AppLocalizations {
     return '$stationで乗り換え';
   }
 
-  @override String get onboardingSkip => 'スキップ';
-  @override String get onboardingNext => '次へ';
-  @override String get onboardingGetStarted => 'はじめる';
-  @override String get onboardingTitle1 => 'ルートを計画する';
-  @override String get onboardingSubtitle1 => '出発駅と到着駅を選ぶだけ — 乗り換え・所要時間・運賃を含む最速ルートを即座に表示します。';
-  @override String get onboardingTitle2 => '路線を理解する';
-  @override String get onboardingSubtitle2 => '3つの色分けされた路線がカイロ全域をカバー。円形アイコンが乗り換え駅を示します。';
-  @override String get onboardingTitle3 => 'すべてが1か所に';
-  @override String get onboardingSubtitle3 => '最寄り駅を検索し、ライブマップを閲覧して、各駅周辺のスポットを発見しましょう。';
-  @override String get onboardingLanguagePrompt => '言語を選択';
-  @override String get onboardingReplay => 'ツアーを再生';
-  @override String get onboardingLine1 => '1号線・ヘルワン → ニュー・エル・マルグ';
-  @override String get onboardingLine2 => '2号線・エル・モウニブ → シュブラ';
-  @override String get onboardingLine3 => '3号線・アドリー・マンスール → 分岐';
-  @override String get onboardingTransfer => '乗換駅';
+  @override
+  String get discoverEgyptTitle => 'エジプトを探索';
 
-  @override String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
-  @override String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
-  @override String get transferWalkCorridor => 'Walk through the underground transfer corridor';
-  @override String get transferCheckDirection => 'Check the direction board before boarding';
-  @override String get transferBoardTrain => 'Board the next train in your direction';
-  @override String get transferNoRevalidate => 'No re-validation needed — same paid zone';
-  @override String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
-  @override String get transferExitSurface => 'Use the stairs or escalator to reach street level';
-  @override String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
-  @override String get transferNoteElShohadaa => "El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo's busiest interchange stations";
-  @override String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
-  @override String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
-  @override String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
-  @override String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
+  @override
+  String get discoverEgyptSubtitle => 'カイロ以外の都市・観光地';
 
-  @override String get searchingOnline => 'オンラインで検索中…';
-  @override String get didYouMean => 'もしかして？';
-  @override String get tapForTransferDetails => '乗り換え詳細をタップ';
+  @override
+  String get gettingThereTitle => 'カイロからのアクセス';
+
+  @override
+  String get transportNote => 'カイロからの所要時間（目安）';
+
+  @override
+  String get bookTicketsTitle => 'チケットを予約';
+
+  @override
+  String get thingsToDoTitle => 'おすすめスポット';
+
+  @override
+  String get transportFlight => '飛行機';
+
+  @override
+  String get transportSleeperTrain => '寝台列車';
+
+  @override
+  String get transportTrain => '電車';
+
+  @override
+  String get transportBus => 'バス';
+
+  @override
+  String get transportCar => 'プライベートカー';
+
+  @override
+  String get transportNileCruise => 'ナイルクルーズ（ルクソール発）';
+
+  @override
+  String get transportBusFromSharm => 'シャルム・エル・シェイクからバス';
+
+  @override
+  String get getOnPlayStore => 'Android';
+
+  @override
+  String get getOnAppStore => 'iOS';
+
+  @override
+  String get onboardingLanguagePrompt => '言語を選択';
+
+  @override
+  String get onboardingSkip => 'スキップ';
+
+  @override
+  String get onboardingTitle1 => 'ルートを計画';
+
+  @override
+  String get onboardingSubtitle1 => 'カイロのネットワークで任意の2駅間の最速地下鉄ルートを検索。';
+
+  @override
+  String get onboardingTitle2 => '路線を探索';
+
+  @override
+  String get onboardingSubtitle2 => '3本の地下鉄路線と便利な乗り換え駅を為になれ。';
+
+  @override
+  String get onboardingTitle3 => 'スマート機能';
+
+  @override
+  String get onboardingSubtitle3 => '最寻駅を検索し、観光スポットを探索し、バリアフリールートを取得。';
+
+  @override
+  String get onboardingGetStarted => '始める';
+
+  @override
+  String get onboardingNext => '次へ';
+
+  @override
+  String get onboardingLine1 => '1号線';
+
+  @override
+  String get onboardingLine2 => '2号線';
+
+  @override
+  String get onboardingLine3 => '3号線';
+
+  @override
+  String get onboardingTransfer => '乗り換え';
+
+  @override
+  String get accessibleRoute => 'バリアフリールート';
+
+  @override
+  String get onboardingReplay => 'チュートリアルを再生';
+
+  @override
+  String get mapViewSchematic => '路線図';
+
+  @override
+  String get mapViewGeographic => '地理図';
+
+  @override
+  String get walkingDirections => '徒歩';
+
+  @override
+  String get getDirections => 'ナビゲーション';
+
+  @override
+  String get currentLocation => '現在地';
+
+  @override
+  String get drivingDirections => '車';
+
+  @override
+  String get useAsDeparture => '出発地に設定';
+
+  @override
+  String get searchingOnline => 'オンライン検索中…';
+
+  @override
+  String get didYouMean => 'もしかして？';
+
+  @override
+  String get routeTypeFastest => '最速';
+
+  @override
+  String get routeTypeAccessible => 'バリアフリー';
+
+  @override
+  String get routeTypeFewestTransfers => '乗り換え最少';
+
+  @override
+  String get routeTypeAlternative => '代替ルート';
+
+  @override
+  String get transferExitCarriage => '車両を降りる';
+
+  @override
+  String get transferFollowSigns => '标識に従う';
+
+  @override
+  String get transferCheckDirection => 'ホームの方向を確認';
+
+  @override
+  String get transferBoardTrain => '列車に乗る';
+
+  @override
+  String get transferWalkCorridor => '通路を歩く';
+
+  @override
+  String get transferNoRevalidate => '切符の再打小不要';
+
+  @override
+  String get transferCheckBranch => '支線方向を確認';
+
+  @override
+  String get transferExitSurface => '地上に出る';
+
+  @override
+  String get transferNoteSadat => 'サダト: L1 ↔ L2 — ホーム間得筙3分。';
+
+  @override
+  String get transferNoteElShohadaa => 'エル・シュハダ: L1 ↔ L2 — 約3分。';
+
+  @override
+  String get transferNoteGamalNasser => 'ガマール・アブド・エル・ナスル: L1 ↔ L3 — 約5分。';
+
+  @override
+  String get transferNoteAtaba => 'アタバ: L2 ↔ L3 — 約4分。';
+
+  @override
+  String get transferNoteKitKat => 'キットカット: L3分岐点 — 約2分。';
+
+  @override
+  String get transferNoteCairoUniversity => 'カイロ大学: L2 ↔ L3B — 約5分。';
 }

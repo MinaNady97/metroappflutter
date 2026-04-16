@@ -17,10 +17,11 @@ abstract class _Sp {
 
 abstract class _TS {
   static const Color _secondary = Color(0xFF78909C);
-  static const cardTitle = TextStyle(
+  // Not a const — color must adapt to dark/light mode.
+  static TextStyle cardTitle(bool isDark) => TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w700,
-    color: AppTheme.primaryNile,
+    color: AppTheme.adaptive(isDark),
     letterSpacing: -0.1,
   );
   static const bodySecondary = TextStyle(
@@ -68,18 +69,18 @@ class RoutePlannerCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryNile.withOpacity(0.10),
+                  color: AppTheme.adaptive(isDark).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(Icons.route,
-                    color: AppTheme.primaryNile, size: 20),
+                child: Icon(Icons.route,
+                    color: AppTheme.adaptive(isDark), size: 20),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(l10n.planYourRoute, style: _TS.cardTitle),
+                    Text(l10n.planYourRoute, style: _TS.cardTitle(isDark)),
                     const SizedBox(height: _Sp.xxs),
                     Text(l10n.planYourRouteSubtitle, style: _TS.bodySecondary),
                   ],
@@ -98,7 +99,7 @@ class RoutePlannerCard extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _dot(AppTheme.primaryNile),
+                  _dot(AppTheme.adaptive(isDark)),
                   Container(
                     width: 2,
                     height: 44,
@@ -107,8 +108,8 @@ class RoutePlannerCard extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          AppTheme.primaryNile.withOpacity(0.6),
-                          AppTheme.accentGold.withOpacity(0.6),
+                          AppTheme.adaptive(isDark).withValues(alpha: 0.7),
+                          AppTheme.accentGold.withValues(alpha: 0.7),
                         ],
                       ),
                     ),
@@ -173,14 +174,16 @@ class RoutePlannerCard extends StatelessWidget {
                       key: TourKeys.swapButton,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryNile.withOpacity(0.08),
+                        color: AppTheme.adaptive(isDark).withValues(
+                            alpha: isDark ? 0.14 : 0.08),
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: AppTheme.primaryNile.withOpacity(0.18)),
+                            color: AppTheme.adaptive(isDark).withValues(
+                                alpha: isDark ? 0.30 : 0.18)),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.swap_vert_rounded,
-                        color: AppTheme.primaryNile,
+                        color: AppTheme.adaptive(isDark),
                         size: 20,
                       ),
                     ),
@@ -219,7 +222,7 @@ class RoutePlannerCard extends StatelessWidget {
               label: l10n.recentSearchesLabel,
               routes: recent,
               isDark: isDark,
-              chipColor: AppTheme.primaryNile,
+              chipColor: AppTheme.adaptive(isDark),
               onTap: (s) {
                 ctrl.depStation.value = s.dep;
                 ctrl.arrStation.value = s.arr;
@@ -344,7 +347,7 @@ class RoutePlannerCard extends StatelessWidget {
                     : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: valid
-                      ? AppTheme.primaryNile
+                      ? AppTheme.adaptive(isDark)
                       : (isDark
                           ? AppTheme.darkElevated
                           : Colors.grey.shade300),
@@ -401,6 +404,8 @@ class _DepartChipState extends State<_DepartChip> {
         ? widget.l10n.leaveNowLabel
         : '${_dt!.hour.toString().padLeft(2, '0')}:${_dt!.minute.toString().padLeft(2, '0')}';
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final chipColor = AppTheme.adaptive(isDark);
     return GestureDetector(
       onTap: () async {
         HapticFeedback.selectionClick();
@@ -423,21 +428,21 @@ class _DepartChipState extends State<_DepartChip> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: AppTheme.primaryNile.withOpacity(0.08),
+          color: chipColor.withValues(alpha: isDark ? 0.14 : 0.08),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppTheme.primaryNile.withOpacity(0.18)),
+          border: Border.all(
+              color: chipColor.withValues(alpha: isDark ? 0.30 : 0.18)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.access_time_rounded,
-                size: 13, color: AppTheme.primaryNile),
+            Icon(Icons.access_time_rounded, size: 13, color: chipColor),
             const SizedBox(width: 4),
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 11,
-                color: AppTheme.primaryNile,
+                color: chipColor,
                 fontWeight: FontWeight.w700,
               ),
             ),

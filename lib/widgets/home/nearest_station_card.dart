@@ -578,26 +578,27 @@ class _FoundCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppTheme.primaryNile
-                            .withValues(alpha: isDark ? 0.15 : 0.08),
+                        color: AppTheme.adaptive(isDark).withValues(
+                            alpha: isDark ? 0.14 : 0.08),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                            color: AppTheme.primaryNile
-                                .withValues(alpha: 0.2)),
+                            color: AppTheme.adaptive(isDark).withValues(
+                                alpha: isDark ? 0.30 : 0.20)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.trip_origin_rounded,
-                              size: 14, color: AppTheme.primaryNile),
+                          Icon(Icons.trip_origin_rounded,
+                              size: 14,
+                              color: AppTheme.adaptive(isDark)),
                           const SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               l10n.useAsDeparture,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: AppTheme.primaryNile,
+                                color: AppTheme.adaptive(isDark),
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),

@@ -31,15 +31,20 @@ class AppTheme {
   static const Color darkBackground = Color(0xFF0B1120);
   static const Color darkSurface = Color(0xFF142035);
   static const Color darkCard = Color(0xFF1A2538);
-  static const Color darkElevated = Color(0xFF1D2D47);
-  static const Color darkPrimary = Color(0xFF2EACBA); // brighter teal for dark
-  static const Color darkDivider = Color(0xFF1E2D42);
-  static const Color darkText = Color(0xFFE2EEF8);
-  static const Color darkTextSub = Color(0xFF8BAEC8);
+  static const Color darkElevated = Color(0xFF1E2E48);
+  static const Color darkPrimary = Color(0xFF38BCC8); // bright teal — high contrast on dark bg
+  static const Color darkDivider = Color(0xFF233347);
+  static const Color darkText = Color(0xFFE8F2FA);
+  static const Color darkTextSub = Color(0xFF90B8D0);
   static const Color darkAppBar = Color(0xFF111E30);
-  static const Color darkBorder = Color(0xFF2A3D56); // borders, outlines
-  static const Color darkTextTertiary = Color(0xFF5A7A96); // placeholder / hint / icon
+  static const Color darkBorder = Color(0xFF324D66); // borders, outlines — readable on dark
+  static const Color darkTextTertiary = Color(0xFF608090); // placeholder / hint / icon
   static const Color darkFlashHighlight = Color(0xFF0E3A2E); // search-bar flash
+
+  // ── Adaptive helpers ──────────────────────────────────────────────────────
+  /// Returns [darkPrimary] in dark mode, [primaryNile] in light mode.
+  /// Use for icon/text/border foregrounds that must contrast on both surfaces.
+  static Color adaptive(bool isDark) => isDark ? darkPrimary : primaryNile;
 
   // ── Light mode explicit palette ───────────────────────────────────────────
   static const Color lightCard = Colors.white; // card & sheet bg
@@ -267,6 +272,21 @@ class AppTheme {
         textColor: darkText,
       ),
       iconTheme: const IconThemeData(color: darkText),
+      // Only override the two properties that must differ in dark mode.
+      // Do NOT set textStyle/padding/shape here — those cause a TextStyle
+      // inherit-mismatch crash when Flutter lerps between light and dark
+      // themes, because the light theme's resolved labelLarge has inherit:false
+      // (merged with the platform text theme) while a freshly created
+      // TextStyle has inherit:true.
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: darkPrimary,
+          side: const BorderSide(color: Color(0x6038BCC8)), // darkPrimary ~38%
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: darkPrimary),
+      ),
       snackBarTheme: const SnackBarThemeData(
         backgroundColor: darkElevated,
         contentTextStyle: TextStyle(color: darkText, fontFamily: 'Tajawal'),

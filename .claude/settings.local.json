@@ -33,7 +33,14 @@
       "Bash(flutter test:*)",
       "Bash(sed -i 's/\\\\.withOpacity\\(\\\\\\(overlayOpacity\\\\\\)\\)/.withValues\\(alpha: \\\\1\\)/g; s/\\\\.withOpacity\\(0\\\\.20\\)/.withValues\\(alpha: 0.20\\)/g; s/\\\\.withOpacity\\(0\\\\.45\\)/.withValues\\(alpha: 0.45\\)/g; s/\\\\.withOpacity\\(opacity\\)/.withValues\\(alpha: opacity\\)/g' lib/tour/spotlight_painter.dart)",
       "Bash(sed -i 's/\\\\.withOpacity\\(0\\\\.78 \\\\* _spotCurve\\\\.value\\)/.withValues\\(alpha: 0.78 * _spotCurve.value\\)/g; s/\\\\.withOpacity\\(0\\\\.74\\)/.withValues\\(alpha: 0.74\\)/g' lib/tour/tour_overlay.dart)",
-      "Bash(dart analyze:*)"
+      "Bash(dart analyze:*)",
+      "Bash(python3:*)",
+      "Bash(/c/Python311/python update_arb.py)",
+      "Bash(flutter gen-l10n:*)",
+      "Bash(flutter build:*)",
+      "Bash(sed -n '60,70p' C:/Users/menan/Downloads/OutWork/metroappflutter/lib/widgets/transfer_guidance_card.dart)",
+      "Bash(sed -n '40,75p' C:/Users/menan/Downloads/OutWork/metroappflutter/lib/widgets/transfer_guidance_card.dart)",
+      "Bash(/c/Python311/python:*)"
     ]
   }
 }

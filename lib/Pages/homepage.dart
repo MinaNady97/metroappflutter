@@ -190,6 +190,7 @@ class _HomepageState extends State<Homepage> {
         color: AppTheme.primaryNile,
         onRefresh: _onRefresh,
         child: CustomScrollView(
+          controller: _ctrl.scrollController,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [

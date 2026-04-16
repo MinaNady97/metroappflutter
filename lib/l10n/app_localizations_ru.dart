@@ -584,7 +584,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get planYourRoute => 'Спланировать маршрут';
 
   @override
-  String get findNearestStation => 'Найти станцию по адресу';
+  String get findNearestStation => 'Найти ближайшую станцию';
 
   @override
   String get scheduleLabel => 'Расписание метро';
@@ -845,20 +845,35 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get nearestStationFound => 'Ближайшая станция найдена';
-  String nextTrainIn(int min) => 'Следующий поезд через ~{min} мин.'.replaceAll('{min}', '$min');
+
+  @override
+  String nextTrainIn(int min) {
+    return 'Следующий поезд через ~$min мин.';
+  }
+
+  @override
   String get outsideServiceHours => 'Вне часов работы';
+
+  @override
   String get saveRouteLabel => 'Сохранить маршрут';
+
+  @override
   String get routeSaved => 'Добавлено в избранное';
+
+  @override
   String get routeUnsaved => 'Удалено из избранного';
-  String get nearestStationTitle => 'Ближайшая к вам станция';
-  String get nearestStationSubtitle => 'Определяется автоматически по GPS';
+
+  @override
+  String get nearestStationTitle => 'Ближайшая станция метро';
+
+  @override
+  String get nearestStationSubtitle => 'Нажмите, чтобы найти ближайшую станцию';
+
+  @override
   String get nearestStationLocating => 'Поиск ближайшей станции…';
+
+  @override
   String get nearestStationCaption => 'Ближайшая станция метро к вашему местоположению';
-  String get getDirections => 'Получить маршрут';
-  String get walkingDirections => 'Пешком';
-  String get drivingDirections => 'На машине';
-  String get currentLocation => 'Моё местоположение';
-  String get useAsDeparture => 'Использовать как отправление';
 
   @override
   String get stationFound => 'Станция найдена';
@@ -1248,12 +1263,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get resetViewLabel => 'Сбросить вид';
 
   @override
-  String get mapViewSchematic => 'Схема';
-
-  @override
-  String get mapViewGeographic => 'Карта';
-
-  @override
   String get mapLegendLabel => 'Легенда карты';
 
   @override
@@ -1479,21 +1488,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get bestRoute => 'Лучший';
 
   @override
-  String get accessibleRoute => 'Доступный маршрут';
-
-  @override
-  String get routeTypeFastest => 'Быстрейший';
-
-  @override
-  String get routeTypeAccessible => 'Доступный';
-
-  @override
-  String get routeTypeFewestTransfers => 'Меньше пересадок';
-
-  @override
-  String get routeTypeAlternative => 'Альтернативный маршрут';
-
-  @override
   String get hideStops => 'Скрыть остановки';
 
   @override
@@ -1531,38 +1525,177 @@ class AppLocalizationsRu extends AppLocalizations {
     return 'Пересадка на $station';
   }
 
-  @override String get onboardingSkip => 'Пропустить';
-  @override String get onboardingNext => 'Далее';
-  @override String get onboardingGetStarted => 'Начать';
-  @override String get onboardingTitle1 => 'Планируйте маршрут';
-  @override String get onboardingSubtitle1 => 'Выберите станцию отправления и прибытия — мы найдём быстрейший путь с пересадками, временем и стоимостью за секунды.';
-  @override String get onboardingTitle2 => 'Изучите линии';
-  @override String get onboardingSubtitle2 => '3 цветные линии охватывают весь Каир. Круглые значки обозначают станции пересадки.';
-  @override String get onboardingTitle3 => 'Всё в одном месте';
-  @override String get onboardingSubtitle3 => 'Найдите ближайшую станцию, просматривайте живую карту и открывайте места рядом с каждой остановкой.';
-  @override String get onboardingLanguagePrompt => 'Выберите язык';
-  @override String get onboardingReplay => 'Повторить тур';
-  @override String get onboardingLine1 => 'Линия 1 · Хелван → Нью-Эль-Мардж';
-  @override String get onboardingLine2 => 'Линия 2 · Эль-Муниб → Шубра';
-  @override String get onboardingLine3 => 'Линия 3 · Адли Мансур → ветки';
-  @override String get onboardingTransfer => 'Пересадочная станция';
+  @override
+  String get discoverEgyptTitle => 'Открой Египет';
 
-  @override String get transferExitCarriage => 'Exit the carriage and head to the center of the platform';
-  @override String get transferFollowSigns => "Follow the 'Transfer' signs inside the station";
-  @override String get transferWalkCorridor => 'Walk through the underground transfer corridor';
-  @override String get transferCheckDirection => 'Check the direction board before boarding';
-  @override String get transferBoardTrain => 'Board the next train in your direction';
-  @override String get transferNoRevalidate => 'No re-validation needed — same paid zone';
-  @override String get transferCheckBranch => 'Check the branch display — trains split here for different destinations';
-  @override String get transferExitSurface => 'Use the stairs or escalator to reach street level';
-  @override String get transferNoteSadat => 'Sadat connects Line 1 & Line 2 beneath Tahrir Square. Platforms are on separate perpendicular levels';
-  @override String get transferNoteElShohadaa => "El Shohadaa (Ramses Sq.) connects Line 1 & Line 2 — one of Cairo's busiest interchange stations";
-  @override String get transferNoteGamalNasser => 'Gamal Abd El Nasser connects Line 1 and Line 3 via an underground passage (~200 m)';
-  @override String get transferNoteAtaba => 'Ataba connects Line 2 and Line 3 — follow the connecting corridor between platforms';
-  @override String get transferNoteKitKat => 'Kit Kat is the L3 junction — trains split here. Check the branch display for Rod El-Farag or Cairo University';
-  @override String get transferNoteCairoUniversity => 'Cairo University connects Line 2 and the L3B branch at street level — a short surface walk is needed';
+  @override
+  String get discoverEgyptSubtitle => 'Города и направления за пределами Каира';
 
-  @override String get searchingOnline => 'Поиск в интернете…';
-  @override String get didYouMean => 'Возможно, вы имели в виду?';
-  @override String get tapForTransferDetails => 'Нажмите для деталей пересадки';
+  @override
+  String get gettingThereTitle => 'Как добраться из Каира';
+
+  @override
+  String get transportNote => 'Приблизительное время в пути из Каира';
+
+  @override
+  String get bookTicketsTitle => 'Купить билеты';
+
+  @override
+  String get thingsToDoTitle => 'Главные достопримечательности';
+
+  @override
+  String get transportFlight => 'Самолёт';
+
+  @override
+  String get transportSleeperTrain => 'Ночной поезд';
+
+  @override
+  String get transportTrain => 'Поезд';
+
+  @override
+  String get transportBus => 'Автобус';
+
+  @override
+  String get transportCar => 'Личный автомобиль';
+
+  @override
+  String get transportNileCruise => 'Круиз по Нилу (из Луксора)';
+
+  @override
+  String get transportBusFromSharm => 'Автобус из Шарм-эль-Шейха';
+
+  @override
+  String get getOnPlayStore => 'Android';
+
+  @override
+  String get getOnAppStore => 'iOS';
+
+  @override
+  String get onboardingLanguagePrompt => 'Выберите язык';
+
+  @override
+  String get onboardingSkip => 'Пропустить';
+
+  @override
+  String get onboardingTitle1 => 'Планируйте маршрут';
+
+  @override
+  String get onboardingSubtitle1 => 'Найдите самый быстрый маршрут метро между любыми двумя станциями каирской сети.';
+
+  @override
+  String get onboardingTitle2 => 'Изучите линии';
+
+  @override
+  String get onboardingSubtitle2 => 'Откройте все 3 линии метро и удобные узловые станции.';
+
+  @override
+  String get onboardingTitle3 => 'Умные функции';
+
+  @override
+  String get onboardingSubtitle3 => 'Найдите ближайшую станцию, исследуйте достопримечательности и получите доступные маршруты.';
+
+  @override
+  String get onboardingGetStarted => 'Начать';
+
+  @override
+  String get onboardingNext => 'Далее';
+
+  @override
+  String get onboardingLine1 => 'Линия 1';
+
+  @override
+  String get onboardingLine2 => 'Линия 2';
+
+  @override
+  String get onboardingLine3 => 'Линия 3';
+
+  @override
+  String get onboardingTransfer => 'Пересадка';
+
+  @override
+  String get accessibleRoute => 'Доступный маршрут';
+
+  @override
+  String get onboardingReplay => 'Повторить обучение';
+
+  @override
+  String get mapViewSchematic => 'Схематичный';
+
+  @override
+  String get mapViewGeographic => 'Географический';
+
+  @override
+  String get walkingDirections => 'Пешком';
+
+  @override
+  String get getDirections => 'Маршрут';
+
+  @override
+  String get currentLocation => 'Моё местоположение';
+
+  @override
+  String get drivingDirections => 'На авто';
+
+  @override
+  String get useAsDeparture => 'Использовать как отправную';
+
+  @override
+  String get searchingOnline => 'Поиск онлайн…';
+
+  @override
+  String get didYouMean => 'Вы имели в виду?';
+
+  @override
+  String get routeTypeFastest => 'Быстрейший';
+
+  @override
+  String get routeTypeAccessible => 'Доступный';
+
+  @override
+  String get routeTypeFewestTransfers => 'Меньше пересадок';
+
+  @override
+  String get routeTypeAlternative => 'Альтернативный';
+
+  @override
+  String get transferExitCarriage => 'Выйти из вагона';
+
+  @override
+  String get transferFollowSigns => 'Следовать указателям';
+
+  @override
+  String get transferCheckDirection => 'Проверить направление платформы';
+
+  @override
+  String get transferBoardTrain => 'Сесть в поезд';
+
+  @override
+  String get transferWalkCorridor => 'Пройти по коридору';
+
+  @override
+  String get transferNoRevalidate => 'Повторное валидирование билета не требуется';
+
+  @override
+  String get transferCheckBranch => 'Проверить направление ветки';
+
+  @override
+  String get transferExitSurface => 'Выйти на поверхность';
+
+  @override
+  String get transferNoteSadat => 'Садат: Л1 ↔ Л2 — ~3 мин. пешком.';
+
+  @override
+  String get transferNoteElShohadaa => 'Эль-Шухада: Л1 ↔ Л2 — ~3 мин.';
+
+  @override
+  String get transferNoteGamalNasser => 'Гамаль Абд эль-Нассер: Л1 ↔ Л3 — ~5 мин.';
+
+  @override
+  String get transferNoteAtaba => 'Атаба: Л2 ↔ Л3 — ~4 мин.';
+
+  @override
+  String get transferNoteKitKat => 'Кит-Кат: ветвление Л3 — ~2 мин.';
+
+  @override
+  String get transferNoteCairoUniversity => 'Университет Каира: Л2 ↔ Л3Б — ~5 мин.';
 }

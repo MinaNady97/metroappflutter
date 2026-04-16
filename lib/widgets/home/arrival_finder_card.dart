@@ -206,10 +206,10 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                   children: [
                     Text(
                       l10n.findNearestStation,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: AppTheme.primaryNile,
+                        color: AppTheme.adaptive(isDark),
                         letterSpacing: -0.1,
                       ),
                     ),
@@ -364,7 +364,7 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                   icon: const Icon(Icons.search_rounded, size: 16),
                   label: Text(l10n.findButtonText),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primaryNile,
+                    backgroundColor: AppTheme.adaptive(isDark),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
@@ -377,20 +377,17 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: () => _pickFromMap(l10n),
-                  icon: const Icon(Icons.map_outlined,
-                      size: 16, color: AppTheme.primaryNile),
-                  label: Text(
-                    l10n.pickFromMapLabel,
-                    style: const TextStyle(color: AppTheme.primaryNile),
-                  ),
+                  icon: const Icon(Icons.map_outlined, size: 16),
+                  label: Text(l10n.pickFromMapLabel),
                   style: OutlinedButton.styleFrom(
+                    foregroundColor: AppTheme.adaptive(isDark),
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                     side: BorderSide(
-                        color: AppTheme.primaryNile
-                            .withValues(alpha: 0.3)),
+                        color: AppTheme.adaptive(isDark)
+                            .withValues(alpha: isDark ? 0.50 : 0.30)),
                   ),
                 ),
               ),
@@ -409,10 +406,12 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   decoration: BoxDecoration(
-                    color: AppTheme.primaryNile.withValues(alpha: isDark ? 0.18 : 0.07),
+                    color: AppTheme.adaptive(isDark).withValues(
+                        alpha: isDark ? 0.12 : 0.07),
                     borderRadius: BorderRadius.circular(14),
                     border: Border.all(
-                      color: AppTheme.primaryNile.withValues(alpha: isDark ? 0.35 : 0.20),
+                      color: AppTheme.adaptive(isDark).withValues(
+                          alpha: isDark ? 0.30 : 0.20),
                     ),
                   ),
                   child: Row(
@@ -420,11 +419,13 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                       Container(
                         padding: const EdgeInsets.all(7),
                         decoration: BoxDecoration(
-                          color: AppTheme.primaryNile.withValues(alpha: 0.12),
+                          color: AppTheme.adaptive(isDark)
+                              .withValues(alpha: 0.14),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.near_me_rounded,
-                            size: 15, color: AppTheme.primaryNile),
+                        child: Icon(Icons.near_me_rounded,
+                            size: 15,
+                            color: AppTheme.adaptive(isDark)),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -433,10 +434,10 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                           children: [
                             Text(
                               l10n.getDirections,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
-                                color: AppTheme.primaryNile,
+                                color: AppTheme.adaptive(isDark),
                               ),
                             ),
                             Text(
@@ -457,7 +458,7 @@ class _ArrivalFinderCardState extends State<ArrivalFinderCard> {
                       Icon(
                         Icons.open_in_new_rounded,
                         size: 15,
-                        color: AppTheme.primaryNile.withValues(alpha: 0.7),
+                        color: AppTheme.adaptive(isDark).withValues(alpha: 0.7),
                       ),
                     ],
                   ),
@@ -577,7 +578,7 @@ class _ArrivalDirectionsSheet extends StatelessWidget {
           _SheetOption(
             icon: Icons.directions_car_rounded,
             label: l10n.drivingDirections,
-            color: AppTheme.primaryNile,
+            color: isDark ? AppTheme.darkPrimary : AppTheme.primaryNile,
             isDark: isDark,
             onTap: onDriving,
           ),
@@ -767,8 +768,10 @@ class _AutocompleteList extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 5, vertical: 2),
                             decoration: BoxDecoration(
-                              color: AppTheme.primaryNile
-                                  .withValues(alpha: 0.10),
+                              color: (isDark
+                                      ? AppTheme.darkPrimary
+                                      : AppTheme.primaryNile)
+                                  .withValues(alpha: isDark ? 0.18 : 0.10),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
@@ -776,7 +779,9 @@ class _AutocompleteList extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 9,
                                 fontWeight: FontWeight.w700,
-                                color: AppTheme.primaryNile,
+                                color: isDark
+                                    ? AppTheme.darkPrimary
+                                    : AppTheme.primaryNile,
                                 letterSpacing: 0.3,
                               ),
                             ),
@@ -818,7 +823,10 @@ class _AutocompleteList extends StatelessWidget {
                     height: 12,
                     child: CircularProgressIndicator(
                       strokeWidth: 1.5,
-                      color: AppTheme.primaryNile.withValues(alpha: 0.5),
+                      color: (isDark
+                              ? AppTheme.darkPrimary
+                              : AppTheme.primaryNile)
+                          .withValues(alpha: 0.6),
                     ),
                   ),
                   const SizedBox(width: 8),

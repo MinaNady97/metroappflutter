@@ -105,6 +105,16 @@ flutter:
   assets:
     - assets/images/
     - assets/images/tourist/
+    - assets/images/tourist/Great_cairo/
+    - assets/images/tourist/Luxor/
+    - assets/images/tourist/Aswan/
+    - assets/images/tourist/Alexandria/
+    - assets/images/tourist/Sharm_El‑Sheikh/
+    - assets/images/tourist/Hurghada/
+    - assets/images/tourist/Dahab/
+    - assets/images/tourist/Siwa_Oasis/
+    - assets/images/tourist/Marsa_Alam/
+    - assets/images/tourist/Fayoum/
     - assets/stations/line3/
     - assets/data/
 

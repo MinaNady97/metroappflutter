@@ -124,17 +124,33 @@ class TourController extends GetxController {
     _insertOverlay();
   }
 
-  /// Restart the tour from step 0 (e.g. from a settings screen).
-  void restartTour() {
-    _removeOverlay();
-    isActive.value = true;
-    currentStep.value = 0;
-    _insertOverlay();
-    // Clear dismissed/completed flags so it can be saved again at the end.
+  /// Restart the tour from step 0 (e.g. from the info sheet).
+  /// Scrolls the homepage back to the top first so every spotlight target
+  /// is in its expected on-screen position before the overlay appears.
+  Future<void> restartTour() async {
+    // Clear dismissed/completed flags so the tour can be saved again.
     SharedPreferences.getInstance().then((p) {
       p.remove(_kTourCompleted);
       p.remove(_kTourDismissed);
     });
+
+    // Scroll to top — gives widgets time to settle into their resting
+    // positions before we measure their RenderBox bounds for the spotlight.
+    final sc = Get.find<HomepageController>().scrollController;
+    if (sc.hasClients && sc.offset > 0) {
+      await sc.animateTo(
+        0,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutCubic,
+      );
+      // One extra frame so the SliverAppBar fully re-expands.
+      await Future.delayed(const Duration(milliseconds: 80));
+    }
+
+    _removeOverlay();
+    isActive.value = true;
+    currentStep.value = 0;
+    _insertOverlay();
   }
 
   /// Advance to the next step. Step 5 triggers the demo navigation.

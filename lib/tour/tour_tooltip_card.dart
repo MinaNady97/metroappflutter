@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../Controllers/languagecontroller.dart';
 import '../core/theme/app_theme.dart';
+import '../widgets/brand_logo_badge.dart';
 import 'tour_l10n.dart';
 import 'tour_step.dart';
 
@@ -233,35 +234,12 @@ class _CardBody extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // ── Welcome icon ──────────────────────────────────────
+                  // ── Welcome icon: hero amulet with breathing halo ─────
                   if (isWelcome) ...[
-                    Center(
-                      child: Container(
-                        width: 58,
-                        height: 58,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [AppTheme.primaryNile, AppTheme.line3],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppTheme.primaryNile.withValues(alpha:0.32),
-                              blurRadius: 18,
-                              offset: const Offset(0, 7),
-                            ),
-                          ],
-                        ),
-                        child: Image.asset(
-                          'assets/images/metrologo.png',
-                          width: 28,
-                          height: 28,
-                        ),
-                      ),
+                    const Center(
+                      child: BrandLogoBadge(size: 84, animated: true),
                     ),
-                    const SizedBox(height: 14),
+                    const SizedBox(height: 18),
                   ],
 
                   // ── Title ─────────────────────────────────────────────

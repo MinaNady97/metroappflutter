@@ -11,6 +11,7 @@ import 'package:metroappflutter/Pages/metro_map_page.dart';
 import 'package:metroappflutter/core/theme/app_theme.dart';
 import 'package:metroappflutter/core/theme/theme_controller.dart';
 import 'package:metroappflutter/l10n/app_localizations.dart';
+import 'package:metroappflutter/widgets/brand_logo_badge.dart';
 import 'package:metroappflutter/widgets/metro_map_preview.dart';
 import 'package:metroappflutter/widgets/home/route_planner_card.dart';
 import 'package:metroappflutter/widgets/home/metro_lines_section.dart';
@@ -20,6 +21,7 @@ import 'package:metroappflutter/widgets/home/quick_actions_section.dart';
 import 'package:metroappflutter/widgets/home/explore_area_section.dart';
 
 import '../Constants/metro_stations.dart';
+import '../Pages/onboarding_page.dart' show kJustCompletedOnboarding;
 import '../tour/tour_controller.dart';
 
 // ── Promo price data (not translatable — currency amounts) ───────────────────
@@ -97,8 +99,20 @@ class _HomepageState extends State<Homepage> {
   ///   2. No Flutter dialog/sheet is covering the homepage (covers the custom
   ///      "location disabled" / "permission denied" dialogs shown by
   ///      [NearestStationCard] after the GPS call throws).
+  ///
+  /// **First-run fast path:** if the user just finished onboarding this
+  /// session, [NearestStationCard] suppresses its auto-GPS and shows a demo
+  /// station instead, so we can fire the tour immediately without waiting on
+  /// any location flow. The real GPS fetch is triggered by NearestStationCard
+  /// when [TourController.isActive] falls back to false.
   void _scheduleTour() {
     if (_tourTriggered) return;
+
+    if (kJustCompletedOnboarding) {
+      _startTourFastPath();
+      return;
+    }
+
     final homeCtrl = Get.find<HomepageController>();
 
     if (homeCtrl.isLocatingNearest.value) {
@@ -123,6 +137,16 @@ class _HomepageState extends State<Homepage> {
         }
       });
     }
+  }
+
+  /// First-run path: tour starts immediately, no GPS or dialog wait.
+  Future<void> _startTourFastPath() async {
+    if (!mounted || _tourTriggered) return;
+    _tourTriggered = true;
+    // Tiny settle so the appbar finishes its first paint before the
+    // overlay measures spotlight target bounds.
+    await Future.delayed(const Duration(milliseconds: 250));
+    if (mounted) Get.find<TourController>().startTourIfNeeded();
   }
 
   /// Polls until this page is the top route (no dialog covering it), then
@@ -488,17 +512,13 @@ class _HomepageState extends State<Homepage> {
               start: lerpDouble(20, 30, 1 - t)!,
               bottom: 10,
             ),
-            // ── Pinned title: icon circle + app name only (no badge) ──────
+            // ── Pinned title: branded "amulet" badge + app name ───────────
             title: Row(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(
-                  'assets/images/metrologo.png',
-                  width: 32,
-                  height: 32,
-                ),
-                const SizedBox(width: 8),
+                const BrandLogoBadge(size: 30),
+                const SizedBox(width: 10),
                 Flexible(
                   child: Text(
                     l10n.appTitle,
@@ -844,29 +864,18 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
 
-                // ── App info section ──────────────────────────────────────
+                // ── App info section: badge on left, vertically centered ──
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryNile.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: const Icon(
-                          Icons.directions_subway_rounded,
-                          color: AppTheme.primaryNile,
-                          size: 26,
-                        ),
-                      ),
+                      const BrandLogoBadge(size: 56),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               l10n.appInfoTitle,

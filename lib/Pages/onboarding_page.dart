@@ -14,6 +14,11 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 
 const _kDoneKey = 'onboarding_done';
 
+/// Non-persistent session flag — true for the lifetime of this app process if
+/// the user just finished onboarding in this run. Consumed once by Homepage to
+/// flip the ordering: tour first, location second. Cleared when the tour ends.
+bool kJustCompletedOnboarding = false;
+
 Future<bool> isOnboardingDone() async {
   final p = await SharedPreferences.getInstance();
   return p.getBool(_kDoneKey) ?? false;
@@ -22,6 +27,7 @@ Future<bool> isOnboardingDone() async {
 Future<void> markOnboardingDone() async {
   final p = await SharedPreferences.getInstance();
   await p.setBool(_kDoneKey, true);
+  kJustCompletedOnboarding = true;
 }
 
 // ── Language metadata ─────────────────────────────────────────────────────────

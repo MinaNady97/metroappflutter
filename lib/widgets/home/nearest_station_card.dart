@@ -9,6 +9,8 @@ import '../../Controllers/homepagecontroller.dart';
 import '../../Constants/metro_stations.dart';
 import '../../core/theme/app_theme.dart';
 import '../../l10n/app_localizations.dart';
+import '../../Pages/onboarding_page.dart' show kJustCompletedOnboarding;
+import '../../tour/tour_controller.dart';
 import '../../tour/tour_keys.dart';
 import '../location_permission_dialog.dart';
 
@@ -29,8 +31,14 @@ class NearestStationCard extends StatefulWidget {
 }
 
 class _NearestStationCardState extends State<NearestStationCard> {
-  bool _triggered = false;
   Timer? _refreshTimer;
+
+  /// True while we're showing the static demo card during the first-run tour.
+  bool _demoActive = false;
+
+  /// Worker that listens for the tour to end so we can fire the deferred
+  /// real GPS fetch once the user is done with the welcome flow.
+  Worker? _tourWorker;
 
   @override
   void initState() {
@@ -38,21 +46,49 @@ class _NearestStationCardState extends State<NearestStationCard> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final ctrl = Get.find<HomepageController>();
-      // Only auto-trigger if we haven't found a station yet and not loading
+
+      // ── First-run path: defer GPS until the welcome tour ends ────────
+      if (kJustCompletedOnboarding && !ctrl.nearestRouteButtonFlag.value) {
+        setState(() => _demoActive = true);
+        _waitForTourThenLocate();
+        // Periodic refresh still scheduled, but it skips while demo is active.
+        _refreshTimer = Timer.periodic(const Duration(seconds: 60), (_) {
+          if (mounted && !_demoActive) _locate();
+        });
+        return;
+      }
+
+      // ── Normal path: auto-trigger GPS on first display ───────────────
       if (!ctrl.nearestRouteButtonFlag.value && !ctrl.isLocatingNearest.value) {
-        _triggered = true;
         _locate();
       }
-      // Auto-refresh every 60 s so moving users see their real nearest station.
       _refreshTimer = Timer.periodic(const Duration(seconds: 60), (_) {
         if (mounted) _locate();
       });
     });
   }
 
+  /// Subscribes to [TourController.isActive] and triggers a real location
+  /// fetch the moment the tour ends (completes or is skipped). The session
+  /// flag is consumed so re-opening the homepage during this run uses the
+  /// normal path.
+  void _waitForTourThenLocate() {
+    final tour = Get.find<TourController>();
+    _tourWorker = ever<bool>(tour.isActive, (active) {
+      if (active || !_demoActive) return;
+      _tourWorker?.dispose();
+      _tourWorker = null;
+      kJustCompletedOnboarding = false;
+      if (!mounted) return;
+      setState(() => _demoActive = false);
+      _locate();
+    });
+  }
+
   @override
   void dispose() {
     _refreshTimer?.cancel();
+    _tourWorker?.dispose();
     super.dispose();
   }
 
@@ -97,6 +133,25 @@ class _NearestStationCardState extends State<NearestStationCard> {
     return KeyedSubtree(
       key: TourKeys.nearestStationCard,
       child: Obx(() {
+      // Static demo card during the first-run welcome tour so the spotlight
+      // step has real visual content. Replaced by live data once the tour
+      // ends and _locate() resolves.
+      if (_demoActive) {
+        return _FoundCard(
+          isDark: isDark,
+          l10n: l10n,
+          station: 'Sadat',
+          lines: const ['1', '2'],
+          distanceM: 320,
+          userLat: 0,
+          userLng: 0,
+          stationLat: 30.0444,
+          stationLng: 31.2357,
+          onRefresh: () {},
+          onSetAsDeparture: () {},
+        );
+      }
+
       final locating = ctrl.isLocatingNearest.value;
       final found = ctrl.nearestRouteButtonFlag.value;
       final station = ctrl.nearestStationName.value;

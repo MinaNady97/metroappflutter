@@ -493,17 +493,10 @@ class _HomepageState extends State<Homepage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.22),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.directions_subway_rounded,
-                    size: 17,
-                    color: Colors.white,
-                  ),
+                Image.asset(
+                  'assets/images/metrologo.png',
+                  width: 32,
+                  height: 32,
                 ),
                 const SizedBox(width: 8),
                 Flexible(

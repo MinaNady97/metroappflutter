@@ -71,21 +71,27 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/metrologo.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  remove_alpha_ios: true
+  image_path: "assets/transparent_enhanced_logo_v1.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#0C1B33"
+  adaptive_icon_foreground: "assets/transparent_enhanced_logo_v1.png"
+  adaptive_icon_foreground_inset: 10
 
 flutter_native_splash:
-  color: "#ffffff"
-  color_dark: "#ffffff"
-  image: assets/images/splashIcon12-.png
+  # Background color (shown behind the centered logo)
+  color: "#0C1B33"
+  color_dark: "#0C1B33"
+  # Pre-12 image: 1152x1152 canvas, logo at 800px — no circular clip, just centered
+  image: assets/splash_pre12.png
   fullscreen: true
 
   android_12:
-    color: "#ffffff"
-    color_dark: "#ffffff"
-    image: assets/images/splashIcon12+.png
-    icon_background_color: "#ffffff"
-    icon_background_color_dark: "#ffffff"
+    # Android 12+ clips the icon to a 768px circle inside a 1152x1152 canvas
+    # Logo is 680px so it sits safely inside the 768px visible circle
+    color: "#0C1B33"
+    color_dark: "#0C1B33"
+    image: assets/splash_android12.png
 
 
 
@@ -103,6 +109,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/transparent_enhanced_logo_v1.png
+    - assets/splash_pre12.png
+    - assets/splash_android12.png
     - assets/images/
     - assets/images/tourist/
     - assets/images/tourist/Great_cairo/

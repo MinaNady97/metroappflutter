@@ -254,10 +254,10 @@ class _CardBody extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.directions_subway_rounded,
-                          color: Colors.white,
-                          size: 28,
+                        child: Image.asset(
+                          'assets/images/metrologo.png',
+                          width: 28,
+                          height: 28,
                         ),
                       ),
                     ),

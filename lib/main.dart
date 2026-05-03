@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:metroappflutter/Pages/homepage.dart';
 import 'package:metroappflutter/Pages/onboarding_page.dart';
+import 'package:metroappflutter/Pages/splash_page.dart';
 import 'package:metroappflutter/Controllers/homepagecontroller.dart';
 import 'package:metroappflutter/Controllers/languagecontroller.dart';
 import 'package:metroappflutter/data/datasources/metro_local_datasource.dart';
@@ -17,7 +18,8 @@ import 'package:metroappflutter/l10n/app_localizations.dart';
 import 'package:metroappflutter/services/local_search_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Load saved language preference and onboarding state
   final prefs = await SharedPreferences.getInstance();
@@ -80,7 +82,7 @@ class MyApp extends StatelessWidget {
         Locale('tr', ''),
         Locale('ja', ''),
       ],
-      home: onboardingDone ? Homepage() : const OnboardingPage(),
+      home: SplashPage(onboardingDone: onboardingDone),
     );
   }
 }

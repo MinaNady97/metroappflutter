@@ -40,7 +40,8 @@
       "Bash(flutter build:*)",
       "Bash(sed -n '60,70p' C:/Users/menan/Downloads/OutWork/metroappflutter/lib/widgets/transfer_guidance_card.dart)",
       "Bash(sed -n '40,75p' C:/Users/menan/Downloads/OutWork/metroappflutter/lib/widgets/transfer_guidance_card.dart)",
-      "Bash(/c/Python311/python:*)"
+      "Bash(/c/Python311/python:*)",
+      "Bash(dart run:*)"
     ]
   }
 }
